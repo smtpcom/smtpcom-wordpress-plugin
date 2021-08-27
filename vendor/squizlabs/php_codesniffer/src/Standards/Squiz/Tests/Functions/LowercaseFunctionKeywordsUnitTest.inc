@@ -1,0 +1,57 @@
+<?php
+
+// Correct.
+function Foo()
+{
+}
+$a = function () {
+};
+
+abstract class Foo
+{
+    public function PublicFunction()
+    {
+    }
+    private function PrivateFunction()
+    {
+    }
+    protected function ProtectedFunction()
+    {
+    }
+    static function StaticFunction()
+    {
+    }
+    abstract protected function AbstractProtectedFunction();
+    final public static function FinalStaticPublicFunction()
+    {
+    }
+}
+
+// Incorrect.
+function Bar()
+{
+}
+$a = function () {
+};
+
+abstract class Bar
+{
+    public function PublicFunction()
+    {
+    }
+    private function PrivateFunction()
+    {
+    }
+    protected function ProtectedFunction()
+    {
+    }
+    static function StaticFunction()
+    {
+    }
+    abstract protected function AbstractProtectedFunction();
+    final public static function FinalStaticPublicFunction()
+    {
+    }
+}
+
+$a = fn($x) => $x;

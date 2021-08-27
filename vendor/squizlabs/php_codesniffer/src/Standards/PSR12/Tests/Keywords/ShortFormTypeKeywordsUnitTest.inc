@@ -1,0 +1,15 @@
+<?php
+
+$bar = (bool) $foo;
+$bar = (bool) $foo;
+$bar = (bool) $foo;
+$bar = (bool) $foo;
+$bar = (int) $foo;
+$bar = (int) $foo;
+$bar = (int) $foo;
+
+// Test recognition with whitespace within the cast.
+$bar = (bool) $foo;
+$bar = (int) $foo;
+$bar = (bool) $foo;
+$bar = (int) $foo;

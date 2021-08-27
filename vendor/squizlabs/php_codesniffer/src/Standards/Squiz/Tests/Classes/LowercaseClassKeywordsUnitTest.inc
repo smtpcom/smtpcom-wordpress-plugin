@@ -1,0 +1,23 @@
+<?php
+
+abstract class MyClass extends MyClass
+{
+}
+final class MyClass implements MyInterface
+{
+}
+interface MyInterface
+{
+}
+trait MyTrait
+{
+}
+
+class MyClass
+{
+    var $myVar = null;
+    const myConst = true;
+}
+
+$a = new CLASS () {
+};
