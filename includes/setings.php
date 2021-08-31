@@ -1,7 +1,12 @@
 <?php
 
 use SmtpSdk\SmtpSdk;
-
+/**
+ * Settings on plugin main page
+ *
+ *
+ * @since    1.0.0
+ */
 function smtpmail_add_options_page()
 {
     add_options_page(
@@ -18,39 +23,48 @@ add_action('admin_menu', 'smtpmail_add_options_page');
 function smtpcommail_setting_display()
 {
     $ps = SmtpSdk::create(smtp_com_mail::get_options_sc('smtp_apikey'));
+    $dateFormatWP = smtp_com_mail::format_custom_date(get_option('date_format'));
+    $timeFormatWP = get_option('time_format');
+    $dateFrom = date($dateFormatWP);
+    $dateFromStandart = date($dateFormatWP, strtotime(date('Y-m-d') . '-7 days'));
+    $dateEnd = date($dateFormatWP);
+    $headerMessDisplay = 'none';
 
     if (version_compare(phpversion(), '7.2', '<')) {
         $startDate = date(DateTime::RFC2822, strtotime("-1 week"));
+        $endDate = date(DateTime::RFC2822, strtotime($dateEnd . ' 23:59:59'));
     } else {
         $startDate = date(DateTimeInterface::RFC2822, strtotime("-1 week"));
+        $endDate = date(DateTimeInterface::RFC2822, strtotime($dateEnd . ' 23:59:59'));
     }
     $parameters = [
         'start' => $startDate,
+        'end'     => $endDate,
         'event' => array('accepted', 'failed', 'delivered'),
         'limit' => 50,
         'offset' => 0,
     ];
-
-//    $dateFrom = date('Y-m-d', strtotime(date('Y-m-d') . '-1 day'));
-    $dateFrom = date('Y-m-d');
-    $dateFromStandart = date('Y-m-d', strtotime(date('Y-m-d') . '-7 days'));
-    $dateEnd = date('Y-m-d');
-    $resultMess = '';
-    $headerMessDisplay = 'none';
+    /**
+     * Get recent deliveries from SMTP.com API
+     *
+     *
+     * @since    1.0.0
+     */
     try {
         $response = $ps->messages(smtp_com_mail::get_options_sc('smtp_channelname'))->index($parameters);
         $messages = array_reverse($response->getItems());
         if (empty($messages)) {
-            $resultMess = "<span class='message_settings__smtp'>Messages don't exist for last 7 days.</span>";
+            $resultMess = "<span class='message_settings__smtp mess_not_found'>Messages don't exist for last 7 days.</span>";
         } else {
             $countMessage = count($messages);
             if ($countMessage >= 50) {
-                $resultMess = "<span class='message_settings__smtp'>First 50 messages have been sent from " . date('m/d/Y', strtotime($dateFrom)) . " to " . date('m/d/Y', strtotime($dateEnd)) . "</span>";
+                $resultMess = "<span class='message_settings__smtp'>First 50 messages have been sent from " . date($dateFormatWP, strtotime($dateFromStandart)) . " to " . date($dateFormatWP, strtotime($dateEnd)) . "</span>";
             } else {
-                $resultMess = "<span class='message_settings__smtp'>". $countMessage ." messages have been sent from " . date('m/d/Y', strtotime($dateFrom)) . " to " . date('m/d/Y', strtotime($dateEnd)) . "</span>";
+                $resultMess = "<span class='message_settings__smtp'>". $countMessage ." messages have been sent from " . date($dateFormatWP, strtotime($dateFromStandart)) . " to " . date($dateFormatWP, strtotime($dateEnd)) . "</span>";
             }
             $headerMessDisplay = 'flex';
             foreach ($messages as $message) {
+                $dateMessage = date($dateFormatWP . ' ' . $timeFormatWP, strtotime($message->getDetails()["delivery"]["finished"]));
                 $resultMess .= '
         <div class="item_block_recent_deliveries">
             <div class="block_recent_deliveries_id sub_item_recent_deliveries">'
@@ -63,33 +77,41 @@ function smtpcommail_setting_display()
                     . htmlspecialchars($message->getMsgData()["subject"]) .
                     '</div>
             <div class="block_recent_deliveries_id sub_item_recent_deliveries">'
-                    . $message->getDetails()["delivery"]["finished"] .
+                    . $dateMessage .
                     '</div>
         </div>';
             }
         }
     } catch (Exception $e) {
-        $resultMess = "<span class='message_settings__smtp setup_settings__smtp'>Set up your SMTP or API settings.</span>";
+        $resultMess = "<span class='message_settings__smtp setup_settings__smtp'>Set up API settings.</span>";
     }
 
     $headerMess = '
-    <div class="date_block__smtp" style="display: '.$headerMessDisplay.';">
+    <div class="date_block__smtp" style="display: ' . $headerMessDisplay . ';" data-dateformat="' . $dateFormatWP . '" >
         <div class="item_date_block__smtp">
             <label for="date_from__smtp">Start Date</label>
-            <input type="date" id="date_from__smtp" name="date_from__smtp" max="' . $dateFrom . '" value="' . $dateFromStandart . '" required>
+            <input type="text" id="date_from__smtp" name="date_from__smtp" autocomplete="off" readonly value="' .$dateFromStandart . '">
+            <label for="date_from__smtp" class="calendar_icon__smtp"><img src="'.  plugin_dir_url(dirname(__FILE__)) . 'admin/images/calendar.gif" alt=""></label>
         </div>
         <div class="item_date_block__smtp">
-            <label for="date_from__smtp">End Date</label>
-            <input type="date" id="date_end__smtp" name="date_end__smtp" max="' . $dateEnd . '" value="' . $dateEnd . '" required>
+            <label for="date_end__smtp">End Date</label>
+            <input type="text" id="date_end__smtp" name="date_end__smtp" autocomplete="off" readonly  value="' .$dateEnd . '">
+            <label for="date_end__smtp" class="calendar_icon__smtp"><img src="'.  plugin_dir_url(dirname(__FILE__)) . 'admin/images/calendar.gif" alt=""></label>
         </div>
     </div>
   <div class="item_block_recent_deliveries header_block__smtp" style="display: '.$headerMessDisplay.';">
             <div class="block_recent_deliveries_id sub_item_recent_deliveries">From</div>
             <div class="block_recent_deliveries_id sub_item_recent_deliveries">To</div>
             <div class="block_recent_deliveries_id sub_item_recent_deliveries">Subject</div>
-            <div class="block_recent_deliveries_id sub_item_recent_deliveries">Time</div>
+            <div class="block_recent_deliveries_id sub_item_recent_deliveries">Date</div>
         </div>';
 
+    /**
+     * Show main settings on plugin main page
+     *
+     *
+     * @since    1.0.0
+     */
     ?>
     <h1 class="title__smtp">
         <img src="<?php echo plugin_dir_url(dirname(__FILE__)) ?>admin/images/logoSMTP.png" alt="logoSMTP">
@@ -107,6 +129,14 @@ function smtpcommail_setting_display()
 
     <div class="block_setting__smtp">
         <form action="#" id="saveSettings__smtp">
+            <?php
+            /**
+             * Settings SMTP on plugin main page
+             *
+             *
+             * @since    1.0.0
+             */
+            ?>
             <div class="main_item_block_settings__smtp">
                 <div class="item_block_settings__smtp"><?php _e('Send Via:', 'smtp-com-mail'); ?></div>
                 <div class="item_block_settings__smtp">
@@ -116,6 +146,14 @@ function smtpcommail_setting_display()
                 </div>
             </div>
 
+            <?php
+            /**
+             * Settings SMTP.com API on plugin main page
+             *
+             *
+             * @since    1.0.0
+             */
+            ?>
             <div class="block_api__smtp <?php if (smtp_com_mail::get_options_sc('smtp_api') == 'api') {
                 echo 'show';
             } ?>">
@@ -137,7 +175,7 @@ function smtpcommail_setting_display()
                                value="<?php echo smtp_com_mail::get_options_sc('smtp_channelname'); ?>">
                         <p class="error_mess__smtp channel_empty" style="display: none;"><?php _e('The channel name is empty', 'smtp-com-mail'); ?></p>
                         <p class="error_mess__smtp channel_invalid" style="display: none;"><?php _e('The channel name is not correct', 'smtp-com-mail'); ?></p>
-                        <p class="error_mess__smtp port_443" style="display: none;"><?php _e('Port 443 is closed by host', 'smtp-com-mail'); ?></p>
+                        <p class="error_mess__smtp port_443" style="display: none;"><?php _e('Port '.API_PORT.' is closed by host', 'smtp-com-mail'); ?></p>
                         <p class="signature__smtp"><?php _e('also known as sender name', 'smtp-com-mail'); ?></p>
                     </div>
                 </div>
@@ -182,6 +220,9 @@ function smtpcommail_setting_display()
                         </select>
                         <p class="error_mess__smtp active_ports" style="display: <?php echo $messageShow; ?>;">
                             <?php _e('All ports are closed by host', 'smtp-com-mail'); ?>
+                        </p>
+                        <p class="error_mess__smtp active_one_port" style="display: <?php echo $messageShow; ?>;">
+                            <?php _e('Port was closed by host', 'smtp-com-mail'); ?>
                         </p>
                     </div>
                 </div>
@@ -231,6 +272,14 @@ function smtpcommail_setting_display()
                 </div>
             </div>
         </form>
+        <?php
+        /**
+         * Support info plugin SMTP.com
+         *
+         *
+         * @since    1.0.0
+         */
+        ?>
         <div class="bonus-info__smtp">
             <p>
                 <?php
@@ -259,12 +308,28 @@ function smtpcommail_setting_display()
 
         </div>
     </div>
+    <?php
+    /**
+     * Block recent deliveries
+     *
+     *
+     * @since    1.0.0
+     */
+    ?>
     <div class="block_recent_deliveries__smtp" style="display: none">
         <?php echo $headerMess; ?>
         <div class="result_message__smtp">
             <?php echo $resultMess; ?>
         </div>
     </div>
+    <?php
+    /**
+     * Modal for report
+     *
+     *
+     * @since    1.0.0
+     */
+    ?>
     <div class="block_modal__smtp" style="display: none">
         <div class="background_modal__smtp"></div>
         <div class="modal__smtp">

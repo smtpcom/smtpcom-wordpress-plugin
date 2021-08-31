@@ -226,7 +226,11 @@ class smtp_com_mail
 
 
 
-
+    /**
+     * Output array options
+     *
+     * @since    1.0.0
+     */
     public static function optionsArray($options = array(), $optionName = 'default'): string
     {
         $output = '';
@@ -238,6 +242,25 @@ class smtp_com_mail
         }
         return $output;
     }
+    /**
+     * Check standard date format
+     *
+     * @since    1.0.0
+     */
+    public static function format_custom_date($format)
+    {
+        if ($format == 'd.m.Y' || $format == 'Y-m-d' || $format == 'm/d/Y' || $format == 'd/m/Y') {
+            return $format;
+        } else {
+            return 'm/d/y';
+        }
+    }
+
+    /**
+     * Get options from smtp_com_mail table
+     *
+     * @since    1.0.0
+     */
     public static function get_options_sc($option_name)
     {
         global $wpdb;
@@ -246,6 +269,11 @@ class smtp_com_mail
         return $result;
     }
 
+    /**
+     * Add options to smtp_com_mail table
+     *
+     * @since    1.0.0
+     */
     public static function add_options_sc($option_name, $option_value = '')
     {
         global $wpdb;
@@ -256,6 +284,11 @@ class smtp_com_mail
         }
     }
 
+    /**
+     * Remove options from smtp_com_mail table
+     *
+     * @since    1.0.0
+     */
     public static function remove_options_sc($option_name)
     {
         global $wpdb;
@@ -263,6 +296,11 @@ class smtp_com_mail
         $wpdb->delete("$sc_table_name WHERE option_name = %s LIMIT 1", $option_name);
     }
 
+    /**
+     * Update options to smtp_com_mail table
+     *
+     * @since    1.0.0
+     */
     public static function update_options_sc($option_name, $option_value)
     {
         global $wpdb;

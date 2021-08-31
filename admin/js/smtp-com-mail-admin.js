@@ -1,6 +1,66 @@
 (function ( $ ) {
     'use strict';
 
+    $(window).load(function () {
+        function replaceBulk( str, findArray, replaceArray ){
+            var i, regex = [], map = {};
+            for( i=0; i<findArray.length; i++ ){
+                regex.push( findArray[i].replace(/([-[\]{}()*+?.\\^$|#,])/g,'\\$1') );
+                map[findArray[i]] = replaceArray[i];
+            }
+            regex = regex.join('|');
+            str = str.replace( new RegExp( regex, 'g' ), function(matched){
+                return map[matched];
+            });
+            return str;
+        }
+
+        function initDatePickers() {
+            let dateFormat = replaceBulk($('.date_block__smtp').data('dateformat').toLowerCase(),['m','d','y'],['mm','dd','yy']);
+            $("#date_from__smtp").datepicker(
+                {
+                    dateFormat: dateFormat,
+                    firstDay: 1,
+                    maxDate: new Date($('#date_end__smtp').val()),
+                },
+            );
+            $("#date_end__smtp").datepicker(
+                {
+                    dateFormat: dateFormat,
+                    maxDate: 0,
+                    firstDay: 1,
+                    minDate: new Date($('#date_from__smtp').val()),
+                },
+            );
+        }
+        initDatePickers();
+
+
+        $(document).on('change', '#date_from__smtp, #date_end__smtp',function () {
+            $('.date_block__smtp, .header_block__smtp').show();
+            let dateFrom = $('#date_from__smtp').val();
+            let dateEnd = $('#date_end__smtp').val();
+            $("#date_from__smtp").datepicker('destroy');
+            $("#date_end__smtp").datepicker('destroy');
+            initDatePickers();
+            $('.result_message__smtp').html('<p class="loading_message__smtp">loading...</p>');
+            $.ajax({
+                url: '/wp-admin/admin-ajax.php',
+                type: "POST",
+                data: {
+                    action: 'sort_messages__smtp',
+                    dateFrom: dateFrom,
+                    dateEnd: dateEnd
+                },
+                success: function (data) {
+                    $('.result_message__smtp').html(data);
+                }
+            });
+            return false;
+        });
+    });
+
+
     $(document).on('click','.show-pass',function () {
         $('#apikey').attr('type','text');
         $('.show-pass').addClass('active');
@@ -17,31 +77,12 @@
             $('.block_smtp__smtp').addClass('show');
             $('.item-tabs_recent__smtp').hide();
         } else {
-            // $('#date_from__smtp').change();
             $('.block_api__smtp').addClass('show');
             $('.item-tabs_recent__smtp').show();
         }
     });
 
-    $(document).on('change', '#date_from__smtp, #date_end__smtp',function () {
-        $('.date_block__smtp, .header_block__smtp').show();
-        let dateFrom = $('#date_from__smtp').val();
-        let dateEnd = $('#date_end__smtp').val();
-        $('.result_message__smtp').html('<p class="loading_message__smtp">loading...</p>');
-        $.ajax({
-            url: '/wp-admin/admin-ajax.php',
-            type: "POST",
-            data: {
-                action: 'sort_messages__smtp',
-                dateFrom: dateFrom,
-                dateEnd: dateEnd
-            },
-            success: function (data) {
-                $('.result_message__smtp').html(data);
-            }
-        });
-        return false;
-    });
+
 
     $(document).on('change', '#smtpSecurity',function () {
         let security = $(this).val().toLowerCase();
@@ -177,6 +218,10 @@
             case 'smtp_failed':
                 $('.block_modal__smtp').fadeOut();
                 $('.smtp_failed').slideDown();
+                break;
+            case 'closed_port':
+                $('.block_modal__smtp').fadeOut();
+                $('.active_one_port').slideDown();
                 break;
             case 'Thanks, api settings have been saved!':
                 $('#date_from__smtp').change();

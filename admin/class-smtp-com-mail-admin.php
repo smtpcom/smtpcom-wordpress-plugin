@@ -74,9 +74,11 @@ class smtp_com_mail_Admin
          * between the defined hooks and the functions defined in this
          * class.
          */
-
+        wp_enqueue_style('datepicker', plugin_dir_url(__FILE__) .
+            'css/datepicker.css', array(), $this->version, 'all');
         wp_enqueue_style($this->smtp_com_mail, plugin_dir_url(__FILE__) .
             'css/smtp-com-mail-admin.css', array(), $this->version, 'all');
+
     }
 
     /**
@@ -98,7 +100,7 @@ class smtp_com_mail_Admin
          * between the defined hooks and the functions defined in this
          * class.
          */
-
+        wp_enqueue_script('datepicker', plugin_dir_url(__FILE__) . 'js/datepicker.js', array(  ), $this->version, false);
         wp_enqueue_script($this->smtp_com_mail, plugin_dir_url(__FILE__) .
             'js/smtp-com-mail-admin.js', array( 'jquery' ), $this->version, false);
     }

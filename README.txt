@@ -1,7 +1,7 @@
-=== SMTP-COM-MAIL ===
+=== SMTP.com ===
 Contributors: (this should be a list of wordpress.org userid's)
-Tags: smtp,mail,wpmail
-Requires at least: 4.0.1
+Tags: smtp, mail, wpmail
+Requires at least: 4.4.1
 Requires PHP:  7.2
 Tested up to: 5.8
 Stable tag: 5.8

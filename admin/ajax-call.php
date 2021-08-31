@@ -3,6 +3,11 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use SmtpSdk\SmtpSdk;
 
+/**
+ * Ajax call for saving settings
+ *
+ * @since    1.0.0
+ */
 add_action("wp_ajax_saveSettings_smtp", "saveSettings_smtp_function");
 function saveSettings_smtp_function()
 {
@@ -16,10 +21,16 @@ function saveSettings_smtp_function()
         $smtpEnc = $_POST['smtpEnc'];
         $smtpLogin = $_POST['smtpLogin'];
         $smtpPass = $_POST['smtpPass'];
+        /**
+         * Ajax call for saving API settings
+         *
+         * @since    1.0.0
+         */
         if ($sendVida == 'api') {
+            $smtpPorts = API_PORT;
             if (!empty($apikey)) {
                 if (!empty($channelname)) {
-                    $port = 443;
+                    $port = API_PORT;
                     $connection = fsockopen("ssl://" . HOST_SMTP, $port, $errno, $errstr, $timeout = 1);
                     if ($connection) {
                         fclose($connection);
@@ -60,6 +71,11 @@ function saveSettings_smtp_function()
                 }
             }
         } else {
+            /**
+             * Ajax call for saving SMTP settings
+             *
+             * @since    1.0.0
+             */
             global $phpmailer;
             if (!($phpmailer instanceof PHPMailer\PHPMailer\PHPMailer)) {
                 require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
@@ -67,58 +83,75 @@ function saveSettings_smtp_function()
                 require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
             }
             $smtp = new SMTP;
+            /**
+             * Debug SMTP connection
+             *
+             * @since    1.0.0
+             */
 //            $smtp->do_debug = SMTP::DEBUG_CONNECTION;
-            try {
-                //Connect to an SMTP server
-                if ($smtpSecurity == 'SSL') {
-                    if (!$smtp->connect("ssl://" . SEND_HOST_SMTP, $smtpPorts)) {
-                        throw new Exception('Connect failed');
-                    }
-                } else {
-                    if (!$smtp->connect(SEND_HOST_SMTP, $smtpPorts)) {
-                        throw new Exception('Connect failed');
-                    }
-                }
-                if (!$smtp->hello(gethostname())) {
-                    throw new Exception('EHLO failed: ' . $smtp->getError()['error']);
-                }
-                $e = $smtp->getServerExtList();
-                if ($smtpSecurity == 'STARTTLS') {
-                    if (is_array($e) && array_key_exists('STARTTLS', $e)) {
-                        $tlsok = $smtp->startTLS();
-                        if (!$tlsok) {
-                            throw new Exception('Failed to start encryption: ' . $smtp->getError()['error']);
+            $connection = @fsockopen(SEND_HOST_SMTP, $smtpPorts, $errno, $errstr, $timeout = 1);
+            if (is_resource($connection)) {
+                fclose($connection);
+                try {
+                    if ($smtpSecurity == 'SSL') {
+                        if (!$smtp->connect("ssl://" . SEND_HOST_SMTP, $smtpPorts)) {
+                            throw new Exception('Connect failed');
                         }
-                        if (!$smtp->hello(gethostname())) {
-                            throw new Exception('EHLO (2) failed: ' . $smtp->getError()['error']);
-                        }
-                        $e = $smtp->getServerExtList();
-                    }
-                }
-                if (is_array($e) && array_key_exists('AUTH', $e)) {
-                    if ($smtp->authenticate($smtpLogin, $smtpPass)) {
-                        smtp_com_mail::update_options_sc('smtp_api', $sendVida);
-                        smtp_com_mail::update_options_sc('smtp_apikey', $apikey);
-                        smtp_com_mail::update_options_sc('smtp_channelname', $channelname);
-                        smtp_com_mail::update_options_sc('smtp_server', $smtpServer);
-                        smtp_com_mail::update_options_sc('smtp_port', $smtpPorts);
-                        smtp_com_mail::update_options_sc('smtp_security', $smtpSecurity);
-                        smtp_com_mail::update_options_sc('smtp_encryption', $smtpEnc);
-                        smtp_com_mail::update_options_sc('smtp_login', $smtpLogin);
-                        smtp_com_mail::update_options_sc('smtp_password', $smtpPass);
-                        _e('Thanks, settings have been saved!', 'smtp-com-mail');
                     } else {
-                        throw new Exception('Authentication failed: ' . $smtp->getError()['error']);
+                        if (!$smtp->connect(SEND_HOST_SMTP, $smtpPorts)) {
+                            throw new Exception('Connect failed');
+                        }
                     }
+                    if (!$smtp->hello(gethostname())) {
+                        throw new Exception('EHLO failed: ' . $smtp->getError()['error']);
+                    }
+                    $e = $smtp->getServerExtList();
+                    if ($smtpSecurity == 'STARTTLS') {
+                        if (is_array($e) && array_key_exists('STARTTLS', $e)) {
+                            $tlsok = $smtp->startTLS();
+                            if (!$tlsok) {
+                                throw new Exception('Failed to start encryption: ' . $smtp->getError()['error']);
+                            }
+                            if (!$smtp->hello(gethostname())) {
+                                throw new Exception('EHLO (2) failed: ' . $smtp->getError()['error']);
+                            }
+                            $e = $smtp->getServerExtList();
+                        }
+                    }
+                    if (is_array($e) && array_key_exists('AUTH', $e)) {
+                        if ($smtp->authenticate($smtpLogin, $smtpPass)) {
+                            smtp_com_mail::update_options_sc('smtp_api', $sendVida);
+                            smtp_com_mail::update_options_sc('smtp_apikey', $apikey);
+                            smtp_com_mail::update_options_sc('smtp_channelname', $channelname);
+                            smtp_com_mail::update_options_sc('smtp_server', $smtpServer);
+                            smtp_com_mail::update_options_sc('smtp_port', $smtpPorts);
+                            smtp_com_mail::update_options_sc('smtp_security', $smtpSecurity);
+                            smtp_com_mail::update_options_sc('smtp_encryption', $smtpEnc);
+                            smtp_com_mail::update_options_sc('smtp_login', $smtpLogin);
+                            smtp_com_mail::update_options_sc('smtp_password', $smtpPass);
+                            _e('Thanks, settings have been saved!', 'smtp-com-mail');
+                        } else {
+                            throw new Exception('Authentication failed: ' . $smtp->getError()['error']);
+                        }
+                    }
+                } catch (Exception $e) {
+                    _e('SMTP login or password is incorrect', 'smtp-com-mail');
+                    // open for debug
+                    // _e('SMTP error: ' . $e->getMessage(), 'smtp-com-mail');
                 }
-            } catch (Exception $e) {
-                _e('SMTP error: ' . $e->getMessage(), 'smtp-com-mail');
+            } else {
+                echo 'closed_port';
             }
         }
     }
     wp_die();
 }
 
+/**
+ * Ajax call for test send message
+ *
+ * @since    1.0.0
+ */
 add_action("wp_ajax_send_test_smtp_com", "send_test_smtp_com_function");
 function send_test_smtp_com_function()
 {
@@ -142,9 +175,14 @@ function send_test_smtp_com_function()
         $message = __('This email confirms that you have successfully installed your SMTP.com Wordpress Plugin. Congratulations and happy sending!');
         $headers = 'From: ' . FROM_SMTP . " \r\n";
         if ($sendVida == 'api') {
+            /**
+             * Ajax call for test API send message
+             *
+             * @since    1.0.0
+             */
+            $port = API_PORT;
             if (!empty($apikey)) {
                 if (!empty($channelname)) {
-                    $port = 443;
                     $connection = fsockopen("ssl://" . HOST_SMTP, $port, $errno, $errstr, $timeout = 1);
                     if ($connection) {
                         fclose($connection);
@@ -176,6 +214,11 @@ function send_test_smtp_com_function()
                 }
             }
         } else {
+            /**
+             * Ajax call for test SMTP send message
+             *
+             * @since    1.0.0
+             */
             global $phpmailer;
             if (!($phpmailer instanceof PHPMailer\PHPMailer\PHPMailer)) {
                 require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
@@ -225,7 +268,11 @@ function send_test_smtp_com_function()
 
 
 
-
+/**
+ * Ajax call for sort recent deliveries
+ *
+ * @since    1.0.0
+ */
 add_action("wp_ajax_sort_messages__smtp", "sort_messages_smtp_function");
 function sort_messages_smtp_function()
 {
@@ -237,8 +284,14 @@ function sort_messages_smtp_function()
     wp_die();
 }
 
+/**
+ * Function for sort recent deliveries
+ *
+ * @since    1.0.0
+ */
 function show_messages ($dateFrom, $dateEnd){
-    $resultMess = '';
+    $dateFormatWP = get_option('date_format');
+    $timeFormatWP = get_option('time_format');
     if (version_compare(phpversion(), '7.2', '<')) {
         $startDate = date(DateTime::RFC2822, strtotime($dateFrom));
         $endDate = date(DateTime::RFC2822, strtotime($dateEnd . ' 23:59:59'));
@@ -257,17 +310,18 @@ function show_messages ($dateFrom, $dateEnd){
     try {
         $ps = SmtpSdk::create(smtp_com_mail::get_options_sc('smtp_apikey'));
         $response = $ps->messages(smtp_com_mail::get_options_sc('smtp_channelname'))->index($parameters);
-        $messages = array_reverse($response->getItems());
+        $messages = $response->getItems();
         if (empty($messages)) {
-            $resultMess = "<span class='message_settings__smtp'>Messages have not been sent from ". date('m/d/Y', strtotime($dateFrom)) ." to ". date('m/d/Y', strtotime($dateEnd)) ."</span>";
+            $resultMess = "<span class='message_settings__smtp'>Messages have not been sent from ". date($dateFormatWP, strtotime($dateFrom)) ." to ". date($dateFormatWP, strtotime($dateEnd)) ."</span>";
         } else {
             $countMessage = count($messages);
             if ($countMessage >= 50) {
-                $resultMess = "<span class='message_settings__smtp'>First 50 messages have been sent from " . date('m/d/Y', strtotime($dateFrom)) . " to " . date('m/d/Y', strtotime($dateEnd)) . "</span>";
+                $resultMess = "<span class='message_settings__smtp'>First 50 messages have been sent from " . date($dateFormatWP, strtotime($dateFrom)) . " to " . date($dateFormatWP, strtotime($dateEnd)) . "</span>";
             } else {
-                $resultMess = "<span class='message_settings__smtp'>". $countMessage ." messages have been sent from " . date('m/d/Y', strtotime($dateFrom)) . " to " . date('m/d/Y', strtotime($dateEnd)) . "</span>";
+                $resultMess = "<span class='message_settings__smtp'>". $countMessage ." messages have been sent from " . date($dateFormatWP, strtotime($dateFrom)) . " to " . date($dateFormatWP, strtotime($dateEnd)) . "</span>";
             }
             foreach ($messages as $message) {
+                $dateMessage = date($dateFormatWP . ' ' . $timeFormatWP, strtotime($message->getDetails()["delivery"]["finished"]));
                 $resultMess .= '
         <div class="item_block_recent_deliveries">
             <div class="block_recent_deliveries_id sub_item_recent_deliveries">'
@@ -280,14 +334,14 @@ function show_messages ($dateFrom, $dateEnd){
                     . htmlspecialchars($message->getMsgData()["subject"]) .
                     '</div>
             <div class="block_recent_deliveries_id sub_item_recent_deliveries">'
-                    . $message->getDetails()["delivery"]["finished"] .
+                    . $dateMessage .
                     '</div>
         </div>';
             }
         }
     } catch (Exception $e) {
         $headerMess = "";
-        $resultMess = "<span class='message_settings__smtp'>Set up your SMTP or API settings.</span>";
+        $resultMess = "<span class='message_settings__smtp'>Set up API settings.</span>";
     }
     _e($resultMess, 'smtp-com-mail');
 }

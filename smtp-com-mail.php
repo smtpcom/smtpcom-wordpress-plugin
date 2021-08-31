@@ -27,13 +27,14 @@ if (! defined('WPINC')) {
 $GLOBALS['wpmdb_meta']['smtp-com-mail']['version'] = '1.0.0';
 /**
  * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
+ * Main constants for plugin
  */
+
 define('smtp_com_mail_VERSION', '1.0.0');
 const HOST_SMTP = "api.smtp.com";
 const SEND_HOST_SMTP = "send.smtp.com";
 const FROM_SMTP = "wordpress@smtp.com";
+const API_PORT = 443;
 
 /**
  * The code that runs during plugin activation.

@@ -24,13 +24,13 @@ class smtp_com_mail_Deactivator
 {
 
     /**
-     * Short Description. (use period)
+     * Remove table smtp_com_mail on deactivate plugin
      *
-     * Long Description.
      *
      * @since    1.0.0
      */
     public static function deactivate()
     {
+
     }
 }

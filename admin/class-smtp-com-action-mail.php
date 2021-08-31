@@ -6,6 +6,11 @@ class smtp_com_action_mail
 {
     public function init_smtp_com()
     {
+        /**
+         * ReInit phpmailer for custom SMTP settings
+         *
+         * @since    1.0.0
+         */
         add_action('phpmailer_init', 'phpmailer_init_smtp', 10, 1);
         function phpmailer_init_smtp($phpmailer)
         {
@@ -29,15 +34,22 @@ class smtp_com_action_mail
             }
         }
 
-
+        /**
+         * Catch wp_mail() errors
+         *
+         * @since    1.0.0
+         */
         add_action('wp_mail_failed', function ($error) {
-            $connection = @fsockopen('send.smtp.com', smtp_com_mail::get_options_sc('smtp_port'), $errno, $errstr, $timeout = 1);
+            if (smtp_com_mail::get_options_sc('smtp_port') == API_PORT) {
+                $connection = fsockopen("ssl://" . HOST_SMTP, API_PORT, $errno, $errstr, $timeout = 1);
+            } else {
+                $connection = @fsockopen(SEND_HOST_SMTP, smtp_com_mail::get_options_sc('smtp_port'), $errno, $errstr, $timeout = 1);
+            }
             if (is_resource($connection)) {
                 fclose($connection);
-                _e('Error SMTP connect failed. Please check settings ', 'smtp-com-mail');
-                _e('<a href="' . get_site_url() . '/wp-admin/options-general.php?page=smtpcommail-setting">Here</a>', 'smtp-com-mail');
+                _e('SMTP login or password is incorrect', 'smtp-com-mail');
             } else {
-                _e('Port ' . smtp_com_mail::get_options_sc('smtp_port') . ' is closed', 'smtp-com-mail');
+                _e('Port was closed by host', 'smtp-com-mail');
             }
         });
     }

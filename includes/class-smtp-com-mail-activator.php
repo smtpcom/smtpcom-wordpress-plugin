@@ -22,11 +22,9 @@
  */
 class smtp_com_mail_Activator
 {
-
     /**
-     * Short Description. (use period)
+     * Create table smtp_com_mail and add options on plugin active
      *
-     * Long Description.
      *
      * @since    1.0.0
      */

@@ -2,6 +2,11 @@
 
 use SmtpSdk\SmtpSdk;
 
+/**
+ * ReInit wp_mail() for SMTP.com API
+ *
+ * @since    1.0.0
+ */
 if (!function_exists('wp_mail')) {
     if (smtp_com_mail::get_options_sc('smtp_api') == 'api') {
             function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
@@ -353,11 +358,17 @@ if (!function_exists('wp_mail')) {
                  */
                 do_action_ref_array('phpmailer_init', array(&$phpmailer));
 // Send!
-                $port = 443;
+                $port = API_PORT;
                 $connection = fsockopen("ssl://" . HOST_SMTP, $port, $errno, $errstr, $timeout = 1);
                 if ($connection) {
                     fclose($connection);
                     try {
+                        /**
+                         * Try send message by SMTP.com API
+                         *
+                         *
+                         * @since    1.0.0
+                         */
                         $ps = SmtpSdk::create(smtp_com_mail::get_options_sc('smtp_apikey'));
                         $key = $ps->keys(smtp_com_mail::get_options_sc('smtp_apikey'))->show();
                         $channel = $ps->channels(smtp_com_mail::get_options_sc('smtp_channelname'))->show();
@@ -378,7 +389,7 @@ if (!function_exists('wp_mail')) {
                         return false;
                     }
                 } else {
-                    echo _e('Port 443 was closed by host', 'smtp-com-mail');
+                    echo _e('Port ' . API_PORT . ' was closed by host', 'smtp-com-mail');
                 }
             }
 

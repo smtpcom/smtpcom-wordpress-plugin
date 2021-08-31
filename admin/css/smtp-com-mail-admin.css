@@ -21,6 +21,9 @@
     height: 50px;
     overflow: auto;
 }
+.mess_not_found{
+    top: 25px !important;
+}
 .main_item_block_settings__smtp{
     display: -webkit-box;
     display: -ms-flexbox;
@@ -32,6 +35,9 @@
     width: 300px;
     margin-top: 20px;
     position: relative;
+}
+p.error_mess__smtp.ssl_port{
+    color: green;
 }
 .show-pass {
     position: absolute;
@@ -203,4 +209,8 @@ p.loading_message__smtp {
 }
 .setup_settings__smtp{
     top: 25px;
+}
+.calendar_icon__smtp{
+    position: relative;
+    left: -30px;
 }
