@@ -16,7 +16,7 @@
         }
 
         function initDatePickers() {
-            let dateFormat = replaceBulk($('.date_block__smtp').data('dateformat').toLowerCase(),['m','d','y'],['mm','dd','yy']);
+            let dateFormat = replaceBulk($('.date_block__smtp').data('dateformat').toLowerCase(),['m','d','y','j','l','f'],['mm','dd','yy','d','DD','MM']);
             $("#date_from__smtp").datepicker(
                 {
                     dateFormat: dateFormat,
@@ -38,8 +38,8 @@
 
         $(document).on('change', '#date_from__smtp, #date_end__smtp',function () {
             $('.date_block__smtp, .header_block__smtp').show();
-            let dateFrom = $('#date_from__smtp').val();
-            let dateEnd = $('#date_end__smtp').val();
+            let dateFrom = formatDate($('#date_from__smtp').datepicker('getDate'));
+            let dateEnd = formatDate($('#date_end__smtp').datepicker('getDate'));
             $("#date_from__smtp").datepicker('destroy');
             $("#date_end__smtp").datepicker('destroy');
             initDatePickers();
@@ -180,6 +180,20 @@
     $(document).on('click','.close_modal__smtp, .background_modal__smtp',function () {
         $('.block_modal__smtp').fadeOut();
     })
+
+    function formatDate(date) {
+        let d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
 
     function checkData(data)
     {

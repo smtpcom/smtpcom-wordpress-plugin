@@ -23,20 +23,21 @@ add_action('admin_menu', 'smtpmail_add_options_page');
 function smtpcommail_setting_display()
 {
     $ps = SmtpSdk::create(smtp_com_mail::get_options_sc('smtp_apikey'));
-    $dateFormatWP = smtp_com_mail::format_custom_date(get_option('date_format'));
+    $dateFormatWP = get_option('date_format');
     $timeFormatWP = get_option('time_format');
     $dateFrom = date($dateFormatWP);
-    $dateFromStandart = date($dateFormatWP, strtotime(date('Y-m-d') . '-7 days'));
+    $dateFromStandart = date($dateFormatWP, strtotime(date('Y-m-d') . '-6 days'));
     $dateEnd = date($dateFormatWP);
     $headerMessDisplay = 'none';
 
     if (version_compare(phpversion(), '7.2', '<')) {
-        $startDate = date(DateTime::RFC2822, strtotime("-1 week"));
-        $endDate = date(DateTime::RFC2822, strtotime($dateEnd . ' 23:59:59'));
+        $startDate = date(DateTime::RFC2822, strtotime(date('Y-m-d 00:00:00', strtotime('-6 days'))));
+        $endDate = date(DateTime::RFC2822, strtotime(date('Y-m-d') . ' 23:59:59'));
     } else {
-        $startDate = date(DateTimeInterface::RFC2822, strtotime("-1 week"));
-        $endDate = date(DateTimeInterface::RFC2822, strtotime($dateEnd . ' 23:59:59'));
+        $startDate = date(DateTimeInterface::RFC2822, strtotime(date('Y-m-d 00:00:00', strtotime("-6 days"))));
+        $endDate = date(DateTimeInterface::RFC2822, strtotime(date('Y-m-d 23:59:59')));
     }
+
     $parameters = [
         'start' => $startDate,
         'end'     => $endDate,
@@ -52,7 +53,7 @@ function smtpcommail_setting_display()
      */
     try {
         $response = $ps->messages(smtp_com_mail::get_options_sc('smtp_channelname'))->index($parameters);
-        $messages = array_reverse($response->getItems());
+        $messages = $response->getItems();
         if (empty($messages)) {
             $resultMess = "<span class='message_settings__smtp mess_not_found'>Messages don't exist for last 7 days.</span>";
         } else {

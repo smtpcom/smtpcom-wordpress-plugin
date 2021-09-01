@@ -293,12 +293,13 @@ function show_messages ($dateFrom, $dateEnd){
     $dateFormatWP = get_option('date_format');
     $timeFormatWP = get_option('time_format');
     if (version_compare(phpversion(), '7.2', '<')) {
-        $startDate = date(DateTime::RFC2822, strtotime($dateFrom));
+        $startDate = date(DateTime::RFC2822, strtotime($dateFrom . ' 00:00:00'));
         $endDate = date(DateTime::RFC2822, strtotime($dateEnd . ' 23:59:59'));
     } else {
-        $startDate = date(DateTimeInterface::RFC2822, strtotime($dateFrom));
+        $startDate = date(DateTimeInterface::RFC2822, strtotime($dateFrom . ' 00:00:00'));
         $endDate = date(DateTimeInterface::RFC2822, strtotime($dateEnd . ' 23:59:59'));
     }
+
     $parameters = [
         'start' => $startDate,
         'end'     => $endDate,
