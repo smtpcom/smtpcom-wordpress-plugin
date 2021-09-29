@@ -124,7 +124,7 @@ class smtp_com_mail
          * side of the site.
          */
 
-        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/setings.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/settings.php';
 
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/mail-api.php';
 

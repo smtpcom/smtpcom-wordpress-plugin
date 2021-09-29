@@ -299,7 +299,7 @@ function smtpcommail_setting_display()
                 <?php
                 echo sprintf(
                     __('Go to %1$s to register right now or read about %2$s offers %3$s here. %4$s'),
-                    '<a href="https://trial.smtp.com/?afid=wpplugin" target="_blank">trial.smtp.com</a>',
+                    '<a href="https://registration.smtp.com/?afid=wpplugin" target="_blank">SMTP.com website</a>',
                     '<a href="https://www.smtp.com/" target="_blank">SMTP.com</a>',
                     '<a href="https://www.smtp.com/pricing/" target="_blank">',
                     '</a>'

@@ -25,7 +25,7 @@ Follow this link to find all information about installing and configuring the pl
 
 = How to create a smtp.com account? =
 
-Follow this link to register on smtp.com and find all further information https://trial.smtp.com/?afid=wpplugin
+Follow this link to register on smtp.com and find all further information https://registration.smtp.com/?afid=wpplugin
 
 == Changelog ==
 
