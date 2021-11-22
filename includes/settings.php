@@ -287,13 +287,13 @@ function smtpcommail_setting_display()
                 echo sprintf(
                     __('Read our %1$s Wordpress Plugin Setup Guide %2$s if you need help or reach out to our
                      Support Team via email address support@smtp.com'),
-                    '<a href="https://kb.smtp.com/article/1709-wordpress-plugin-setup-guide" target="_blank">',
+                    '<a href="https://kb.smtp.com/article/2137-wp-plugin" target="_blank">',
                     '</a>'
                 );
                 ?>
             <p><?php _e('Create your own account with SMTP.com to send emails from 
             your Wordpress website.', 'smtp-com-mail'); ?></p>
-            <p><?php _e('The setup is easy and you can get the first month for free, 
+            <p><?php _e('The setup is easy and you can get the first month for free. 
             Plans start at $25 per month after that.', 'smtp-com-mail'); ?></p>
             <p>
                 <?php
