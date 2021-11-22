@@ -190,28 +190,16 @@ if (!function_exists('wp_mail')) {
                 $phpmailer->clearAttachments();
                 $phpmailer->clearCustomHeaders();
                 $phpmailer->clearReplyTos();
-// Set "From" name and email.
+                // Set "From" name and email.
 
                 // If we don't have a name from the input headers.
                 if (!isset($from_name)) {
                     $from_name = 'WordPress';
                 }
 
-                /*
-                         * If we don't have an email from the input headers, default to wordpress@$sitename
-                         * Some hosts will block outgoing mail from this address if it doesn't exist,
-                         * but there's no easy alternative. Defaulting to admin_email might appear to be
-                         * another option, but some hosts may refuse to relay mail from an unknown domain.
-                         * See https://core.trac.wordpress.org/ticket/5007.
-                 */
+                // if from field doesn't set, use admin email option
                 if (!isset($from_email)) {
-// Get the site domain and get rid of www.
-                    $sitename = wp_parse_url(network_home_url(), PHP_URL_HOST);
-                    if ('www.' === substr($sitename, 0, 4)) {
-                        $sitename = substr($sitename, 4);
-                    }
-
-                    $from_email = 'wordpress@' . $sitename;
+                    $from_email = get_option('admin_email');
                 }
 
                 /**
@@ -233,11 +221,16 @@ if (!function_exists('wp_mail')) {
                 try {
                     $phpmailer->setFrom($from_email, $from_name, false);
                 } catch (PHPMailer\PHPMailer\Exception $e) {
-                    $mail_error_data = compact('to', 'subject', 'message', 'headers', 'attachments');
-                    $mail_error_data['phpmailer_exception_code'] = $e->getCode();
-                    /** This filter is documented in wp-includes/pluggable.php */
-                    do_action('wp_mail_failed', new WP_Error('wp_mail_failed', $e->getMessage(), $mail_error_data));
-                    return false;
+                    try {
+                        $from_email = get_option('admin_email');
+                        $phpmailer->setFrom($from_email, $from_name, false);
+                    } catch (PHPMailer\PHPMailer\Exception $e) {
+                        $mail_error_data = compact('to', 'subject', 'message', 'headers', 'attachments');
+                        $mail_error_data['phpmailer_exception_code'] = $e->getCode();
+                        /** This filter is documented in wp-includes/pluggable.php */
+                        do_action('wp_mail_failed', new WP_Error('wp_mail_failed', $e->getMessage(), $mail_error_data));
+                        return false;
+                    }
                 }
 
                 // Set mail's subject and body.

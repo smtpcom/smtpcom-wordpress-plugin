@@ -171,9 +171,11 @@ function send_test_smtp_com_function()
             $smtpPorts = 0;
         }
         $to = (string) $current_user->user_email;
+        $fromSmtp = get_option('admin_email');
+
         $subject = 'Hello from your Wordpress Website via SMTP.com';
         $message = __('This email confirms that you have successfully installed your SMTP.com Wordpress Plugin. Congratulations and happy sending!');
-        $headers = 'From: ' . FROM_SMTP . " \r\n";
+        $headers = 'From: ' . $fromSmtp . " \r\n";
         if ($sendVida == 'api') {
             /**
              * Ajax call for test API send message
@@ -191,7 +193,7 @@ function send_test_smtp_com_function()
                             $ps->keys($apikey)->show();
                             try {
                                 $ps->channels($channelname)->show();
-                                $ps->messages($channelname)->create(FROM_SMTP, $to, $subject, $message);
+                                $ps->messages($channelname)->create($fromSmtp, $to, $subject, $message);
                                 _e('The test email has been sent!', 'smtp-com-mail');
 
                             } catch (Exception $e) {
@@ -243,7 +245,7 @@ function send_test_smtp_com_function()
                 global $current_user;
                 get_currentuserinfo();
                 $to = (string) $current_user->user_email;
-                $phpmailer->setFrom(FROM_SMTP, 'smtp.com');
+                $phpmailer->setFrom($fromSmtp);
                 $phpmailer->AddAddress($to);
                 $phpmailer->Subject = "Hello from your Wordpress Website via SMTP.com";
                 $phpmailer->Body = "This email confirms that you have successfully installed your SMTP.com Wordpress Plugin. Congratulations and happy sending!";

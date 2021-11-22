@@ -1,9 +1,0 @@
-<?php
-
-/**
- * Docblock.
- */
-function TestFirstFunctionInFileTooLittleSpacing()
-{
-    // Code
-}

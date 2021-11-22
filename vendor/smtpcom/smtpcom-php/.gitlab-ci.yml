@@ -1,0 +1,9 @@
+php:test:
+  before_script:
+    - bash .gitlab-ci.sh
+  image: php:7.2
+  script:
+    - php vendor/bin/phpcs --encoding=utf8
+    - php vendor/bin/phpunit --no-coverage
+    - php vendor/bin/phpstan
+    - php vendor/bin/psalm.phar

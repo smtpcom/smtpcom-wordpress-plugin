@@ -2,14 +2,14 @@
     "repositories": [
         {
             "type": "path",
-            "url": "libs/sdk-php",
+            "url": "../sdk-php",
             "options": {
                 "symlink": false
             }
         }
     ],
     "require": {
-        "smtp-com/sdk-php": "*"
+        "smtpcom/smtpcom-php": "*"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.6.0"

@@ -33,7 +33,6 @@ $GLOBALS['wpmdb_meta']['smtp-com-mail']['version'] = '1.0.0';
 define('smtp_com_mail_VERSION', '1.0.0');
 const HOST_SMTP = "api.smtp.com";
 const SEND_HOST_SMTP = "send.smtp.com";
-const FROM_SMTP = "wordpress@smtp.com";
 const API_PORT = 443;
 
 /**

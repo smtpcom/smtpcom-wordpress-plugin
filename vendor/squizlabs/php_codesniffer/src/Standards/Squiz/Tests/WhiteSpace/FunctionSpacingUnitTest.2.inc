@@ -1,6 +1,0 @@
-<?php
-
-function TestFirstFunctionInFileTooLittleSpacing()
-{
-    // Code
-}
