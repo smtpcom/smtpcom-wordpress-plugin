@@ -15,7 +15,7 @@ function saveSettings_smtp_function()
         $sendVida = $_POST['sendVia'];
         $apikey = $_POST['apikey'];
         $channelname = $_POST['channelname'];
-        $smtpServer = 'send.smtp.com';
+        $smtpServer = SEND_HOST_SMTP;
         $smtpPorts = $_POST['smtpPorts'];
         $smtpSecurity = $_POST['smtpSecurity'];
         $smtpEnc = $_POST['smtpEnc'];
@@ -159,7 +159,7 @@ function send_test_smtp_com_function()
         $sendVida = $_POST['sendVia'];
         $apikey = $_POST['apikey'];
         $channelname = $_POST['channelname'];
-        $smtpServer = 'send.smtp.com';
+        $smtpServer = SEND_HOST_SMTP;
         $smtpPorts = $_POST['smtpPorts'];
         $smtpSecurity = $_POST['smtpSecurity'];
         $smtpEnc = $_POST['smtpEnc'];
