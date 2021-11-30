@@ -349,6 +349,11 @@ if (!function_exists('wp_mail')) {
                  * @since 2.2.0
                  *
                  */
+
+		$mime = $phpmailer->headerLine('Subject',$phpmailer->encodeHeader($phpmailer->secureHeader($subject))) .
+			$phpmailer->createHeader() . "\r\n\r\n" .
+			$phpmailer->createBody();
+
                 do_action_ref_array('phpmailer_init', array(&$phpmailer));
 // Send!
                 $port = API_PORT;
@@ -365,7 +370,8 @@ if (!function_exists('wp_mail')) {
                         $ps = SmtpSdk::create(smtp_com_mail::get_options_sc('smtp_apikey'));
                         $key = $ps->keys(smtp_com_mail::get_options_sc('smtp_apikey'))->show();
                         $channel = $ps->channels(smtp_com_mail::get_options_sc('smtp_channelname'))->show();
-                        return $ps->messages(smtp_com_mail::get_options_sc('smtp_channelname'))->create($from_email, $to, $subject, $message, $attachments);
+                        //return $ps->messages(smtp_com_mail::get_options_sc('smtp_channelname'))->create($from_email, $to, $subject, $message, $attachments);
+	                return $ps->messages(smtp_com_mail::get_options_sc('smtp_channelname'))->createMime($from_email, $to, $mime);
                     } catch (Exception $e) {
                         $mail_error_data = compact('to', 'subject', 'message', 'headers', 'attachments');
                         $mail_error_data['phpmailer_exception_code'] = $e->getCode();
