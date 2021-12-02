@@ -349,10 +349,8 @@ if (!function_exists('wp_mail')) {
                  * @since 2.2.0
                  *
                  */
-
-		$mime = $phpmailer->headerLine('Subject',$phpmailer->encodeHeader($phpmailer->secureHeader($subject))) .
-			$phpmailer->createHeader() . "\r\n\r\n" .
-			$phpmailer->createBody();
+                $phpmailer->preSend();
+                $mime = $phpmailer->getSentMIMEMessage();
 
                 do_action_ref_array('phpmailer_init', array(&$phpmailer));
 // Send!
