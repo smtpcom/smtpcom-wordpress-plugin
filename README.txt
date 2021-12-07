@@ -38,7 +38,7 @@ Another useful feature provided with our WordPress plugin is the ability to trac
 1. Download the plugin from its repository by clicking the *Download* button.
 2. Unzip the downloaded file and launch your FTP client.
 3. Locate the folder `plugins` under the `wp-content` folder in the root directory.
-4. Upload the whole folder `smtp-com-mail` from the unzipped file to the `plugins` folder on your remote server.
+4. Upload the whole folder from the unzipped file to the `plugins` folder on your remote server.
 5. Activate the plugin in the *Plugins* menu in WordPress as specified in the **Admin Panel** option above.
 
 == Frequently Asked Questions ==
