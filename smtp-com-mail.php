@@ -9,14 +9,13 @@
  * @wordpress-plugin
  * Plugin Name:       SMTP.com
  * Plugin URI:        https://www.smtp.com/
- * Description:       Powerful and reliable SMTP delivery services that enable you to send and track high volume emails effortlessly.
+ * Description:       SMTP.com is a powerful and reliable SMTP delivery service that enables you to send and track high volume emails effortlessly.
  * Version:           1.0.0
  * Author:            SMTP.com
  * Author URI:        https://www.smtp.com/
  * Network:           True
- * License:           MIT
- * License URI:       https://opensource.org/licenses/MIT
- * Text Domain:       smtp-com-mail
+ * License:           GPLv3 or later
+ * License URI:       http://www.gnu.org/licenses/gpl-3.0.html
  * Domain Path:       /languages
  */
 

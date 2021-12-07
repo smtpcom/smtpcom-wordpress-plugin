@@ -1,13 +1,3 @@
-=== SMTP.com ===
-Contributors: smtpcom
-Tags: smtp, mail, email, wp_mail, phpmailer, api, http, smtpcom, wpmail, wordpress smtp, mailer
-Requires at least: 4.4.1
-Requires PHP: 7.2
-Tested up to: 5.8
-Stable tag: 1.0.0
-License: GPLv3 or later
-License URI: http://www.gnu.org/licenses/gpl-3.0.html
-
 SMTP.com is a powerful and reliable SMTP delivery service that enables you to send and track high volume emails effortlessly.
 
 == Description ==
