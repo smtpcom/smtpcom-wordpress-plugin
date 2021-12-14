@@ -6,7 +6,7 @@ use SmtpSdk\SmtpSdk;
 /**
  * Ajax call for saving settings
  *
- * @since    1.0.0
+ * @since 1.0.0
  */
 add_action("wp_ajax_saveSettings_smtp", "saveSettings_smtp_function");
 function saveSettings_smtp_function()
@@ -25,7 +25,7 @@ function saveSettings_smtp_function()
         /**
          * Ajax call for saving API settings
          *
-         * @since    1.0.0
+         * @since 1.0.0
          */
         if ($sendVia == 'api') {
             $smtpPorts = API_PORT;
@@ -53,43 +53,43 @@ function saveSettings_smtp_function()
                                 _e('Thanks, api settings have been saved!', 'smtp-com-mail');
 
                             } catch (Exception $e) {
-                                echo 'channel_invalid';
+                                echo esc_attr('channel_invalid');
                             }
                         } catch (Exception $e) {
-                            echo 'API_invalid';
+                            echo esc_attr('API_invalid');
                         }
                     } else {
-                        echo 'port_443';
+                        echo esc_attr('port_443');
                     }
                 } else {
-                    echo 'channel_empty';
+                    echo esc_attr('channel_empty');
                 }
             } else {
                 if (empty($channelname)) {
-                    echo 'API_channel_empty';
+                    echo esc_attr('API_channel_empty');
                 } else {
-                    echo 'API_empty';
+                    echo esc_attr('API_empty');
                 }
             }
         } else {
             /**
              * Ajax call for saving SMTP settings
              *
-             * @since    1.0.0
+             * @since 1.0.0
              */
             global $phpmailer;
             if (!($phpmailer instanceof PHPMailer\PHPMailer\PHPMailer)) {
-                require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
-                require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
-                require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
+                include_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+                include_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
+                include_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
             }
             $smtp = new SMTP;
             /**
              * Debug SMTP connection
              *
-             * @since    1.0.0
+             * @since 1.0.0
              */
-//            $smtp->do_debug = SMTP::DEBUG_CONNECTION;
+            //            $smtp->do_debug = SMTP::DEBUG_CONNECTION;
             $connection = @fsockopen(SEND_HOST_SMTP, $smtpPorts, $errno, $errstr, $timeout = 1);
             if (is_resource($connection)) {
                 fclose($connection);
@@ -141,7 +141,7 @@ function saveSettings_smtp_function()
                     // _e('SMTP error: ' . $e->getMessage(), 'smtp-com-mail');
                 }
             } else {
-                echo 'closed_port';
+                echo esc_attr('closed_port');
             }
         }
     }
@@ -151,7 +151,7 @@ function saveSettings_smtp_function()
 /**
  * Ajax call for test send message
  *
- * @since    1.0.0
+ * @since 1.0.0
  */
 add_action("wp_ajax_send_test_smtp_com", "send_test_smtp_com_function");
 function send_test_smtp_com_function()
@@ -181,7 +181,7 @@ function send_test_smtp_com_function()
             /**
              * Ajax call for test API send message
              *
-             * @since    1.0.0
+             * @since 1.0.0
              */
             $port = API_PORT;
             if (!empty($apikey)) {
@@ -198,35 +198,35 @@ function send_test_smtp_com_function()
                                 _e('The test email has been sent!', 'smtp-com-mail');
 
                             } catch (Exception $e) {
-                                echo 'channel_invalid';
+                                echo esc_attr('channel_invalid');
                             }
                         } catch (Exception $e) {
-                            echo 'API_invalid';
+                            echo esc_attr('API_invalid');
                         }
                     } else {
-                        echo 'port_443';
+                        echo esc_attr('port_443');
                     }
                 } else {
-                    echo 'channel_empty';
+                    echo esc_attr('channel_empty');
                 }
             } else {
                 if (empty($channelname)) {
-                    echo 'API_channel_empty';
+                    echo esc_attr('API_channel_empty');
                 } else {
-                    echo 'API_empty';
+                    echo esc_attr('API_empty');
                 }
             }
         } else {
             /**
              * Ajax call for test SMTP send message
              *
-             * @since    1.0.0
+             * @since 1.0.0
              */
             global $phpmailer;
             if (!($phpmailer instanceof PHPMailer\PHPMailer\PHPMailer)) {
-                require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
-                require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
-                require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
+                include_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+                include_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
+                include_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
                 $phpmailer = new PHPMailer(true);
                 $phpmailer->IsSMTP();
                 $phpmailer->CharSet = 'utf-8';
@@ -261,7 +261,7 @@ function send_test_smtp_com_function()
                     echo _e('Port was closed by host', 'smtp-com-mail');
                 }
             } catch (Exception $e) {
-                echo 'smtp_failed';
+                echo esc_attr('smtp_failed');
             }
         }
     }
@@ -274,7 +274,7 @@ function send_test_smtp_com_function()
 /**
  * Ajax call for sort recent deliveries
  *
- * @since    1.0.0
+ * @since 1.0.0
  */
 add_action("wp_ajax_sort_messages__smtp", "sort_messages_smtp_function");
 function sort_messages_smtp_function()
@@ -290,9 +290,10 @@ function sort_messages_smtp_function()
 /**
  * Function for sort recent deliveries
  *
- * @since    1.0.0
+ * @since 1.0.0
  */
-function show_messages ($dateFrom, $dateEnd){
+function show_messages($dateFrom, $dateEnd)
+{
     $dateFormatWP = get_option('date_format');
     $timeFormatWP = get_option('time_format');
     if (version_compare(phpversion(), '7.2', '<')) {

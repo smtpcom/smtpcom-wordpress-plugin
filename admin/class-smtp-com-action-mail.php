@@ -8,13 +8,14 @@ class smtp_com_action_mail
 {
     public function init_smtp_com()
     {
-       /**
-         * ReInit mail from field
-         *
-         * @since    1.0.0
-         */
-        add_filter( 'wp_mail_from', 'wp_mail_from_smtp' );
-        function wp_mail_from_smtp( $from_email ){
+        /**
+          * ReInit mail from field
+          *
+          * @since 1.0.0
+          */
+        add_filter('wp_mail_from', 'wp_mail_from_smtp');
+        function wp_mail_from_smtp( $from_email )
+        {
             try {
                 $phpmailer = new PHPMailer(true);
                 $phpmailer->setFrom($from_email, '', false);
@@ -22,13 +23,13 @@ class smtp_com_action_mail
                 $from_email = get_option('admin_email');
             }
 
-	    return $from_email;
+            return $from_email;
         }
 
         /**
          * ReInit phpmailer for custom SMTP settings
          *
-         * @since    1.0.0
+         * @since 1.0.0
          */
         add_action('phpmailer_init', 'phpmailer_init_smtp', 10, 1);
         function phpmailer_init_smtp($phpmailer)
@@ -56,20 +57,22 @@ class smtp_com_action_mail
         /**
          * Catch wp_mail() errors
          *
-         * @since    1.0.0
+         * @since 1.0.0
          */
-        add_action('wp_mail_failed', function ($error) {
-            if (smtp_com_mail::get_options_sc('smtp_port') == API_PORT) {
-                $connection = fsockopen("ssl://" . HOST_SMTP, API_PORT, $errno, $errstr, $timeout = 1);
-            } else {
-                $connection = @fsockopen(SEND_HOST_SMTP, smtp_com_mail::get_options_sc('smtp_port'), $errno, $errstr, $timeout = 1);
+        add_action(
+            'wp_mail_failed', function ($error) {
+                if (smtp_com_mail::get_options_sc('smtp_port') == API_PORT) {
+                    $connection = fsockopen("ssl://" . HOST_SMTP, API_PORT, $errno, $errstr, $timeout = 1);
+                } else {
+                    $connection = @fsockopen(SEND_HOST_SMTP, smtp_com_mail::get_options_sc('smtp_port'), $errno, $errstr, $timeout = 1);
+                }
+                if (is_resource($connection)) {
+                    fclose($connection);
+                    _e('SMTP login or password is incorrect', 'smtp-com-mail');
+                } else {
+                    _e('Port was closed by host', 'smtp-com-mail');
+                }
             }
-            if (is_resource($connection)) {
-                fclose($connection);
-                _e('SMTP login or password is incorrect', 'smtp-com-mail');
-            } else {
-                _e('Port was closed by host', 'smtp-com-mail');
-            }
-        });
+        );
     }
 }

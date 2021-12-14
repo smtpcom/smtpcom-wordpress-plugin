@@ -6,8 +6,8 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       http://smtp.com
- * @since      1.0.0
+ * @link  http://smtp.com
+ * @since 1.0.0
  *
  * @package    smtp_com_mail
  * @subpackage smtp_com_mail/includes
@@ -34,27 +34,27 @@ class smtp_com_mail
      * The loader that's responsible for maintaining and registering all hooks that power
      * the plugin.
      *
-     * @since    1.0.0
-     * @access   protected
-     * @var      smtp_com_mail_Loader    $loader    Maintains and registers all hooks for the plugin.
+     * @since  1.0.0
+     * @access protected
+     * @var    smtp_com_mail_Loader    $loader    Maintains and registers all hooks for the plugin.
      */
     protected $loader;
 
     /**
      * The unique identifier of this plugin.
      *
-     * @since    1.0.0
-     * @access   protected
-     * @var      string    $smtp_com_mail    The string used to uniquely identify this plugin.
+     * @since  1.0.0
+     * @access protected
+     * @var    string    $smtp_com_mail    The string used to uniquely identify this plugin.
      */
     protected $smtp_com_mail;
 
     /**
      * The current version of the plugin.
      *
-     * @since    1.0.0
-     * @access   protected
-     * @var      string    $version    The current version of the plugin.
+     * @since  1.0.0
+     * @access protected
+     * @var    string    $version    The current version of the plugin.
      */
     protected $version;
 
@@ -65,7 +65,7 @@ class smtp_com_mail
      * Load the dependencies, define the locale, and set the hooks for the admin area and
      * the public-facing side of the site.
      *
-     * @since    1.0.0
+     * @since 1.0.0
      */
     public function __construct()
     {
@@ -94,8 +94,8 @@ class smtp_com_mail
      * Create an instance of the loader which will be used to register the hooks
      * with WordPress.
      *
-     * @since    1.0.0
-     * @access   private
+     * @since  1.0.0
+     * @access private
      */
     private function load_dependencies()
     {
@@ -104,33 +104,33 @@ class smtp_com_mail
          * The class responsible for orchestrating the actions and filters of the
          * core plugin.
          */
-        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-smtp-com-mail-loader.php';
+        include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-smtp-com-mail-loader.php';
 
         /**
          * The class responsible for defining internationalization functionality
          * of the plugin.
          */
-        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-smtp-com-mail-i18n.php';
+        include_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-smtp-com-mail-i18n.php';
 
         /**
          * The class responsible for defining all actions that occur in the admin area.
          */
 
 
-        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-smtp-com-mail-admin.php';
+        include_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-smtp-com-mail-admin.php';
 
         /**
          * The class responsible for defining all actions that occur in the public-facing
          * side of the site.
          */
 
-        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/settings.php';
+        include_once plugin_dir_path(dirname(__FILE__)) . 'includes/settings.php';
 
-        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/mail-api.php';
+        include_once plugin_dir_path(dirname(__FILE__)) . 'admin/mail-api.php';
 
-        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/ajax-call.php';
+        include_once plugin_dir_path(dirname(__FILE__)) . 'admin/ajax-call.php';
 
-        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-smtp-com-action-mail.php';
+        include_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-smtp-com-action-mail.php';
 
         $maile = new smtp_com_action_mail();
         $maile->init_smtp_com();
@@ -143,8 +143,8 @@ class smtp_com_mail
      * Uses the smtp_com_mail_i18n class in order to set the domain and to register the hook
      * with WordPress.
      *
-     * @since    1.0.0
-     * @access   private
+     * @since  1.0.0
+     * @access private
      */
     private function set_locale()
     {
@@ -158,8 +158,8 @@ class smtp_com_mail
      * Register all of the hooks related to the admin area functionality
      * of the plugin.
      *
-     * @since    1.0.0
-     * @access   private
+     * @since  1.0.0
+     * @access private
      */
     private function define_admin_hooks()
     {
@@ -174,15 +174,15 @@ class smtp_com_mail
      * Register all of the hooks related to the public-facing functionality
      * of the plugin.
      *
-     * @since    1.0.0
-     * @access   private
+     * @since  1.0.0
+     * @access private
      */
 
 
     /**
      * Run the loader to execute all of the hooks with WordPress.
      *
-     * @since    1.0.0
+     * @since 1.0.0
      */
     public function run()
     {
@@ -193,8 +193,8 @@ class smtp_com_mail
      * The name of the plugin used to uniquely identify it within the context of
      * WordPress and to define internationalization functionality.
      *
-     * @since     1.0.0
-     * @return    string    The name of the plugin.
+     * @since  1.0.0
+     * @return string    The name of the plugin.
      */
     public function get_smtp_com_mail()
     {
@@ -204,8 +204,8 @@ class smtp_com_mail
     /**
      * The reference to the class that orchestrates the hooks with the plugin.
      *
-     * @since     1.0.0
-     * @return    smtp_com_mail_Loader    Orchestrates the hooks of the plugin.
+     * @since  1.0.0
+     * @return smtp_com_mail_Loader    Orchestrates the hooks of the plugin.
      */
     public function get_loader()
     {
@@ -215,8 +215,8 @@ class smtp_com_mail
     /**
      * Retrieve the version number of the plugin.
      *
-     * @since     1.0.0
-     * @return    string    The version number of the plugin.
+     * @since  1.0.0
+     * @return string    The version number of the plugin.
      */
     public function get_version()
     {
@@ -229,7 +229,7 @@ class smtp_com_mail
     /**
      * Output array options
      *
-     * @since    1.0.0
+     * @since 1.0.0
      */
     public static function optionsArray($options = array(), $optionName = 'default'): string
     {
@@ -245,7 +245,7 @@ class smtp_com_mail
     /**
      * Check standard date format
      *
-     * @since    1.0.0
+     * @since 1.0.0
      */
     public static function format_custom_date($format)
     {
@@ -259,7 +259,7 @@ class smtp_com_mail
     /**
      * Get options from smtp_com_mail table
      *
-     * @since    1.0.0
+     * @since 1.0.0
      */
     public static function get_options_sc($option_name)
     {
@@ -272,7 +272,7 @@ class smtp_com_mail
     /**
      * Add options to smtp_com_mail table
      *
-     * @since    1.0.0
+     * @since 1.0.0
      */
     public static function add_options_sc($option_name, $option_value = '')
     {
@@ -287,7 +287,7 @@ class smtp_com_mail
     /**
      * Remove options from smtp_com_mail table
      *
-     * @since    1.0.0
+     * @since 1.0.0
      */
     public static function remove_options_sc($option_name)
     {
@@ -299,7 +299,7 @@ class smtp_com_mail
     /**
      * Update options to smtp_com_mail table
      *
-     * @since    1.0.0
+     * @since 1.0.0
      */
     public static function update_options_sc($option_name, $option_value)
     {

@@ -3,8 +3,8 @@
 /**
  * Fired during plugin activation
  *
- * @link       http://smtp.com
- * @since      1.0.0
+ * @link  http://smtp.com
+ * @since 1.0.0
  *
  * @package    smtp_com_mail
  * @subpackage smtp_com_mail/includes
@@ -25,8 +25,7 @@ class smtp_com_mail_Activator
     /**
      * Create table smtp_com_mail and add options on plugin active
      *
-     *
-     * @since    1.0.0
+     * @since 1.0.0
      */
     public static function activate()
     {
@@ -41,7 +40,7 @@ class smtp_com_mail_Activator
           option_value varchar(255) NOT NULL,
           UNIQUE KEY id (id)
         );";
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        include_once ABSPATH . 'wp-admin/includes/upgrade.php';
         dbDelta($xmlitua_sql);
 
         smtp_com_mail::add_options_sc('smtp_api');
