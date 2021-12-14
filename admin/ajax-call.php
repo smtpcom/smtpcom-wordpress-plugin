@@ -12,21 +12,22 @@ add_action("wp_ajax_saveSettings_smtp", "saveSettings_smtp_function");
 function saveSettings_smtp_function()
 {
     if ($_POST['action'] == 'saveSettings_smtp') {
-        $sendVida = $_POST['sendVia'];
-        $apikey = $_POST['apikey'];
-        $channelname = $_POST['channelname'];
+        $sendVia = sanitize_text_field($_POST['sendVia']);
+        $apikey = sanitize_key($_POST['apikey']);
+        $channelname = sanitize_text_field($_POST['channelname']);
         $smtpServer = SEND_HOST_SMTP;
-        $smtpPorts = $_POST['smtpPorts'];
-        $smtpSecurity = $_POST['smtpSecurity'];
-        $smtpEnc = $_POST['smtpEnc'];
-        $smtpLogin = $_POST['smtpLogin'];
-        $smtpPass = $_POST['smtpPass'];
+        $smtpPorts = intval($_POST['smtpPorts']);
+        $smtpSecurity = sanitize_text_field($_POST['smtpSecurity']);
+        $smtpEnc = sanitize_text_field($_POST['smtpEnc']);
+        $smtpLogin = sanitize_text_field($_POST['smtpLogin']);
+        $smtpPass = sanitize_text_field($_POST['smtpPass']);
+
         /**
          * Ajax call for saving API settings
          *
          * @since    1.0.0
          */
-        if ($sendVida == 'api') {
+        if ($sendVia == 'api') {
             $smtpPorts = API_PORT;
             if (!empty($apikey)) {
                 if (!empty($channelname)) {
@@ -40,7 +41,7 @@ function saveSettings_smtp_function()
                             try {
                                 $ps->channels($channelname)->show();
 
-                                smtp_com_mail::update_options_sc('smtp_api', $sendVida);
+                                smtp_com_mail::update_options_sc('smtp_api', $sendVia);
                                 smtp_com_mail::update_options_sc('smtp_apikey', $apikey);
                                 smtp_com_mail::update_options_sc('smtp_channelname', $channelname);
                                 smtp_com_mail::update_options_sc('smtp_server', $smtpServer);
@@ -120,7 +121,7 @@ function saveSettings_smtp_function()
                     }
                     if (is_array($e) && array_key_exists('AUTH', $e)) {
                         if ($smtp->authenticate($smtpLogin, $smtpPass)) {
-                            smtp_com_mail::update_options_sc('smtp_api', $sendVida);
+                            smtp_com_mail::update_options_sc('smtp_api', $sendVia);
                             smtp_com_mail::update_options_sc('smtp_apikey', $apikey);
                             smtp_com_mail::update_options_sc('smtp_channelname', $channelname);
                             smtp_com_mail::update_options_sc('smtp_server', $smtpServer);
@@ -156,15 +157,15 @@ add_action("wp_ajax_send_test_smtp_com", "send_test_smtp_com_function");
 function send_test_smtp_com_function()
 {
     if ($_POST['action'] == 'send_test_smtp_com') {
-        $sendVida = $_POST['sendVia'];
-        $apikey = $_POST['apikey'];
-        $channelname = $_POST['channelname'];
+        $sendVia = sanitize_text_field($_POST['sendVia']);
+        $apikey = sanitize_key($_POST['apikey']);
+        $channelname = sanitize_text_field($_POST['channelname']);
         $smtpServer = SEND_HOST_SMTP;
-        $smtpPorts = $_POST['smtpPorts'];
-        $smtpSecurity = $_POST['smtpSecurity'];
-        $smtpEnc = $_POST['smtpEnc'];
-        $smtpLogin = $_POST['smtpLogin'];
-        $smtpPass = $_POST['smtpPass'];
+        $smtpPorts = intval($_POST['smtpPorts']);
+        $smtpSecurity = sanitize_text_field($_POST['smtpSecurity']);
+        $smtpEnc = sanitize_text_field($_POST['smtpEnc']);
+        $smtpLogin = sanitize_text_field($_POST['smtpLogin']);
+        $smtpPass = sanitize_text_field($_POST['smtpPass']);
         global $current_user;
         get_currentuserinfo();
         if (empty($smtpPorts)) {
@@ -176,7 +177,7 @@ function send_test_smtp_com_function()
         $subject = 'Hello from your Wordpress Website via SMTP.com';
         $message = __('This email confirms that you have successfully installed your SMTP.com Wordpress Plugin. Congratulations and happy sending!');
         $headers = 'From: ' . $fromSmtp . " \r\n";
-        if ($sendVida == 'api') {
+        if ($sendVia == 'api') {
             /**
              * Ajax call for test API send message
              *
@@ -279,8 +280,8 @@ add_action("wp_ajax_sort_messages__smtp", "sort_messages_smtp_function");
 function sort_messages_smtp_function()
 {
     if ($_POST['action'] == 'sort_messages__smtp') {
-        $dateFrom = $_POST['dateFrom'];
-        $dateEnd = $_POST['dateEnd'];
+        $dateFrom = sanitize_option('date_format', $_POST['dateFrom']);
+        $dateEnd = sanitize_option('date_format', $_POST['dateEnd']);
         show_messages($dateFrom, $dateEnd);
     }
     wp_die();
