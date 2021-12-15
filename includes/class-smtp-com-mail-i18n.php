@@ -6,8 +6,8 @@
  * Loads and defines the internationalization files for this plugin
  * so that it is ready for translation.
  *
- * @link       http://smtp.com
- * @since      1.0.0
+ * @link  http://smtp.com
+ * @since 1.0.0
  *
  * @package    smtp_com_mail
  * @subpackage smtp_com_mail/includes
@@ -31,7 +31,7 @@ class smtp_com_mail_i18n
     /**
      * Load the plugin text domain for translation.
      *
-     * @since    1.0.0
+     * @since 1.0.0
      */
     public function load_plugin_textdomain()
     {

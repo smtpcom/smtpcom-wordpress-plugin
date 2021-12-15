@@ -2,9 +2,9 @@
 
 /**
  *
- * @link              http://smtp.com
- * @since             1.0.0
- * @package           smtp-com-mail
+ * @link    http://smtp.com
+ * @since   1.0.0
+ * @package smtp-com-mail
  *
  * @wordpress-plugin
  * Plugin Name:       SMTP.com
@@ -41,7 +41,7 @@ const API_PORT = 443;
  */
 
 if (is_readable(__DIR__ . '/vendor/autoload.php')) {
-    require __DIR__ . '/vendor/autoload.php';
+    include __DIR__ . '/vendor/autoload.php';
 }
 
 add_filter('plugin_action_links', 'smtp_com_plugin_action_links', 10, 2);
@@ -58,7 +58,7 @@ function smtp_com_plugin_action_links($actions, $plugin_file)
 
 function activate_smtp_com_mail()
 {
-    require_once plugin_dir_path(__FILE__) . 'includes/class-smtp-com-mail-activator.php';
+    include_once plugin_dir_path(__FILE__) . 'includes/class-smtp-com-mail-activator.php';
     smtp_com_mail_Activator::activate();
     smtp_com_mail_Activator::createTable();
 }
@@ -69,7 +69,7 @@ function activate_smtp_com_mail()
  */
 function deactivate_smtp_com_mail()
 {
-    require_once plugin_dir_path(__FILE__) . 'includes/class-smtp-com-mail-deactivator.php';
+    include_once plugin_dir_path(__FILE__) . 'includes/class-smtp-com-mail-deactivator.php';
     smtp_com_mail_Deactivator::deactivate();
 }
 
@@ -90,7 +90,7 @@ require plugin_dir_path(__FILE__) . 'includes/class-smtp-com-mail.php';
  * then kicking off the plugin from this point in the file does
  * not affect the page life cycle.
  *
- * @since    1.0.0
+ * @since 1.0.0
  */
 
 
