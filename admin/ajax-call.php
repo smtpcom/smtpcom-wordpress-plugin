@@ -11,6 +11,15 @@ use SmtpSdk\SmtpSdk;
 add_action("wp_ajax_saveSettings_smtp", "saveSettings_smtp_function");
 function saveSettings_smtp_function()
 {
+    try {
+        if(!check_ajax_referer('wp_ajax_settings_smtp', false, false)){
+            throw new Exception("Error Processing Request", 1);
+        }
+    } catch (Exception $e) {
+        echo esc_attr('Access is denied');
+        wp_die();
+    }
+
     if ($_POST['action'] == 'saveSettings_smtp') {
         $sendVia = sanitize_text_field($_POST['sendVia']);
         $apikey = sanitize_key($_POST['apikey']);
@@ -156,6 +165,15 @@ function saveSettings_smtp_function()
 add_action("wp_ajax_send_test_smtp_com", "send_test_smtp_com_function");
 function send_test_smtp_com_function()
 {
+    try {
+        if(!check_ajax_referer('wp_ajax_settings_smtp', false, false)){
+            throw new Exception("Error Processing Request", 1);
+        }
+    } catch (Exception $e) {
+        echo esc_attr('Access denied');
+        wp_die();
+    }
+
     if ($_POST['action'] == 'send_test_smtp_com') {
         $sendVia = sanitize_text_field($_POST['sendVia']);
         $apikey = sanitize_key($_POST['apikey']);
@@ -268,9 +286,6 @@ function send_test_smtp_com_function()
     wp_die();
 }
 
-
-
-
 /**
  * Ajax call for sort recent deliveries
  *
@@ -346,7 +361,7 @@ function show_messages($dateFrom, $dateEnd)
         }
     } catch (Exception $e) {
         $headerMess = "";
-        $resultMess = "<span class='message_settings__smtp'>Set up API settings.</span>";
+        $resultMess = esc_html("<span class='message_settings__smtp'>Set up API settings.</span>");
     }
     _e($resultMess, 'smtp-com-mail');
 }
