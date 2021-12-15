@@ -111,17 +111,37 @@
         }
     });
 
-    $(document).on('submit','#saveSettings__smtp',function () {
+    $(document).on('click','.submitSettings',function () {
         $('.message_modal__smtp').html('saving...');
         $('.error_mess__smtp').slideUp();
         $('.inpur_error__smtp').removeClass('inpur_error__smtp');
         $('.block_modal__smtp').fadeIn();
-        let str = $(this).serialize();
-        str = str + '&action=' + 'saveSettings_smtp';
+        let sendVia = $('#sendVia').val();
+        let apikey = $('#apikey').val();
+        let channelname = $('#channelname').val();
+        let smtpPorts = $('#smtpPorts').val();
+        let smtpSecurity = $('#smtpSecurity').val();
+        let smtpEnc = $('#smtpEnc').val();
+        let smtpLogin = $('#smtpLogin').val();
+        let smtpPass = $('#smtpPass').val();
+        let _wpnonce = $('#_wpnonce').val();
+        let _wp_http_referer = $("input[name=_wp_http_referer]").val();
         $.ajax({
             url: '/wp-admin/admin-ajax.php',
             type: "POST",
-            data: str,
+            data: {
+                action: 'saveSettings_smtp',
+                sendVia: sendVia,
+                apikey: apikey,
+                channelname: channelname,
+                smtpPorts: smtpPorts,
+                smtpSecurity: smtpSecurity,
+                smtpEnc: smtpEnc,
+                smtpLogin: smtpLogin,
+                smtpPass: smtpPass,
+                _wpnonce: _wpnonce,
+                _wp_http_referer: _wp_http_referer
+            },
             success: function (data) {
                 checkData(data)
             }
@@ -142,6 +162,8 @@
         let smtpEnc = $('#smtpEnc').val();
         let smtpLogin = $('#smtpLogin').val();
         let smtpPass = $('#smtpPass').val();
+        let _wpnonce = $('#_wpnonce').val();
+        let _wp_http_referer = $("input[name=_wp_http_referer]").val();
         $.ajax({
             url: '/wp-admin/admin-ajax.php',
             type: "POST",
@@ -155,6 +177,8 @@
                 smtpEnc: smtpEnc,
                 smtpLogin: smtpLogin,
                 smtpPass: smtpPass,
+                _wpnonce: _wpnonce,
+                _wp_http_referer: _wp_http_referer
             },
             success: function (data) {
                 checkData(data)

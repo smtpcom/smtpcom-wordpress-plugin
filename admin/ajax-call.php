@@ -11,6 +11,15 @@ use SmtpSdk\SmtpSdk;
 add_action("wp_ajax_saveSettings_smtp", "saveSettings_smtp_function");
 function saveSettings_smtp_function()
 {
+    try {
+        if(!check_ajax_referer('wp_ajax_settings_smtp', false, false)){
+            throw new Exception("Error Processing Request", 1);
+        }
+    } catch (Exception $e) {
+        echo esc_attr('Access is denied');
+        wp_die();
+    }
+
     if ($_POST['action'] == 'saveSettings_smtp') {
         $sendVia = sanitize_text_field($_POST['sendVia']);
         $apikey = sanitize_key($_POST['apikey']);
@@ -53,22 +62,22 @@ function saveSettings_smtp_function()
                                 _e('Thanks, api settings have been saved!', 'smtp-com-mail');
 
                             } catch (Exception $e) {
-                                echo 'channel_invalid';
+                                echo esc_attr('channel_invalid');
                             }
                         } catch (Exception $e) {
-                            echo 'API_invalid';
+                            echo esc_attr('API_invalid');
                         }
                     } else {
-                        echo 'port_443';
+                        echo esc_attr('port_443');
                     }
                 } else {
-                    echo 'channel_empty';
+                    echo esc_attr('channel_empty');
                 }
             } else {
                 if (empty($channelname)) {
-                    echo 'API_channel_empty';
+                    echo esc_attr('API_channel_empty');
                 } else {
-                    echo 'API_empty';
+                    echo esc_attr('API_empty');
                 }
             }
         } else {
@@ -141,7 +150,7 @@ function saveSettings_smtp_function()
                     // _e('SMTP error: ' . $e->getMessage(), 'smtp-com-mail');
                 }
             } else {
-                echo 'closed_port';
+                echo esc_attr('closed_port');
             }
         }
     }
@@ -156,6 +165,15 @@ function saveSettings_smtp_function()
 add_action("wp_ajax_send_test_smtp_com", "send_test_smtp_com_function");
 function send_test_smtp_com_function()
 {
+    try {
+        if(!check_ajax_referer('wp_ajax_settings_smtp', false, false)){
+            throw new Exception("Error Processing Request", 1);
+        }
+    } catch (Exception $e) {
+        echo esc_attr('Access denied');
+        wp_die();
+    }
+
     if ($_POST['action'] == 'send_test_smtp_com') {
         $sendVia = sanitize_text_field($_POST['sendVia']);
         $apikey = sanitize_key($_POST['apikey']);
@@ -198,22 +216,22 @@ function send_test_smtp_com_function()
                                 _e('The test email has been sent!', 'smtp-com-mail');
 
                             } catch (Exception $e) {
-                                echo 'channel_invalid';
+                                echo esc_attr('channel_invalid');
                             }
                         } catch (Exception $e) {
-                            echo 'API_invalid';
+                            echo esc_attr('API_invalid');
                         }
                     } else {
-                        echo 'port_443';
+                        echo esc_attr('port_443');
                     }
                 } else {
-                    echo 'channel_empty';
+                    echo esc_attr('channel_empty');
                 }
             } else {
                 if (empty($channelname)) {
-                    echo 'API_channel_empty';
+                    echo esc_attr('API_channel_empty');
                 } else {
-                    echo 'API_empty';
+                    echo esc_attr('API_empty');
                 }
             }
         } else {
@@ -261,15 +279,12 @@ function send_test_smtp_com_function()
                     echo _e('Port was closed by host', 'smtp-com-mail');
                 }
             } catch (Exception $e) {
-                echo 'smtp_failed';
+                echo esc_attr('smtp_failed');
             }
         }
     }
     wp_die();
 }
-
-
-
 
 /**
  * Ajax call for sort recent deliveries
@@ -345,7 +360,7 @@ function show_messages ($dateFrom, $dateEnd){
         }
     } catch (Exception $e) {
         $headerMess = "";
-        $resultMess = "<span class='message_settings__smtp'>Set up API settings.</span>";
+        $resultMess = esc_html("<span class='message_settings__smtp'>Set up API settings.</span>");
     }
     _e($resultMess, 'smtp-com-mail');
 }

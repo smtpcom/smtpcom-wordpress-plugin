@@ -130,7 +130,8 @@ function smtpcommail_setting_display()
 
     <div class="block_setting__smtp">
         <form action="#" id="saveSettings__smtp">
-            <?php
+            <?php wp_nonce_field('wp_ajax_settings_smtp'); ?>
+            <?php 
             /**
              * Settings SMTP on plugin main page
              *
@@ -265,11 +266,10 @@ function smtpcommail_setting_display()
 
             <div class="main_item_block_settings__smtp">
                 <div class="item_block_settings__smtp">
-                    <button type="submit" class="submitSettings"><?php _e('Save Settings', 'smtp-com-mail'); ?></button>
+                    <button type="button" class="submitSettings"><?php _e('Save Settings', 'smtp-com-mail'); ?></button>
                 </div>
                 <div class="item_block_settings__smtp">
-                    <button type="button"
-                            class="testEmailSettings"><?php _e('Send Test Email', 'smtp-com-mail'); ?></button>
+                    <button type="button" class="testEmailSettings"><?php _e('Send Test Email', 'smtp-com-mail'); ?></button>
                 </div>
             </div>
         </form>
