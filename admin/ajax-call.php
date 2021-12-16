@@ -12,54 +12,40 @@ add_action("wp_ajax_saveSettings_smtp", "saveSettings_smtp_function");
 function saveSettings_smtp_function()
 {
     try {
-        if(!check_ajax_referer('wp_ajax_settings_smtp', false, false)){
+        if(!check_ajax_referer('wp_ajax_settings_smtp', false, false)) {
             throw new Exception("Error Processing Request", 1);
         }
     } catch (Exception $e) {
-        echo esc_attr('Access is denied');
+        echo esc_attr('Access denied');
         wp_die();
     }
 
-    if ($_POST['action'] == 'saveSettings_smtp') {
-        $sendVia = sanitize_text_field($_POST['sendVia']);
-        $apikey = sanitize_key($_POST['apikey']);
-        $channelname = sanitize_text_field($_POST['channelname']);
-        $smtpServer = SEND_HOST_SMTP;
-        $smtpPorts = intval($_POST['smtpPorts']);
-        $smtpSecurity = sanitize_text_field($_POST['smtpSecurity']);
-        $smtpEnc = sanitize_text_field($_POST['smtpEnc']);
-        $smtpLogin = sanitize_text_field($_POST['smtpLogin']);
-        $smtpPass = sanitize_text_field($_POST['smtpPass']);
+    $sanitizedData = sanitizeData($_POST);
 
+    if ($sanitizedData['action'] == 'saveSettings_smtp') {
         /**
          * Ajax call for saving API settings
          *
          * @since 1.0.0
          */
-        if ($sendVia == 'api') {
-            $smtpPorts = API_PORT;
-            if (!empty($apikey)) {
-                if (!empty($channelname)) {
-                    $port = API_PORT;
-                    $connection = fsockopen("ssl://" . HOST_SMTP, $port, $errno, $errstr, $timeout = 1);
+        if ($sanitizedData['sendVia'] == 'api') {
+            $sanitizedData['smtpPorts'] = API_PORT;
+            if (!empty($sanitizedData['apikey'])) {
+                if (!empty($sanitizedData['channelname'])) {
+                    $connection = fsockopen("ssl://" . HOST_SMTP, $sanitizedData['smtpPorts'], $errno, $errstr, $timeout = 1);
                     if ($connection) {
                         fclose($connection);
                         try {
-                            $ps = SmtpSdk::create($apikey);
-                            $ps->keys($apikey)->show();
+                            $ps = SmtpSdk::create($sanitizedData['apikey']);
+                            $ps->keys($sanitizedData['apikey'])->show();
                             try {
-                                $ps->channels($channelname)->show();
+                                $ps->channels($sanitizedData['channelname'])->show();
 
-                                smtp_com_mail::update_options_sc('smtp_api', $sendVia);
-                                smtp_com_mail::update_options_sc('smtp_apikey', $apikey);
-                                smtp_com_mail::update_options_sc('smtp_channelname', $channelname);
-                                smtp_com_mail::update_options_sc('smtp_server', $smtpServer);
-                                smtp_com_mail::update_options_sc('smtp_port', $smtpPorts);
-                                smtp_com_mail::update_options_sc('smtp_security', $smtpSecurity);
-                                smtp_com_mail::update_options_sc('smtp_encryption', $smtpEnc);
-                                smtp_com_mail::update_options_sc('smtp_login', $smtpLogin);
-                                smtp_com_mail::update_options_sc('smtp_password', $smtpPass);
-                                _e('Thanks, api settings have been saved!', 'smtp-com-mail');
+                                if(saveSettings($sanitizedData)) {
+                                    _e('Thanks, api settings have been saved!', 'smtp-com-mail');
+                                } else {
+                                    echo esc_attr('Oops.. Looks like something went completely wrong');
+                                }
 
                             } catch (Exception $e) {
                                 echo esc_attr('channel_invalid');
@@ -99,16 +85,16 @@ function saveSettings_smtp_function()
              * @since 1.0.0
              */
             //            $smtp->do_debug = SMTP::DEBUG_CONNECTION;
-            $connection = @fsockopen(SEND_HOST_SMTP, $smtpPorts, $errno, $errstr, $timeout = 1);
+            $connection = @fsockopen(SEND_HOST_SMTP, $sanitizedData['smtpPorts'], $errno, $errstr, $timeout = 1);
             if (is_resource($connection)) {
                 fclose($connection);
                 try {
-                    if ($smtpSecurity == 'SSL') {
-                        if (!$smtp->connect("ssl://" . SEND_HOST_SMTP, $smtpPorts)) {
+                    if ($sanitizedData['smtpSecurity'] == 'SSL') {
+                        if (!$smtp->connect("ssl://" . SEND_HOST_SMTP, $sanitizedData['smtpPorts'])) {
                             throw new Exception('Connect failed');
                         }
                     } else {
-                        if (!$smtp->connect(SEND_HOST_SMTP, $smtpPorts)) {
+                        if (!$smtp->connect(SEND_HOST_SMTP, $sanitizedData['smtpPorts'])) {
                             throw new Exception('Connect failed');
                         }
                     }
@@ -116,7 +102,7 @@ function saveSettings_smtp_function()
                         throw new Exception('EHLO failed: ' . $smtp->getError()['error']);
                     }
                     $e = $smtp->getServerExtList();
-                    if ($smtpSecurity == 'STARTTLS') {
+                    if ($sanitizedData['smtpSecurity'] == 'STARTTLS') {
                         if (is_array($e) && array_key_exists('STARTTLS', $e)) {
                             $tlsok = $smtp->startTLS();
                             if (!$tlsok) {
@@ -129,17 +115,12 @@ function saveSettings_smtp_function()
                         }
                     }
                     if (is_array($e) && array_key_exists('AUTH', $e)) {
-                        if ($smtp->authenticate($smtpLogin, $smtpPass)) {
-                            smtp_com_mail::update_options_sc('smtp_api', $sendVia);
-                            smtp_com_mail::update_options_sc('smtp_apikey', $apikey);
-                            smtp_com_mail::update_options_sc('smtp_channelname', $channelname);
-                            smtp_com_mail::update_options_sc('smtp_server', $smtpServer);
-                            smtp_com_mail::update_options_sc('smtp_port', $smtpPorts);
-                            smtp_com_mail::update_options_sc('smtp_security', $smtpSecurity);
-                            smtp_com_mail::update_options_sc('smtp_encryption', $smtpEnc);
-                            smtp_com_mail::update_options_sc('smtp_login', $smtpLogin);
-                            smtp_com_mail::update_options_sc('smtp_password', $smtpPass);
-                            _e('Thanks, settings have been saved!', 'smtp-com-mail');
+                        if ($smtp->authenticate($sanitizedData['smtpLogin'], $sanitizedData['smtpPass'])) {
+                            if(saveSettings($sanitizedData)) {
+                                _e('Thanks, settings have been saved!', 'smtp-com-mail');
+                            } else {
+                                echo esc_attr('Oops.. Looks like something went completely wrong');
+                            }
                         } else {
                             throw new Exception('Authentication failed: ' . $smtp->getError()['error']);
                         }
@@ -166,7 +147,7 @@ add_action("wp_ajax_send_test_smtp_com", "send_test_smtp_com_function");
 function send_test_smtp_com_function()
 {
     try {
-        if(!check_ajax_referer('wp_ajax_settings_smtp', false, false)){
+        if(!check_ajax_referer('wp_ajax_settings_smtp', false, false)) {
             throw new Exception("Error Processing Request", 1);
         }
     } catch (Exception $e) {
@@ -364,4 +345,38 @@ function show_messages($dateFrom, $dateEnd)
         $resultMess = esc_html("<span class='message_settings__smtp'>Set up API settings.</span>");
     }
     _e($resultMess, 'smtp-com-mail');
+}
+
+function sanitizeData($data)
+{
+    return [
+        'action' => sanitize_text_field($data['action']),
+        'sendVia' => sanitize_text_field($data['sendVia']),
+        'apikey' => sanitize_key($data['apikey']),
+        'channelname' => sanitize_text_field($data['channelname']),
+        'smtpServer' => SEND_HOST_SMTP,
+        'smtpPorts' => intval($data['smtpPorts']),
+        'smtpSecurity' => sanitize_text_field($data['smtpSecurity']),
+        'smtpEnc' => sanitize_text_field($data['smtpEnc']),
+        'smtpLogin' => sanitize_text_field($data['smtpLogin']),
+        'smtpPass' => sanitize_text_field($data['smtpPass']),
+    ];
+}
+
+function saveSettings($sanitizedData)
+{
+    try {
+        smtp_com_mail::update_options_sc('smtp_api', $sanitizedData['sendVia']);
+        smtp_com_mail::update_options_sc('smtp_apikey', $sanitizedData['apikey']);
+        smtp_com_mail::update_options_sc('smtp_channelname', $sanitizedData['channelname']);
+        smtp_com_mail::update_options_sc('smtp_server', $sanitizedData['smtpServer']);
+        smtp_com_mail::update_options_sc('smtp_port', $sanitizedData['smtpPorts']);
+        smtp_com_mail::update_options_sc('smtp_security', $sanitizedData['smtpSecurity']);
+        smtp_com_mail::update_options_sc('smtp_encryption', $sanitizedData['smtpEnc']);
+        smtp_com_mail::update_options_sc('smtp_login', $sanitizedData['smtpLogin']);
+        smtp_com_mail::update_options_sc('smtp_password', $sanitizedData['smtpPass']);
+    } catch (Exception $e) {
+        return 0;
+    }
+    return 1;
 }

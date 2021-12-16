@@ -237,7 +237,7 @@ class smtp_com_mail
         for ($i = 0; $i < count($options); $i++) {
             $output .= '<option '
                 . ( smtp_com_mail::get_options_sc($optionName) == strtolower($options[$i]) ? 'selected="selected"' : '' ) . '>'
-                . $options[$i]
+                . esc_textarea($options[$i])
                 . '</option>';
         }
         return $output;
