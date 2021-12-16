@@ -11,15 +11,6 @@ use SmtpSdk\SmtpSdk;
 add_action("wp_ajax_saveSettings_smtp", "saveSettings_smtp_function");
 function saveSettings_smtp_function()
 {
-    try {
-        if(!check_ajax_referer('wp_ajax_settings_smtp', false, false)) {
-            throw new Exception("Error Processing Request", 1);
-        }
-    } catch (Exception $e) {
-        echo esc_attr('Access denied');
-        wp_die();
-    }
-
     $sanitizedData = sanitizeData($_POST);
 
     if ($sanitizedData['action'] == 'saveSettings_smtp') {
@@ -60,7 +51,7 @@ function saveSettings_smtp_function()
                     echo esc_attr('channel_empty');
                 }
             } else {
-                if (empty($channelname)) {
+                if (empty($sanitizedData['channelname'])) {
                     echo esc_attr('API_channel_empty');
                 } else {
                     echo esc_attr('API_empty');
@@ -146,29 +137,14 @@ function saveSettings_smtp_function()
 add_action("wp_ajax_send_test_smtp_com", "send_test_smtp_com_function");
 function send_test_smtp_com_function()
 {
-    try {
-        if(!check_ajax_referer('wp_ajax_settings_smtp', false, false)) {
-            throw new Exception("Error Processing Request", 1);
-        }
-    } catch (Exception $e) {
-        echo esc_attr('Access denied');
-        wp_die();
-    }
+    $sanitizedData = sanitizeData($_POST);
 
-    if ($_POST['action'] == 'send_test_smtp_com') {
-        $sendVia = sanitize_text_field($_POST['sendVia']);
-        $apikey = sanitize_key($_POST['apikey']);
-        $channelname = sanitize_text_field($_POST['channelname']);
-        $smtpServer = SEND_HOST_SMTP;
-        $smtpPorts = intval($_POST['smtpPorts']);
-        $smtpSecurity = sanitize_text_field($_POST['smtpSecurity']);
-        $smtpEnc = sanitize_text_field($_POST['smtpEnc']);
-        $smtpLogin = sanitize_text_field($_POST['smtpLogin']);
-        $smtpPass = sanitize_text_field($_POST['smtpPass']);
+    if ($sanitizedData['action'] == 'send_test_smtp_com') {
+        
         global $current_user;
         get_currentuserinfo();
-        if (empty($smtpPorts)) {
-            $smtpPorts = 0;
+        if (empty($sanitizedData['smtpPorts'])) {
+            $sanitizedData['smtpPorts'] = 0;
         }
         $to = (string) $current_user->user_email;
         $fromSmtp = get_option('admin_email');
@@ -176,24 +152,24 @@ function send_test_smtp_com_function()
         $subject = 'Hello from your Wordpress Website via SMTP.com';
         $message = __('This email confirms that you have successfully installed your SMTP.com Wordpress Plugin. Congratulations and happy sending!');
         $headers = 'From: ' . $fromSmtp . " \r\n";
-        if ($sendVia == 'api') {
+        if ($sanitizedData['sendVia'] == 'api') {
             /**
              * Ajax call for test API send message
              *
              * @since 1.0.0
              */
             $port = API_PORT;
-            if (!empty($apikey)) {
-                if (!empty($channelname)) {
+            if (!empty($sanitizedData['apikey'])) {
+                if (!empty($sanitizedData['channelname'])) {
                     $connection = fsockopen("ssl://" . HOST_SMTP, $port, $errno, $errstr, $timeout = 1);
                     if ($connection) {
                         fclose($connection);
                         try {
-                            $ps = SmtpSdk::create($apikey);
-                            $ps->keys($apikey)->show();
+                            $ps = SmtpSdk::create($sanitizedData['apikey']);
+                            $ps->keys($sanitizedData['apikey'])->show();
                             try {
-                                $ps->channels($channelname)->show();
-                                $ps->messages($channelname)->create($fromSmtp, $to, $subject, $message);
+                                $ps->channels($sanitizedData['channelname'])->show();
+                                $ps->messages($sanitizedData['channelname'])->create($fromSmtp, $to, $subject, $message);
                                 _e('The test email has been sent!', 'smtp-com-mail');
 
                             } catch (Exception $e) {
@@ -209,7 +185,7 @@ function send_test_smtp_com_function()
                     echo esc_attr('channel_empty');
                 }
             } else {
-                if (empty($channelname)) {
+                if (empty($sanitizedData['channelname'])) {
                     echo esc_attr('API_channel_empty');
                 } else {
                     echo esc_attr('API_empty');
@@ -229,19 +205,19 @@ function send_test_smtp_com_function()
                 $phpmailer = new PHPMailer(true);
                 $phpmailer->IsSMTP();
                 $phpmailer->CharSet = 'utf-8';
-                if (strtolower($smtpSecurity) == 'none') {
+                if (strtolower($sanitizedData['smtpSecurity']) == 'none') {
                     $phpmailer->SMTPSecure = false;
                     $phpmailer->SMTPAutoTLS = false;
-                } elseif (strtolower($smtpSecurity) == 'starttls') {
+                } elseif (strtolower($sanitizedData['smtpSecurity']) == 'starttls') {
                     $phpmailer->SMTPSecure = 'tls';
                 } else {
-                    $phpmailer->SMTPSecure = strtolower($smtpSecurity);
+                    $phpmailer->SMTPSecure = strtolower($sanitizedData['smtpSecurity']);
                 }
-                $phpmailer->Host = strtolower($smtpServer);
-                $phpmailer->Port = strtolower($smtpPorts);
+                $phpmailer->Host = strtolower($sanitizedData['smtpServer']);
+                $phpmailer->Port = strtolower($sanitizedData['smtpPorts']);
                 $phpmailer->SMTPAuth = true;
-                $phpmailer->Username = strtolower($smtpLogin);
-                $phpmailer->Password = $smtpPass;
+                $phpmailer->Username = strtolower($sanitizedData['smtpLogin']);
+                $phpmailer->Password = $sanitizedData['smtpPass'];
                 global $current_user;
                 get_currentuserinfo();
                 $to = (string) $current_user->user_email;
@@ -251,7 +227,7 @@ function send_test_smtp_com_function()
                 $phpmailer->Body = "This email confirms that you have successfully installed your SMTP.com Wordpress Plugin. Congratulations and happy sending!";
             }
             try {
-                $connection = @fsockopen(SEND_HOST_SMTP, $smtpPorts, $errno, $errstr, $timeout = 1);
+                $connection = @fsockopen(SEND_HOST_SMTP, $sanitizedData['smtpPorts'], $errno, $errstr, $timeout = 1);
                 if (is_resource($connection)) {
                     fclose($connection);
                     $phpmailer->Send();
@@ -349,6 +325,15 @@ function show_messages($dateFrom, $dateEnd)
 
 function sanitizeData($data)
 {
+    try {
+        if(!check_ajax_referer('wp_ajax_settings_smtp', false, false)) {
+            throw new Exception("Error Processing Request", 1);
+        }
+    } catch (Exception $e) {
+        echo esc_attr('Access denied');
+        wp_die();
+    }
+
     return [
         'action' => sanitize_text_field($data['action']),
         'sendVia' => sanitize_text_field($data['sendVia']),

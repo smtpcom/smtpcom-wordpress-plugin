@@ -4,7 +4,8 @@ use SmtpSdk\SmtpSdk;
 /**
  * Settings on plugin main page
  *
- * @since 1.0.0
+ *
+ * @since    1.0.0
  */
 function smtpmail_add_options_page()
 {
@@ -47,7 +48,8 @@ function smtpcommail_setting_display()
     /**
      * Get recent deliveries from SMTP.com API
      *
-     * @since 1.0.0
+     *
+     * @since    1.0.0
      */
     try {
         $response = $ps->messages(smtp_com_mail::get_options_sc('smtp_channelname'))->index($parameters);
@@ -108,7 +110,8 @@ function smtpcommail_setting_display()
     /**
      * Show main settings on plugin main page
      *
-     * @since 1.0.0
+     *
+     * @since    1.0.0
      */
     ?>
     <h1 class="title__smtp">
@@ -132,7 +135,8 @@ function smtpcommail_setting_display()
             /**
              * Settings SMTP on plugin main page
              *
-             * @since 1.0.0
+             *
+             * @since    1.0.0
              */
             ?>
             <div class="main_item_block_settings__smtp">
@@ -148,12 +152,13 @@ function smtpcommail_setting_display()
             /**
              * Settings SMTP.com API on plugin main page
              *
-             * @since 1.0.0
+             *
+             * @since    1.0.0
              */
             ?>
             <div class="block_api__smtp <?php if (smtp_com_mail::get_options_sc('smtp_api') == 'api') {
                 echo esc_attr('show');
-} ?>">
+            } ?>">
                 <div class="main_item_block_settings__smtp">
                     <div class="item_block_settings__smtp"><?php _e('API Key', 'smtp-com-mail'); ?>*:</div>
                     <div class="item_block_settings__smtp">
@@ -181,7 +186,7 @@ function smtpcommail_setting_display()
 
             <div class="block_smtp__smtp <?php if (smtp_com_mail::get_options_sc('smtp_api') == 'smtp') {
                 echo esc_attr('show');
-} ?>">
+            } ?>">
                 <div class="main_item_block_settings__smtp">
                     <div class="item_block_settings__smtp"><?php _e('SMTP Server:', 'smtp-com-mail'); ?></div>
                     <div class="item_block_settings__smtp">
@@ -272,29 +277,24 @@ function smtpcommail_setting_display()
         /**
          * Support info plugin SMTP.com
          *
-         * @since 1.0.0
+         *
+         * @since    1.0.0
          */
         ?>
         <div class="bonus-info__smtp">
             <p>
                 <?php
                 echo sprintf(
-                    __(
-                        'Read our %1$s Wordpress Plugin Setup Guide %2$s if you need help or reach out to our
-                     Support Team via email address support@smtp.com'
-                    ),
+                    __('Read our %1$s Wordpress Plugin Setup Guide %2$s if you need help or reach out to our
+                     Support Team via email address support@smtp.com'),
                     '<a href="https://kb.smtp.com/article/2137-wp-plugin" target="_blank">',
                     '</a>'
                 );
                 ?>
-            <p><?php _e(
-                'Create your own account with SMTP.com to send emails from 
-            your Wordpress website.', 'smtp-com-mail'
-            ); ?></p>
-            <p><?php _e(
-                'The setup is easy and you can get the first month for free. 
-            Plans start at $25 per month after that.', 'smtp-com-mail'
-            ); ?></p>
+            <p><?php _e('Create your own account with SMTP.com to send emails from 
+            your Wordpress website.', 'smtp-com-mail'); ?></p>
+            <p><?php _e('The setup is easy and you can get the first month for free. 
+            Plans start at $25 per month after that.', 'smtp-com-mail'); ?></p>
             <p>
                 <?php
                 echo sprintf(
@@ -313,20 +313,22 @@ function smtpcommail_setting_display()
     /**
      * Block recent deliveries
      *
-     * @since 1.0.0
+     *
+     * @since    1.0.0
      */
     ?>
     <div class="block_recent_deliveries__smtp" style="display: none">
-        <?php echo esc_html($headerMess); ?>
+        <?php echo $headerMess; ?>
         <div class="result_message__smtp">
-            <?php echo esc_html($resultMess); ?>
+            <?php $resultMess; ?>
         </div>
     </div>
     <?php
     /**
      * Modal for report
      *
-     * @since 1.0.0
+     *
+     * @since    1.0.0
      */
     ?>
     <div class="block_modal__smtp" style="display: none">
