@@ -12,7 +12,7 @@ add_action("wp_ajax_saveSettings_smtp", "saveSettings_smtp_function");
 function saveSettings_smtp_function()
 {
     $sanitizedData = sanitizeData($_POST);
-
+    
     if ($sanitizedData['action'] == 'saveSettings_smtp') {
         /**
          * Ajax call for saving API settings
@@ -20,43 +20,48 @@ function saveSettings_smtp_function()
          * @since 1.0.0
          */
         if ($sanitizedData['sendVia'] == 'api') {
-            $sanitizedData['smtpPorts'] = API_PORT;
-            if (!empty($sanitizedData['apikey'])) {
-                if (!empty($sanitizedData['channelname'])) {
-                    $connection = fsockopen("ssl://" . HOST_SMTP, $sanitizedData['smtpPorts'], $errno, $errstr, $timeout = 1);
-                    if ($connection) {
-                        fclose($connection);
-                        try {
-                            $ps = SmtpSdk::create($sanitizedData['apikey']);
-                            $ps->keys($sanitizedData['apikey'])->show();
-                            try {
-                                $ps->channels($sanitizedData['channelname'])->show();
-
-                                if(saveSettings($sanitizedData)) {
-                                    _e('Thanks, api settings have been saved!', 'smtp-com-mail');
-                                } else {
-                                    echo esc_attr('Oops.. Looks like something went completely wrong');
-                                }
-
-                            } catch (Exception $e) {
-                                echo esc_attr('channel_invalid');
-                            }
-                        } catch (Exception $e) {
-                            echo esc_attr('API_invalid');
-                        }
-                    } else {
-                        echo esc_attr('port_443');
-                    }
-                } else {
-                    echo esc_attr('channel_empty');
-                }
-            } else {
-                if (empty($sanitizedData['channelname'])) {
-                    echo esc_attr('API_channel_empty');
-                } else {
-                    echo esc_attr('API_empty');
-                }
+            if (empty($sanitizedData['channelname'])) {
+                echo esc_attr('API_channel_empty');
+                wp_die();
             }
+
+            if (empty($sanitizedData['apikey'])) {
+                echo esc_attr('API_empty');
+                wp_die();
+            }
+
+            $sanitizedData['smtpPorts'] = API_PORT;
+            $connection = fsockopen("ssl://" . HOST_SMTP, $sanitizedData['smtpPorts'], $errno, $errstr, $timeout = 1);
+            if (!is_resource($connection)) {
+                echo esc_attr('port_443');
+                wp_die();
+            }
+            fclose($connection);
+        
+            try {
+                $ps = SmtpSdk::create($sanitizedData['apikey']);
+                $ps->keys($sanitizedData['apikey'])->show();
+            } catch (Exception $e) {
+                echo esc_attr('API_invalid');
+                wp_die();
+            }
+
+            try {
+                $ps->channels($sanitizedData['channelname'])->show();
+
+                if(saveSettings($sanitizedData)) {
+                    _e('Thanks, api settings have been saved!', 'smtp-com-mail');
+                    wp_die();
+                } else {
+                    echo esc_attr('Oops.. Looks like something went completely wrong');
+                    wp_die();
+                }
+
+            } catch (Exception $e) {
+                echo esc_attr('channel_invalid');
+                wp_die();
+            }
+
         } else {
             /**
              * Ajax call for saving SMTP settings
@@ -78,51 +83,51 @@ function saveSettings_smtp_function()
             //            $smtp->do_debug = SMTP::DEBUG_CONNECTION;
             $connection = @fsockopen(SEND_HOST_SMTP, $sanitizedData['smtpPorts'], $errno, $errstr, $timeout = 1);
             if (is_resource($connection)) {
-                fclose($connection);
-                try {
-                    if ($sanitizedData['smtpSecurity'] == 'SSL') {
-                        if (!$smtp->connect("ssl://" . SEND_HOST_SMTP, $sanitizedData['smtpPorts'])) {
-                            throw new Exception('Connect failed');
+                echo esc_attr('closed_port');
+                wp_die();
+            }
+            fclose($connection);
+            try {
+                if ($sanitizedData['smtpSecurity'] == 'SSL') {
+                    if (!$smtp->connect("ssl://" . SEND_HOST_SMTP, $sanitizedData['smtpPorts'])) {
+                        throw new Exception('Connect failed');
+                    }
+                } else {
+                    if (!$smtp->connect(SEND_HOST_SMTP, $sanitizedData['smtpPorts'])) {
+                        throw new Exception('Connect failed');
+                    }
+                }
+                if (!$smtp->hello(gethostname())) {
+                    throw new Exception('EHLO failed: ' . $smtp->getError()['error']);
+                }
+                $e = $smtp->getServerExtList();
+                if ($sanitizedData['smtpSecurity'] == 'STARTTLS') {
+                    if (is_array($e) && array_key_exists('STARTTLS', $e)) {
+                        $tlsok = $smtp->startTLS();
+                        if (!$tlsok) {
+                            throw new Exception('Failed to start encryption: ' . $smtp->getError()['error']);
+                        }
+                        if (!$smtp->hello(gethostname())) {
+                            throw new Exception('EHLO (2) failed: ' . $smtp->getError()['error']);
+                        }
+                        $e = $smtp->getServerExtList();
+                    }
+                }
+                if (is_array($e) && array_key_exists('AUTH', $e)) {
+                    if ($smtp->authenticate($sanitizedData['smtpLogin'], $sanitizedData['smtpPass'])) {
+                        if(saveSettings($sanitizedData)) {
+                            _e('Thanks, settings have been saved!', 'smtp-com-mail');
+                        } else {
+                            echo esc_attr('Oops.. Looks like something went completely wrong');
                         }
                     } else {
-                        if (!$smtp->connect(SEND_HOST_SMTP, $sanitizedData['smtpPorts'])) {
-                            throw new Exception('Connect failed');
-                        }
+                        throw new Exception('Authentication failed: ' . $smtp->getError()['error']);
                     }
-                    if (!$smtp->hello(gethostname())) {
-                        throw new Exception('EHLO failed: ' . $smtp->getError()['error']);
-                    }
-                    $e = $smtp->getServerExtList();
-                    if ($sanitizedData['smtpSecurity'] == 'STARTTLS') {
-                        if (is_array($e) && array_key_exists('STARTTLS', $e)) {
-                            $tlsok = $smtp->startTLS();
-                            if (!$tlsok) {
-                                throw new Exception('Failed to start encryption: ' . $smtp->getError()['error']);
-                            }
-                            if (!$smtp->hello(gethostname())) {
-                                throw new Exception('EHLO (2) failed: ' . $smtp->getError()['error']);
-                            }
-                            $e = $smtp->getServerExtList();
-                        }
-                    }
-                    if (is_array($e) && array_key_exists('AUTH', $e)) {
-                        if ($smtp->authenticate($sanitizedData['smtpLogin'], $sanitizedData['smtpPass'])) {
-                            if(saveSettings($sanitizedData)) {
-                                _e('Thanks, settings have been saved!', 'smtp-com-mail');
-                            } else {
-                                echo esc_attr('Oops.. Looks like something went completely wrong');
-                            }
-                        } else {
-                            throw new Exception('Authentication failed: ' . $smtp->getError()['error']);
-                        }
-                    }
-                } catch (Exception $e) {
-                    _e('SMTP login or password is incorrect', 'smtp-com-mail');
-                    // open for debug
-                    // _e('SMTP error: ' . $e->getMessage(), 'smtp-com-mail');
                 }
-            } else {
-                echo esc_attr('closed_port');
+            } catch (Exception $e) {
+                _e('SMTP login or password is incorrect', 'smtp-com-mail');
+                // open for debug
+                // _e('SMTP error: ' . $e->getMessage(), 'smtp-com-mail');
             }
         }
     }
@@ -158,39 +163,39 @@ function send_test_smtp_com_function()
              *
              * @since 1.0.0
              */
-            $port = API_PORT;
-            if (!empty($sanitizedData['apikey'])) {
-                if (!empty($sanitizedData['channelname'])) {
-                    $connection = fsockopen("ssl://" . HOST_SMTP, $port, $errno, $errstr, $timeout = 1);
-                    if ($connection) {
-                        fclose($connection);
-                        try {
-                            $ps = SmtpSdk::create($sanitizedData['apikey']);
-                            $ps->keys($sanitizedData['apikey'])->show();
-                            try {
-                                $ps->channels($sanitizedData['channelname'])->show();
-                                $ps->messages($sanitizedData['channelname'])->create($fromSmtp, $to, $subject, $message);
-                                _e('The test email has been sent!', 'smtp-com-mail');
-
-                            } catch (Exception $e) {
-                                echo esc_attr('channel_invalid');
-                            }
-                        } catch (Exception $e) {
-                            echo esc_attr('API_invalid');
-                        }
-                    } else {
-                        echo esc_attr('port_443');
-                    }
-                } else {
-                    echo esc_attr('channel_empty');
-                }
-            } else {
-                if (empty($sanitizedData['channelname'])) {
-                    echo esc_attr('API_channel_empty');
-                } else {
-                    echo esc_attr('API_empty');
-                }
+            if (empty($sanitizedData['channelname'])) {
+                echo esc_attr('API_channel_empty');
+                wp_die();
             }
+
+            if (empty($sanitizedData['apikey'])) {
+                echo esc_attr('API_empty');
+                wp_die();
+            }
+
+            $port = API_PORT;
+            $connection = fsockopen("ssl://" . HOST_SMTP, $port, $errno, $errstr, $timeout = 1);
+            if (!is_resource($connection)) {
+                echo esc_attr('port_443');
+                wp_die();
+            }
+            fclose($connection);
+
+            try {
+                $ps = SmtpSdk::create($sanitizedData['apikey']);
+                $ps->keys($sanitizedData['apikey'])->show();
+            } catch (Exception $e) {
+                echo esc_attr('API_invalid');
+            }
+
+            try {
+                $ps->channels($sanitizedData['channelname'])->show();
+                $ps->messages($sanitizedData['channelname'])->create($fromSmtp, $to, $subject, $message);
+                _e('The test email has been sent!', 'smtp-com-mail');
+            } catch (Exception $e) {
+                echo esc_attr('channel_invalid');
+            }
+
         } else {
             /**
              * Ajax call for test SMTP send message
