@@ -134,18 +134,13 @@
     );
 
     $(document).on(
-        'submit','#saveSettings__smtp',function () {
-            $('.message_modal__smtp').html('saving...');
-            $('.error_mess__smtp').slideUp();
-            $('.inpur_error__smtp').removeClass('inpur_error__smtp');
-            $('.block_modal__smtp').fadeIn();
-            let str = $(this).serialize();
-            str = str + '&action=' + 'saveSettings_smtp';
+        'click','.submitSettings',function () {
+            initModal();
             $.ajax(
                 {
                     url: '/wp-admin/admin-ajax.php',
                     type: "POST",
-                    data: str,
+                    data: getFormData(this),
                     success: function (data) {
                         checkData(data)
                     }
@@ -157,33 +152,12 @@
 
     $(document).on(
         'click','.testEmailSettings',function () {
-            $('.message_modal__smtp').html('sending...');
-            $('.error_mess__smtp').slideUp();
-            $('.inpur_error__smtp').removeClass('inpur_error__smtp');
-            $('.block_modal__smtp').fadeIn();
-            let sendVia = $('#sendVia').val();
-            let apikey = $('#apikey').val();
-            let channelname = $('#channelname').val();
-            let smtpPorts = $('#smtpPorts').val();
-            let smtpSecurity = $('#smtpSecurity').val();
-            let smtpEnc = $('#smtpEnc').val();
-            let smtpLogin = $('#smtpLogin').val();
-            let smtpPass = $('#smtpPass').val();
+            initModal();
             $.ajax(
                 {
                     url: '/wp-admin/admin-ajax.php',
                     type: "POST",
-                    data: {
-                        action: 'send_test_smtp_com',
-                        sendVia: sendVia,
-                        apikey: apikey,
-                        channelname: channelname,
-                        smtpPorts: smtpPorts,
-                        smtpSecurity: smtpSecurity,
-                        smtpEnc: smtpEnc,
-                        smtpLogin: smtpLogin,
-                        smtpPass: smtpPass,
-                    },
+                    data: getFormData(this),
                     success: function (data) {
                         checkData(data)
                     }
@@ -209,103 +183,16 @@
             $('.block_setting__smtp').hide();
             $('.block_recent_deliveries__smtp').show();
         }
-    });
+    );
 
-    $(document).on('click','.submitSettings',function () {
-        $('.message_modal__smtp').html('saving...');
-        $('.error_mess__smtp').slideUp();
-        $('.inpur_error__smtp').removeClass('inpur_error__smtp');
-        $('.block_modal__smtp').fadeIn();
-        let sendVia = $('#sendVia').val();
-        let apikey = $('#apikey').val();
-        let channelname = $('#channelname').val();
-        let smtpPorts = $('#smtpPorts').val();
-        let smtpSecurity = $('#smtpSecurity').val();
-        let smtpEnc = $('#smtpEnc').val();
-        let smtpLogin = $('#smtpLogin').val();
-        let smtpPass = $('#smtpPass').val();
-        let _wpnonce = $('#_wpnonce').val();
-        let _wp_http_referer = $("input[name=_wp_http_referer]").val();
-        $.ajax({
-            url: '/wp-admin/admin-ajax.php',
-            type: "POST",
-            data: {
-                action: 'saveSettings_smtp',
-                sendVia: sendVia,
-                apikey: apikey,
-                channelname: channelname,
-                smtpPorts: smtpPorts,
-                smtpSecurity: smtpSecurity,
-                smtpEnc: smtpEnc,
-                smtpLogin: smtpLogin,
-                smtpPass: smtpPass,
-                _wpnonce: _wpnonce,
-                _wp_http_referer: _wp_http_referer
-            },
-            success: function (data) {
-                checkData(data)
-            }
-        });
-        return false;
-    });
+    $(document).on(
+        'click','.close_modal__smtp, .background_modal__smtp',function () {
+            $('.block_modal__smtp').fadeOut();
+        }
+    )
 
-    $(document).on('click','.testEmailSettings',function () {
-        $('.message_modal__smtp').html('sending...');
-        $('.error_mess__smtp').slideUp();
-        $('.inpur_error__smtp').removeClass('inpur_error__smtp');
-        $('.block_modal__smtp').fadeIn();
-        let sendVia = $('#sendVia').val();
-        let apikey = $('#apikey').val();
-        let channelname = $('#channelname').val();
-        let smtpPorts = $('#smtpPorts').val();
-        let smtpSecurity = $('#smtpSecurity').val();
-        let smtpEnc = $('#smtpEnc').val();
-        let smtpLogin = $('#smtpLogin').val();
-        let smtpPass = $('#smtpPass').val();
-        let _wpnonce = $('#_wpnonce').val();
-        let _wp_http_referer = $("input[name=_wp_http_referer]").val();
-        $.ajax({
-            url: '/wp-admin/admin-ajax.php',
-            type: "POST",
-            data: {
-                action: 'send_test_smtp_com',
-                sendVia: sendVia,
-                apikey: apikey,
-                channelname: channelname,
-                smtpPorts: smtpPorts,
-                smtpSecurity: smtpSecurity,
-                smtpEnc: smtpEnc,
-                smtpLogin: smtpLogin,
-                smtpPass: smtpPass,
-                _wpnonce: _wpnonce,
-                _wp_http_referer: _wp_http_referer
-            },
-            success: function (data) {
-                checkData(data)
-            }
-        });
-        return false;
-    });
-
-    $(document).on('click','.item-tabs_settings__smtp',function () {
-        $('.item-tabs_title__smtp').removeClass('active__smtp');
-        $(this).addClass('active__smtp');
-        $('.block_recent_deliveries__smtp').hide();
-        $('.block_setting__smtp').show();
-    });
-
-    $(document).on('click','.item-tabs_recent__smtp',function () {
-        $('.item-tabs_title__smtp').removeClass('active__smtp');
-        $(this).addClass('active__smtp');
-        $('.block_setting__smtp').hide();
-        $('.block_recent_deliveries__smtp').show();
-    });
-
-    $(document).on('click','.close_modal__smtp, .background_modal__smtp',function () {
-        $('.block_modal__smtp').fadeOut();
-    })
-
-    function formatDate(date) {
+    function formatDate(date)
+    {
         let d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
@@ -373,5 +260,31 @@
         }
     }
 
+    function getFormData(e)
+    {
+        const data = {
+            action: $(e).attr('id'),
+            sendVia: $('#sendVia').val(),
+            apikey : $('#apikey').val(),
+            channelname : $('#channelname').val(),
+            smtpPorts : $('#smtpPorts').val(),
+            smtpSecurity : $('#smtpSecurity').val(),
+            smtpEnc : $('#smtpEnc').val(),
+            smtpLogin : $('#smtpLogin').val(),
+            smtpPass : $('#smtpPass').val(),
+            _wpnonce : $('#_wpnonce').val(),
+            _wp_http_referer : $("input[name=_wp_http_referer]").val()
+        }
+    
+        return data;
+    }
+
+    function initModal()
+    {
+        $('.message_modal__smtp').html('sending...');
+        $('.error_mess__smtp').slideUp();
+        $('.inpur_error__smtp').removeClass('inpur_error__smtp');
+        $('.block_modal__smtp').fadeIn();
+    }
 
 })(jQuery);

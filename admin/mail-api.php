@@ -375,7 +375,7 @@ if (!function_exists('wp_mail')) {
                      * @since 4.4.0
                      */
                     do_action('wp_mail_failed', new WP_Error('wp_mail_failed', $e->getMessage(), $mail_error_data));
-                    echo '<span class="exeption__smtp" style="display: none">' . $e->getMessage() . '</span>';
+                    echo esc_html('<span class="exeption__smtp" style="display: none">' . $e->getMessage() . '</span>');
                     return false;
                 }
             } else {
