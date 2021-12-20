@@ -82,7 +82,7 @@ function saveSettings_smtp_function()
              */
             //            $smtp->do_debug = SMTP::DEBUG_CONNECTION;
             $connection = @fsockopen(SEND_HOST_SMTP, $sanitizedData['smtpPorts'], $errno, $errstr, $timeout = 1);
-            if (is_resource($connection)) {
+            if (!is_resource($connection)) {
                 echo esc_attr('closed_port');
                 wp_die();
             }
@@ -186,6 +186,7 @@ function send_test_smtp_com_function()
                 $ps->keys($sanitizedData['apikey'])->show();
             } catch (Exception $e) {
                 echo esc_attr('API_invalid');
+                wp_die();
             }
 
             try {
@@ -194,6 +195,7 @@ function send_test_smtp_com_function()
                 _e('The test email has been sent!', 'smtp-com-mail');
             } catch (Exception $e) {
                 echo esc_attr('channel_invalid');
+                wp_die();
             }
 
         } else {
