@@ -317,8 +317,34 @@ function smtpcommail_setting_display()
      * @since    1.0.0
      */
     ?>
+    <?php    
+        $allowedHTML = 
+        array(
+            'div' => array(
+                'class' => array(),
+                'style' => array(),
+                'data-dateformat' => array()
+            ),
+            'label' => array(
+                'for' => array(),
+                'class' => array(),
+            ),
+            'input' => array(
+                'type' => array(),
+                'id' => array(),
+                'name' => array(),
+                'autocomplete' => array(),
+                'readonly' => array(),
+                'value' => array()
+            ),
+            'img' => array(
+                'src' => array(),
+                'alt' => array()
+            )
+        );
+    ?>
     <div class="block_recent_deliveries__smtp" style="display: none">
-        <?php echo $headerMess; ?>
+        <?php echo wp_kses($headerMess, $allowedHTML); ?>
         <div class="result_message__smtp">
             <?php $resultMess; ?>
         </div>
