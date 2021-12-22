@@ -11,7 +11,7 @@ use SmtpSdk\SmtpSdk;
 add_action("wp_ajax_saveSettings_smtp", "saveSettings_smtp_function");
 function saveSettings_smtp_function()
 {
-    $sanitizedData = sanitizeData($_POST);
+    $sanitizedData = smtp_sanitizeData($_POST);
     
     if ($sanitizedData['action'] == 'saveSettings_smtp') {
         /**
@@ -49,7 +49,7 @@ function saveSettings_smtp_function()
             try {
                 $ps->channels($sanitizedData['channelname'])->show();
 
-                if(saveSettings($sanitizedData)) {
+                if(smtp_saveSettings($sanitizedData)) {
                     _e('Thanks, api settings have been saved!', 'smtp-com-mail');
                     wp_die();
                 } else {
@@ -115,7 +115,7 @@ function saveSettings_smtp_function()
                 }
                 if (is_array($e) && array_key_exists('AUTH', $e)) {
                     if ($smtp->authenticate($sanitizedData['smtpLogin'], $sanitizedData['smtpPass'])) {
-                        if(saveSettings($sanitizedData)) {
+                        if(smtp_saveSettings($sanitizedData)) {
                             _e('Thanks, settings have been saved!', 'smtp-com-mail');
                         } else {
                             echo esc_attr('Oops.. Looks like something went completely wrong');
@@ -142,7 +142,7 @@ function saveSettings_smtp_function()
 add_action("wp_ajax_send_test_smtp_com", "send_test_smtp_com_function");
 function send_test_smtp_com_function()
 {
-    $sanitizedData = sanitizeData($_POST);
+    $sanitizedData = smtp_sanitizeData($_POST);
 
     if ($sanitizedData['action'] == 'send_test_smtp_com') {
         
@@ -261,7 +261,7 @@ function sort_messages_smtp_function()
     if ($_POST['action'] == 'sort_messages__smtp') {
         $dateFrom = sanitize_option('date_format', $_POST['dateFrom']);
         $dateEnd = sanitize_option('date_format', $_POST['dateEnd']);
-        show_messages($dateFrom, $dateEnd);
+        smtp_show_messages($dateFrom, $dateEnd);
     }
     wp_die();
 }
@@ -271,7 +271,7 @@ function sort_messages_smtp_function()
  *
  * @since 1.0.0
  */
-function show_messages($dateFrom, $dateEnd)
+function smtp_show_messages($dateFrom, $dateEnd)
 {
     $dateFormatWP = get_option('date_format');
     $timeFormatWP = get_option('time_format');
@@ -330,7 +330,7 @@ function show_messages($dateFrom, $dateEnd)
     _e($resultMess, 'smtp-com-mail');
 }
 
-function sanitizeData($data)
+function smtp_sanitizeData($data)
 {
     try {
         if(!check_ajax_referer('wp_ajax_settings_smtp', false, false)) {
@@ -355,7 +355,7 @@ function sanitizeData($data)
     ];
 }
 
-function saveSettings($sanitizedData)
+function smtp_saveSettings($sanitizedData)
 {
     try {
         smtp_com_mail::update_options_sc('smtp_api', $sanitizedData['sendVia']);
