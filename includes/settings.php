@@ -318,7 +318,7 @@ function smtpcommail_setting_display()
      */
     ?>
     <?php    
-        $allowedHTML = 
+        $smtp_allowedHTML = 
         array(
             'div' => array(
                 'class' => array(),
@@ -344,7 +344,7 @@ function smtpcommail_setting_display()
         );
     ?>
     <div class="block_recent_deliveries__smtp" style="display: none">
-        <?php echo wp_kses($headerMess, $allowedHTML); ?>
+        <?php echo wp_kses($headerMess, $smtp_allowedHTML); ?>
         <div class="result_message__smtp">
             <?php $resultMess; ?>
         </div>
