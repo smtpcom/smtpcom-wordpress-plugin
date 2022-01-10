@@ -9,51 +9,54 @@ class smtp_com_action_mail
     public function init_smtp_com()
     {
         /**
-          * ReInit mail from field
-          *
-          * @since 1.0.0
-          */
-        add_filter('wp_mail_from', 'wp_mail_from_smtp');
-        function wp_mail_from_smtp( $from_email )
-        {
-            try {
-                $phpmailer = new PHPMailer(true);
-                $phpmailer->setFrom($from_email, '', false);
-            } catch (Exception $e) {
-                $from_email = get_option('admin_email');
+         * ReInit mail from field
+        *
+        * @since 1.0.0
+        */
+        
+        if (!function_exists( 'wp_mail_from_smtp' )){
+            add_filter('wp_mail_from', 'wp_mail_from_smtp');
+            function wp_mail_from_smtp( $from_email )
+            {
+                try {
+                    $phpmailer = new PHPMailer(true);
+                    $phpmailer->setFrom($from_email, '', false);
+                } catch (Exception $e) {
+                    $from_email = get_option('admin_email');
+                }
+
+                return $from_email;
             }
-
-            return $from_email;
         }
-
         /**
          * ReInit phpmailer for custom SMTP settings
          *
          * @since 1.0.0
          */
-        add_action('phpmailer_init', 'phpmailer_init_smtp', 10, 1);
-        function phpmailer_init_smtp($phpmailer)
-        {
-            if (smtp_com_mail::get_options_sc('smtp_api') == 'smtp') {
-                $phpmailer->IsSMTP();
-                $phpmailer->CharSet = 'utf-8';
-                if (smtp_com_mail::get_options_sc('smtp_security') == 'none') {
-                    $phpmailer->SMTPSecure = false;
-                    $phpmailer->SMTPAutoTLS = false;
-                } elseif (smtp_com_mail::get_options_sc('smtp_security') == 'starttls') {
-                    $phpmailer->SMTPSecure = 'tls';
-                } else {
-                    $phpmailer->SMTPSecure = smtp_com_mail::get_options_sc('smtp_security');
-                }
-                $phpmailer->Host = smtp_com_mail::get_options_sc('smtp_server');
-                $phpmailer->Port = smtp_com_mail::get_options_sc('smtp_port');
+        if (!function_exists( 'phpmailer_init_smtp' )){
+            add_action('phpmailer_init', 'phpmailer_init_smtp', 10, 1);
+            function phpmailer_init_smtp($phpmailer)
+            {
+                if (smtp_com_mail::get_options_sc('smtp_api') == 'smtp') {
+                    $phpmailer->IsSMTP();
+                    $phpmailer->CharSet = 'utf-8';
+                    if (smtp_com_mail::get_options_sc('smtp_security') == 'none') {
+                        $phpmailer->SMTPSecure = false;
+                        $phpmailer->SMTPAutoTLS = false;
+                    } elseif (smtp_com_mail::get_options_sc('smtp_security') == 'starttls') {
+                        $phpmailer->SMTPSecure = 'tls';
+                    } else {
+                        $phpmailer->SMTPSecure = smtp_com_mail::get_options_sc('smtp_security');
+                    }
+                    $phpmailer->Host = smtp_com_mail::get_options_sc('smtp_server');
+                    $phpmailer->Port = smtp_com_mail::get_options_sc('smtp_port');
 
-                $phpmailer->SMTPAuth = true;
-                $phpmailer->Username = smtp_com_mail::get_options_sc('smtp_login');
-                $phpmailer->Password = smtp_com_mail::get_options_sc('smtp_password');
+                    $phpmailer->SMTPAuth = true;
+                    $phpmailer->Username = smtp_com_mail::get_options_sc('smtp_login');
+                    $phpmailer->Password = smtp_com_mail::get_options_sc('smtp_password');
+                }
             }
         }
-
         /**
          * Catch wp_mail() errors
          *
