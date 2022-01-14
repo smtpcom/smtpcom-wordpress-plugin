@@ -7,24 +7,52 @@ use SmtpSdk\SmtpSdk;
  *
  * @since    1.0.0
  */
-if ( !function_exists( 'smtpmail_add_options_page' ) ) {
-    function smtpmail_add_options_page()
+if ( !function_exists( 'smtpcom_mail_add_options_page' ) ) {
+    function smtpcom_mail_add_options_page()
     {
         add_options_page(
             'SMTP Settings',
             'SMTP.com',
             'manage_options',
             'smtpcommail-setting',
-            'smtpcommail_setting_display'
+            'smtpcom_mail_setting_display'
         );
     }
+    add_action('admin_menu', 'smtpcom_mail_add_options_page');
 }
 
-if ( !function_exists( 'smtpmail_add_options_page' ) ) {
-add_action('admin_menu', 'smtpmail_add_options_page');
+if ( !function_exists( 'smtpcom_mail_setting_display' ) ) {
+    function smtpcom_mail_setting_display()
+    {   
+        //Use with wp_kses()
+        $smtp_allowedHTML = 
+        array(
+            'div' => array(
+                'class' => true,
+                'style' => true,
+                'data-dateformat' => true
+            ),
+            'label' => array(
+                'for' => true,
+                'class' => true,
+            ),
+            'input' => array(
+                'type' => true,
+                'id' => true,
+                'name' => true,
+                'autocomplete' => true,
+                'readonly' => true,
+                'value' => true
+            ),
+            'img' => array(
+                'src' => true,
+                'alt' => true
+            ),
+            'span' => array(
+                'class'=> true, 
+            )
+        );
 
-    function smtpcommail_setting_display()
-    {
         $ps = SmtpSdk::create(smtp_com_mail::get_options_sc('smtp_apikey'));
         $dateFormatWP = get_option('date_format');
         $timeFormatWP = get_option('time_format');
@@ -41,13 +69,6 @@ add_action('admin_menu', 'smtpmail_add_options_page');
             $endDate = date(DateTimeInterface::RFC2822, strtotime(date('Y-m-d 23:59:59')));
         }
 
-        $parameters = [
-            'start' => $startDate,
-            'end'     => $endDate,
-            'event' => array('accepted', 'failed', 'delivered'),
-            'limit' => 50,
-            'offset' => 0,
-        ];
         /**
          * Get recent deliveries from SMTP.com API
          *
@@ -55,7 +76,15 @@ add_action('admin_menu', 'smtpmail_add_options_page');
          * @since    1.0.0
          */
         try {
-            $response = $ps->messages(smtp_com_mail::get_options_sc('smtp_channelname'))->index($parameters);
+            $channelName = smtp_com_mail::get_options_sc('smtp_channelname');
+
+            $response = $ps->messages($channelName)->index([
+                'start'  => $startDate,
+                'end'    => $endDate,
+                'event'  => array('accepted', 'failed', 'delivered'),
+                'limit'  => 50,
+                'offset' => 0,
+            ]);
             $messages = $response->getItems();
             if (empty($messages)) {
                 $resultMess = "<span class='message_settings__smtp mess_not_found'>Messages don't exist for last 7 days.</span>";
@@ -125,10 +154,9 @@ add_action('admin_menu', 'smtpmail_add_options_page');
             <div class="item-tabs_title__smtp item-tabs_settings__smtp active__smtp">
                 <?php _e('Mail Settings', 'smtp-com-mail'); ?>
             </div>
-            <div class="item-tabs_title__smtp item-tabs_recent__smtp"
-                <?php if (smtp_com_mail::get_options_sc('smtp_api') == 'smtp') {
-                    echo esc_attr('style=display:none');
-                } ?>><?php _e('Recent deliveries', 'smtp-com-mail'); ?></div>
+            <div class="item-tabs_title__smtp item-tabs_recent__smtp">
+                <?php _e('Recent deliveries', 'smtp-com-mail'); ?>
+            </div>
         </div>
 
         <div class="block_setting__smtp">
@@ -320,32 +348,7 @@ add_action('admin_menu', 'smtpmail_add_options_page');
          * @since    1.0.0
          */
         ?>
-        <?php    
-            $smtp_allowedHTML = 
-            array(
-                'div' => array(
-                    'class' => array(),
-                    'style' => array(),
-                    'data-dateformat' => array()
-                ),
-                'label' => array(
-                    'for' => array(),
-                    'class' => array(),
-                ),
-                'input' => array(
-                    'type' => array(),
-                    'id' => array(),
-                    'name' => array(),
-                    'autocomplete' => array(),
-                    'readonly' => array(),
-                    'value' => array()
-                ),
-                'img' => array(
-                    'src' => array(),
-                    'alt' => array()
-                )
-            );
-        ?>
+
         <div class="block_recent_deliveries__smtp" style="display: none">
             <?php echo wp_kses($headerMess, $smtp_allowedHTML); ?>
             <div class="result_message__smtp">

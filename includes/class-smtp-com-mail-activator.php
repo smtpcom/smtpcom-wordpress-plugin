@@ -52,6 +52,6 @@ class smtp_com_mail_Activator
         smtp_com_mail::add_options_sc('smtp_encryption');
         smtp_com_mail::add_options_sc('smtp_login');
         smtp_com_mail::add_options_sc('smtp_password');
-        smtp_com_mail::update_options_sc('smtp_api', 'smtp');
+        smtp_com_mail::update_options_sc('smtp_api', 'api');
     }
 }

@@ -14,7 +14,7 @@ class smtp_com_action_mail
         * @since 1.0.0
         */
         
-        if (!function_exists( 'wp_mail_from_smtp' )){
+        if (!function_exists('wp_mail_from_smtp')) {
             add_filter('wp_mail_from', 'wp_mail_from_smtp');
             function wp_mail_from_smtp( $from_email )
             {
@@ -33,7 +33,7 @@ class smtp_com_action_mail
          *
          * @since 1.0.0
          */
-        if (!function_exists( 'phpmailer_init_smtp' )){
+        if (!function_exists('phpmailer_init_smtp')) {
             add_action('phpmailer_init', 'phpmailer_init_smtp', 10, 1);
             function phpmailer_init_smtp($phpmailer)
             {
