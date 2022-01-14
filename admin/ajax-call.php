@@ -9,16 +9,16 @@ use SmtpSdk\SmtpSdk;
  * @since 1.0.0
  */
 
-if ( !function_exists( 'saveSettings_smtp_function' ) ) {
-    add_action("wp_ajax_saveSettings_smtp", "saveSettings_smtp_function");
-    function saveSettings_smtp_function()
+if ( !function_exists( 'smtpcom_mail_saveSettings_function' ) ) {
+    add_action("wp_ajax_saveSettings_smtp", "smtpcom_mail_saveSettings_function");
+    function smtpcom_mail_saveSettings_function()
     {
         if(!is_admin()){
             echo esc_attr('You must have administrator rights!');
             wp_die();
         }
 
-        $sanitizedData = smtp_sanitizeData($_POST);
+        $sanitizedData = smtpcom_mail_sanitizeData($_POST);
         if ($sanitizedData['action'] == 'saveSettings_smtp') {
             /**
              * Ajax call for saving API settings
@@ -55,7 +55,7 @@ if ( !function_exists( 'saveSettings_smtp_function' ) ) {
                 try {
                     $ps->channels($sanitizedData['channelname'])->show();
 
-                    if(smtp_saveSettings($sanitizedData)) {
+                    if(smtpcom_mail_saveSettings($sanitizedData)) {
                         _e('Thanks, api settings have been saved!', 'smtp-com-mail');
                         wp_die();
                     } else {
@@ -121,7 +121,7 @@ if ( !function_exists( 'saveSettings_smtp_function' ) ) {
                     }
                     if (is_array($e) && array_key_exists('AUTH', $e)) {
                         if ($smtp->authenticate($sanitizedData['smtpLogin'], $sanitizedData['smtpPass'])) {
-                            if(smtp_saveSettings($sanitizedData)) {
+                            if(smtpcom_mail_saveSettings($sanitizedData)) {
                                 _e('Thanks, settings have been saved!', 'smtp-com-mail');
                             } else {
                                 echo esc_attr('Oops.. Looks like something went completely wrong');
@@ -146,16 +146,16 @@ if ( !function_exists( 'saveSettings_smtp_function' ) ) {
  *
  * @since 1.0.0
  */
-if ( !function_exists( 'send_test_smtp_com_function' ) ) {
-    add_action("wp_ajax_send_test_smtp_com", "send_test_smtp_com_function");
-    function send_test_smtp_com_function()
+if ( !function_exists( 'smtpcom_mail_send_test_function' ) ) {
+    add_action("wp_ajax_send_test_smtp_com", "smtpcom_mail_send_test_function");
+    function smtpcom_mail_send_test_function()
     {
         if(!is_admin()){
             echo esc_attr('You must have administrator rights!');
             wp_die();
         }
 
-        $sanitizedData = smtp_sanitizeData($_POST);
+        $sanitizedData = smtpcom_mail_sanitizeData($_POST);
 
         if ($sanitizedData['action'] == 'send_test_smtp_com') {
             
@@ -269,14 +269,14 @@ if ( !function_exists( 'send_test_smtp_com_function' ) ) {
  *
  * @since 1.0.0
  */
-if ( !function_exists( 'sort_messages_smtp_function' ) ) {
-    add_action("wp_ajax_sort_messages__smtp", "sort_messages_smtp_function");
-    function sort_messages_smtp_function()
+if ( !function_exists( 'smtpcom_mail_sort_messages_function' ) ) {
+    add_action("wp_ajax_sort_messages__smtp", "smtpcom_mail_sort_messages_function");
+    function smtpcom_mail_sort_messages_function()
     {
         if ($_POST['action'] == 'sort_messages__smtp') {
             $dateFrom = sanitize_option('date_format', $_POST['dateFrom']);
             $dateEnd = sanitize_option('date_format', $_POST['dateEnd']);
-            smtp_show_messages($dateFrom, $dateEnd);
+            smtpcom_mail_show_messages($dateFrom, $dateEnd);
         }
         wp_die();
     }
@@ -287,8 +287,8 @@ if ( !function_exists( 'sort_messages_smtp_function' ) ) {
  *
  * @since 1.0.0
  */
-if ( !function_exists( 'smtp_show_messages' ) ) {
-    function smtp_show_messages($dateFrom, $dateEnd)
+if ( !function_exists( 'smtpcom_mail_show_messages' ) ) {
+    function smtpcom_mail_show_messages($dateFrom, $dateEnd)
     {
         $dateFormatWP = get_option('date_format');
         $timeFormatWP = get_option('time_format');
@@ -342,14 +342,17 @@ if ( !function_exists( 'smtp_show_messages' ) ) {
             }
         } catch (Exception $e) {
             $headerMess = "";
-            $resultMess = esc_html("<span class='message_settings__smtp'>Set up API settings.</span>");
+            $resultMess = "
+            <div class='setup_settings__smtp'>
+                <span class='message_settings__smtp setup_settings__smtp'>Set up API settings.</span>
+            </div>";
         }
         _e($resultMess, 'smtp-com-mail');
     }
 }
 
-if ( !function_exists( 'smtp_sanitizeData' ) ) {
-    function smtp_sanitizeData($data)
+if ( !function_exists( 'smtpcom_mail_sanitizeData' ) ) {
+    function smtpcom_mail_sanitizeData($data)
     {
         try {
             if(!check_ajax_referer('wp_ajax_settings_smtp', false, false)) {
@@ -375,8 +378,8 @@ if ( !function_exists( 'smtp_sanitizeData' ) ) {
     }
 }
 
-if ( !function_exists( 'smtp_saveSettings' ) ) {
-    function smtp_saveSettings($sanitizedData)
+if ( !function_exists( 'smtpcom_mail_saveSettings' ) ) {
+    function smtpcom_mail_saveSettings($sanitizedData)
     {
         try {
             smtp_com_mail::update_options_sc('smtp_api', $sanitizedData['sendVia']);

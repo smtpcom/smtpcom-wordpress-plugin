@@ -3,68 +3,13 @@
 
     $(window).load(
         function () {
-            function replaceBulk( str, findArray, replaceArray )
-            {
-                var i, regex = [], map = {};
-                for( i=0; i<findArray.length; i++ ){
-                    regex.push(findArray[i].replace(/([-[\]{}()*+?.\\^$|#,])/g,'\\$1'));
-                    map[findArray[i]] = replaceArray[i];
-                }
-                regex = regex.join('|');
-                str = str.replace(
-                    new RegExp(regex, 'g'), function (matched) {
-                        return map[matched];
-                    }
-                );
-                return str;
-            }
 
-            function initDatePickers()
-            {
-                let dateFormat = replaceBulk($('.date_block__smtp').data('dateformat').toLowerCase(),['m','d','y','j','l','f'],['mm','dd','yy','d','DD','MM']);
-                $("#date_from__smtp").datepicker(
-                    {
-                        dateFormat: dateFormat,
-                        firstDay: 1,
-                        maxDate: new Date($('#date_end__smtp').val()),
-                    },
-                );
-                $("#date_end__smtp").datepicker(
-                    {
-                        dateFormat: dateFormat,
-                        maxDate: 0,
-                        firstDay: 1,
-                        minDate: new Date($('#date_from__smtp').val()),
-                    },
-                );
-            }
             initDatePickers();
-
 
             $(document).on(
                 'change', '#date_from__smtp, #date_end__smtp',function () {
                     $('.date_block__smtp, .header_block__smtp').show();
-                    let dateFrom = formatDate($('#date_from__smtp').datepicker('getDate'));
-                    let dateEnd = formatDate($('#date_end__smtp').datepicker('getDate'));
-                    $("#date_from__smtp").datepicker('destroy');
-                    $("#date_end__smtp").datepicker('destroy');
-                    initDatePickers();
-                    $('.result_message__smtp').html('<p class="loading_message__smtp">loading...</p>');
-                    $.ajax(
-                        {
-                            url: '/wp-admin/admin-ajax.php',
-                            type: "POST",
-                            data: {
-                                action: 'sort_messages__smtp',
-                                dateFrom: dateFrom,
-                                dateEnd: dateEnd
-                            },
-                            success: function (data) {
-                                $('.result_message__smtp').html(data);
-                            }
-                        }
-                    );
-                    return false;
+                    getMessagesHistory();
                 }
             );
         }
@@ -90,10 +35,8 @@
             $('.block_api__smtp, .block_smtp__smtp').removeClass('show');
             if (sendVia == 'smtp') {
                 $('.block_smtp__smtp').addClass('show');
-                $('.item-tabs_recent__smtp').hide();
             } else {
                 $('.block_api__smtp').addClass('show');
-                $('.item-tabs_recent__smtp').show();
             }
         }
     );
@@ -182,6 +125,7 @@
             $(this).addClass('active__smtp');
             $('.block_setting__smtp').hide();
             $('.block_recent_deliveries__smtp').show();
+            getMessagesHistory();
         }
     );
 
@@ -285,6 +229,66 @@
         $('.error_mess__smtp').slideUp();
         $('.inpur_error__smtp').removeClass('inpur_error__smtp');
         $('.block_modal__smtp').fadeIn();
+    }
+
+    function getMessagesHistory(){
+        let dateFrom = formatDate($('#date_from__smtp').datepicker('getDate'));
+        let dateEnd = formatDate($('#date_end__smtp').datepicker('getDate'));
+        $("#date_from__smtp").datepicker('destroy');
+        $("#date_end__smtp").datepicker('destroy');
+        initDatePickers();
+        $('.result_message__smtp').html('<p class="loading_message__smtp">loading...</p>');
+        $.ajax(
+            {
+                url: '/wp-admin/admin-ajax.php',
+                type: "POST",
+                data: {
+                    action: 'sort_messages__smtp',
+                    dateFrom: dateFrom,
+                    dateEnd: dateEnd
+                },
+                success: function (data) {
+                    $('.result_message__smtp').html(data);
+                }
+            }
+        );
+        return false;
+    }
+
+    function initDatePickers()
+    {
+        let dateFormat = replaceBulk($('.date_block__smtp').data('dateformat').toLowerCase(),['m','d','y','j','l','f'],['mm','dd','yy','d','DD','MM']);
+        $("#date_from__smtp").datepicker(
+            {
+                dateFormat: dateFormat,
+                firstDay: 1,
+                maxDate: new Date($('#date_end__smtp').val()),
+            },
+        );
+        $("#date_end__smtp").datepicker(
+            {
+                dateFormat: dateFormat,
+                maxDate: 0,
+                firstDay: 1,
+                minDate: new Date($('#date_from__smtp').val()),
+            },
+        );
+    }
+
+    function replaceBulk( str, findArray, replaceArray )
+    {
+        var i, regex = [], map = {};
+        for( i=0; i<findArray.length; i++ ){
+            regex.push(findArray[i].replace(/([-[\]{}()*+?.\\^$|#,])/g,'\\$1'));
+            map[findArray[i]] = replaceArray[i];
+        }
+        regex = regex.join('|');
+        str = str.replace(
+            new RegExp(regex, 'g'), function (matched) {
+                return map[matched];
+            }
+        );
+        return str;
     }
 
 })(jQuery);

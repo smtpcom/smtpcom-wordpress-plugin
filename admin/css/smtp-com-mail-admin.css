@@ -214,3 +214,14 @@ p.loading_message__smtp {
     position: relative;
     left: -30px;
 }
+
+.message_settings__smtp.setup_settings__smtp{
+    font-size: 18px;
+    color: red;
+    width: 100%;
+    text-align: center;
+}
+
+div.setup_settings__smtp{
+    text-align: center;
+}
