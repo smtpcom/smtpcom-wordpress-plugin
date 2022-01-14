@@ -12,7 +12,7 @@
  * Description:       SMTP.com is a powerful and reliable SMTP delivery service that enables you to send and track high volume emails effortlessly.
  * Version:           1.0.0
  * Author:            SMTP.com
- * Author URI:        https://www.smtp.com/
+ * Author URI:        https://www.smtp.com/about-us/
  * Network:           True
  * License:           GPLv3 or later
  * License URI:       http://www.gnu.org/licenses/gpl-3.0.html
