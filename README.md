@@ -6,7 +6,7 @@ SMTP.com is a powerful and reliable SMTP delivery service that enables you to se
 
 Don't worry about maintaining your email server or taking care of its IP reputation, forget about dealing with ISPs like Gmail, Yahoo or Microsoft in attempting to understand why your email isn’t reaching its destination. SMTP.com manages all this on your behalf. Simply create a SMTP.com account to [get started](https://registration.smtp.com/?afid=wpplugin) and set up this plugin. Although this plugin is free you will need a paid subscription with SMTP.com to send emails from your WordPress site.
 
-You can send emails from your WordPress site using the SMTP.com API or the standard SMTP protocol. Our plugin will suggest the best way for you to send email even if your provider has restricted access to outbound internet ports. Either way, SMPT.com will still ensure your email gets delivered.
+You can send emails from your WordPress site using the SMTP.com API or the standard SMTP protocol. Our plugin will suggest the best way for you to send email even if your provider has restricted access to outbound internet ports. Either way, SMTP.com will still ensure your email gets delivered.
 
 Another useful feature provided with our WordPress plugin is the ability to track your email delivery from within the plugin itself. See the results of your recent sends to ensure successful delivery or identify the reason why your particular email hasn't been delivered.
 
