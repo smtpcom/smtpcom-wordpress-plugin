@@ -1,0 +1,19 @@
+{
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../sdk-php",
+            "options": {
+                "symlink": false
+            }
+        }
+    ],
+    "require": {
+        "smtpcom/smtpcom-php": "*"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.6.0"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

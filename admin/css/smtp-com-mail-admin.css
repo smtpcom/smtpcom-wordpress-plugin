@@ -1,0 +1,227 @@
+.bonus-info__smtp{
+    margin-top: 50px;
+}
+.message_settings__smtp {
+    padding: 15px;
+    position: relative;
+    top: -90px;
+    font-size: 15px;
+}
+.date_block__smtp {
+    padding-left: 15px;
+}
+.block_recent_deliveries_id.sub_item_recent_deliveries:nth-child(1), .block_recent_deliveries_id.sub_item_recent_deliveries:nth-child(2) {
+    width: 200px;
+}
+.block_recent_deliveries_id.sub_item_recent_deliveries:nth-child(3) {
+    width: 500px;
+}
+.block_recent_deliveries_id.sub_item_recent_deliveries {
+    width: 270px;
+    height: 50px;
+    overflow: auto;
+}
+.mess_not_found{
+    top: 25px !important;
+}
+.main_item_block_settings__smtp{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin: 0 -40px;
+}
+.item_block_settings__smtp{
+    padding: 0 40px;
+    width: 300px;
+    margin-top: 20px;
+    position: relative;
+}
+p.error_mess__smtp.ssl_port{
+    color: green;
+}
+.show-pass {
+    position: absolute;
+    top: 7px;
+    right: 50px;
+    cursor: pointer;
+}
+input#apikey {
+    padding-right: 40px;
+}
+form#saveSettings__smtp{
+    overflow: hidden;
+}
+.item_block_settings__smtp:first-child{
+    font-size: 16px;
+}
+.item_block_settings__smtp .signature__smtp{
+    margin: 0;
+}
+.item_block_settings__smtp input, .item_block_settings__smtp select{
+    width: 100%;
+    height: 35px;
+}
+.main_item_block_settings__smtp:last-child .item_block_settings__smtp:first-child button{
+    background-color: blue;
+}
+.main_item_block_settings__smtp:last-child .item_block_settings__smtp:last-child button{
+    background-color: green;
+}
+.main_item_block_settings__smtp:last-child button{
+    width: 100%;
+    height: 40px;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.block_api__smtp.show, .block_smtp__smtp.show{
+    display: block;
+}
+.block_api__smtp, .block_smtp__smtp{
+    display: none;
+}
+
+.modal__smtp{
+    border-radius: 15px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    height: 200px;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    z-index: 99999;
+    -webkit-box-shadow: 2px 2px 25px rgba(0, 0, 0, 0.4);
+    box-shadow: 2px 2px 25px rgba(0, 0, 0, 0.4);
+    background-color: #fff;
+}
+.inpur_error__smtp {
+    border: 2px solid red !important;
+}
+.close_modal__smtp{
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-size: 25px;
+    line-height: 20px;
+}
+.message_modal__smtp {
+    width: 100%;
+    text-align: center;
+    height: 100%;
+    margin: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    font-size: 25px;
+}
+p.error_mess__smtp {
+    margin: 0;
+    color: red;
+}
+p.message_modal__smtp {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+.background_modal__smtp {
+    position: absolute;
+    width: calc(100% + 20px);
+    height: 100%;
+    top: 0;
+    left: -20px;
+    background: #f2f2f2;
+    cursor: pointer;
+    opacity: 0.6;
+}
+.tabs_title__smtp {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    border-bottom: 1px solid #d2d2d2;
+}
+.item-tabs_title__smtp.active__smtp {
+    border: 1px solid #d2d2d2;
+    border-bottom: none;
+}
+.item-tabs_title__smtp {
+    font-size: 18px;
+    cursor: pointer;
+    padding: 15px 20px;
+}
+.item_block_recent_deliveries {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    border-bottom: 1px solid #d2d2d2;
+    padding: 15px;
+}
+.sub_item_recent_deliveries {
+    margin-right: 60px;
+}
+.sub_item_recent_deliveries:last-child {
+    margin-right: 0;
+}
+.exeption__smtp{
+    display: none;
+    color: red;
+}
+.message_modal__smtp .exeption__smtp{
+    display: block !important;
+}
+p.filter_title__smtp {
+    font-size: 20px;
+}
+.item_date_block__smtp {
+    display: inline-block;
+    margin-right: 60px;
+}
+.item_date_block__smtp label {
+    font-size: 15px;
+}
+.date_block__smtp {
+    margin: 20px 0 70px 0;
+}
+.header_block__smtp .block_recent_deliveries_id.sub_item_recent_deliveries {
+    height: 25px;
+    font-size: 15px;
+}
+p.filter_title__smtp {
+    margin-bottom: 10px;
+}
+p.loading_message__smtp {
+    text-align: center;
+    font-size: 25px;
+}
+.setup_settings__smtp{
+    top: 25px;
+}
+.calendar_icon__smtp{
+    position: relative;
+    left: -30px;
+}
+
+.message_settings__smtp.setup_settings__smtp{
+    font-size: 18px;
+    color: red;
+    width: 100%;
+    text-align: center;
+}
+
+div.setup_settings__smtp{
+    text-align: center;
+}
