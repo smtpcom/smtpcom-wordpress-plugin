@@ -1,6 +1,6 @@
 === SMTP.com ===
 Contributors: smtpcom
-Tags: smtp, mail, email, wp_mail, phpmailer, api, http, smtpcom, wpmail, wordpress smtp, mailer
+Tags: smtp, email, phpmailer, smtpcom, wordpress smtp
 Requires at least: 4.4.1
 Requires PHP: 7.2
 Tested up to: 6.7.1
