@@ -53,5 +53,8 @@ You don't need to pay for the WordPress plugin -- it's completely free. You will
 
 # Changelog
 
+## 1.0.1
+* Security updates
+
 ## 1.0.0  
 * Initial version of the plugin
