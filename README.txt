@@ -3,7 +3,7 @@ Contributors: smtpcom
 Tags: smtp, email, phpmailer, smtpcom, wordpress smtp
 Requires at least: 4.4.1
 Requires PHP: 7.2
-Tested up to: 6.7.1
+Tested up to: 6.9
 Stable tag: 1.0.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
