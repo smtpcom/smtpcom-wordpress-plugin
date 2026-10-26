@@ -172,7 +172,7 @@ class AssertionChain
         }
 
         if (!\method_exists($this->assertionClassName, $methodName)) {
-            throw new \RuntimeException("Assertion '" . $methodName . "' does not exist.");
+            throw new \RuntimeException("Assertion '".$methodName."' does not exist.");
         }
 
         $reflClass = new ReflectionClass($this->assertionClassName);
@@ -196,7 +196,7 @@ class AssertionChain
         }
 
         if ($this->all) {
-            $methodName = 'all' . $methodName;
+            $methodName = 'all'.$methodName;
         }
 
         \call_user_func_array([$this->assertionClassName, $methodName], $args);
@@ -238,7 +238,7 @@ class AssertionChain
         }
 
         if (Assertion::class !== $className && !\is_subclass_of($className, Assertion::class)) {
-            throw new LogicException($className . ' is not (a subclass of) ' . Assertion::class);
+            throw new LogicException($className.' is not (a subclass of) '.Assertion::class);
         }
 
         $this->assertionClassName = $className;

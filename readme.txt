@@ -4,7 +4,7 @@ Tags: smtp, email, phpmailer, smtpcom, wordpress smtp
 Requires at least: 4.4.1
 Requires PHP: 7.2
 Tested up to: 7.1
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -62,6 +62,10 @@ You don't need to pay for the WordPress plugin -- it's completely free. You will
 3. The Recent Deliveries page.
 
 == Changelog ==
+
+= 1.0.3 =
+* Security: bundled nyholm/psr7 updated to 1.8.2 (the 1.0.1 update was missing from the plugin package)
+* Updated bundled PSR HTTP dependencies
 
 = 1.0.2 =
 * Renamed "SMTP Login" to "Channel login" on the settings page

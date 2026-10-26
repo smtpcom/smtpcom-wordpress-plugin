@@ -2,7 +2,7 @@
     "repositories": [
         {
             "type": "path",
-            "url": "../sdk-php",
+            "url": "sdk/smtpcom-php",
             "options": {
                 "symlink": false
             }

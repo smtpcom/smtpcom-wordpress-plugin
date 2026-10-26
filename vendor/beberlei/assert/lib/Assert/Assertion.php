@@ -2137,7 +2137,7 @@ class Assertion
             return true;
         }
 
-        throw new BadMethodCallException('No assertion Assertion#' . $method . ' exists.');
+        throw new BadMethodCallException('No assertion Assertion#'.$method.' exists.');
     }
 
     /**
@@ -2399,7 +2399,7 @@ class Assertion
         static::string($value, $message, $propertyPath);
         static::string($format, $message, $propertyPath);
 
-        $dateTime = DateTime::createFromFormat('!' . $format, $value);
+        $dateTime = DateTime::createFromFormat('!'.$format, $value);
 
         if (false === $dateTime || $value !== $dateTime->format($format)) {
             $message = \sprintf(
@@ -2738,7 +2738,7 @@ class Assertion
             $val = (string)$value;
 
             if (\mb_strlen($val) > 100) {
-                $val = \mb_substr($val, 0, 97) . '...';
+                $val = \mb_substr($val, 0, 97).'...';
             }
 
             $result = $val;

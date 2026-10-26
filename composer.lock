@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "76aace3ab27bd5afe4e7e5a6124c9f77",
+    "content-hash": "244da49ebb317e1f2fa7dd8caaede411",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -843,8 +843,8 @@
             "version": "dev-master",
             "dist": {
                 "type": "path",
-                "url": "../sdk-php",
-                "reference": "a696c06a2c2346ebf8b1a46be9437de2a7928a95"
+                "url": "sdk/smtpcom-php",
+                "reference": "225f7ed83dac33f2e2febbea529bc35f8eb9e0fe"
             },
             "require": {
                 "beberlei/assert": "^3.3",
@@ -1245,10 +1245,10 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
-    "platform": [],
-    "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "platform": {},
+    "platform-dev": {},
+    "plugin-api-version": "2.9.0"
 }
