@@ -10,7 +10,7 @@
  * Plugin Name:       SMTP.com
  * Plugin URI:        https://www.smtp.com/
  * Description:       SMTP.com is a powerful and reliable SMTP delivery service that enables you to send and track high volume emails effortlessly.
- * Version:           1.0.0
+ * Version:           1.0.2
  * Author:            SMTP.com
  * Author URI:        https://www.smtp.com/about-us/
  * Network:           True
@@ -23,13 +23,13 @@
 if (! defined('WPINC')) {
     die;
 }
-$GLOBALS['wpmdb_meta']['smtp-com-mail']['version'] = '1.0.0';
+$GLOBALS['wpmdb_meta']['smtp-com-mail']['version'] = '1.0.2';
 /**
  * Currently plugin version.
  * Main constants for plugin
  */
 
-define('smtp_com_mail_VERSION', '1.0.0');
+define('smtp_com_mail_VERSION', '1.0.2');
 const HOST_SMTP = "api.smtp.com";
 const SEND_HOST_SMTP = "send.smtp.com";
 const API_PORT = 443;
