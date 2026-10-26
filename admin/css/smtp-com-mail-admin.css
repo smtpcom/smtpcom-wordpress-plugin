@@ -36,6 +36,15 @@
     margin-top: 20px;
     position: relative;
 }
+.item_block_settings__smtp--label{
+    display: flex;
+    align-items: center;
+}
+.item_block_settings__smtp--label span{
+    color: red;
+    font-size: 14px;
+    font-weight: 600;
+}
 p.error_mess__smtp.ssl_port{
     color: green;
 }
@@ -52,7 +61,9 @@ form#saveSettings__smtp{
     overflow: hidden;
 }
 .item_block_settings__smtp:first-child{
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: 600;
+    width: 200px;
 }
 .item_block_settings__smtp .signature__smtp{
     margin: 0;
@@ -62,7 +73,7 @@ form#saveSettings__smtp{
     height: 35px;
 }
 .main_item_block_settings__smtp:last-child .item_block_settings__smtp:first-child button{
-    background-color: blue;
+    background-color: #1e379a;
 }
 .main_item_block_settings__smtp:last-child .item_block_settings__smtp:last-child button{
     background-color: green;
@@ -72,8 +83,9 @@ form#saveSettings__smtp{
     height: 40px;
     color: #fff;
     border: none;
-    font-size: 16px;
-    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 2px;
     cursor: pointer;
 }
 .block_api__smtp.show, .block_smtp__smtp.show{
