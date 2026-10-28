@@ -7,7 +7,7 @@
     ],
     "require": {
         "php": "^8.3",
-        "smtpcom/smtpcom-php": "^1.1"
+        "smtpcom/smtpcom-php": "^1.1.1"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.6.0"

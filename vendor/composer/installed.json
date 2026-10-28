@@ -839,17 +839,17 @@
         },
         {
             "name": "smtpcom/smtpcom-php",
-            "version": "v1.1.0",
-            "version_normalized": "1.1.0.0",
+            "version": "v1.1.1",
+            "version_normalized": "1.1.1.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:smtpcom/smtpcom-php.git",
-                "reference": "78a18bf6cafbafe7c31a88a3f06a368e39398be8"
+                "reference": "9c7c3a017405e9014ae0787068cd22564467999b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smtpcom/smtpcom-php/zipball/78a18bf6cafbafe7c31a88a3f06a368e39398be8",
-                "reference": "78a18bf6cafbafe7c31a88a3f06a368e39398be8",
+                "url": "https://api.github.com/repos/smtpcom/smtpcom-php/zipball/9c7c3a017405e9014ae0787068cd22564467999b",
+                "reference": "9c7c3a017405e9014ae0787068cd22564467999b",
                 "shasum": ""
             },
             "require": {
@@ -872,7 +872,7 @@
                 "psalm/phar": "^6.0",
                 "squizlabs/php_codesniffer": "^4.0"
             },
-            "time": "2026-10-28T09:10:36+00:00",
+            "time": "2026-10-28T09:47:38+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -894,7 +894,7 @@
             ],
             "description": "Smtp.com SDK provides methods for all API functions.",
             "support": {
-                "source": "https://github.com/smtpcom/smtpcom-php/tree/v1.1.0",
+                "source": "https://github.com/smtpcom/smtpcom-php/tree/v1.1.1",
                 "issues": "https://github.com/smtpcom/smtpcom-php/issues"
             },
             "install-path": "../smtpcom/smtpcom-php"

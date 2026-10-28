@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "56e77cea60cfa9ebee020dc15a245d8d",
+    "content-hash": "c5a45535f3f853f9abf875cd6544d4c0",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -806,16 +806,16 @@
         },
         {
             "name": "smtpcom/smtpcom-php",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:smtpcom/smtpcom-php.git",
-                "reference": "78a18bf6cafbafe7c31a88a3f06a368e39398be8"
+                "reference": "9c7c3a017405e9014ae0787068cd22564467999b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smtpcom/smtpcom-php/zipball/78a18bf6cafbafe7c31a88a3f06a368e39398be8",
-                "reference": "78a18bf6cafbafe7c31a88a3f06a368e39398be8",
+                "url": "https://api.github.com/repos/smtpcom/smtpcom-php/zipball/9c7c3a017405e9014ae0787068cd22564467999b",
+                "reference": "9c7c3a017405e9014ae0787068cd22564467999b",
                 "shasum": ""
             },
             "require": {
@@ -858,10 +858,10 @@
             ],
             "description": "Smtp.com SDK provides methods for all API functions.",
             "support": {
-                "source": "https://github.com/smtpcom/smtpcom-php/tree/v1.1.0",
+                "source": "https://github.com/smtpcom/smtpcom-php/tree/v1.1.1",
                 "issues": "https://github.com/smtpcom/smtpcom-php/issues"
             },
-            "time": "2026-10-28T09:10:36+00:00"
+            "time": "2026-10-28T09:47:38+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",

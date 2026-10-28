@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit56e77cea60cfa9ebee020dc15a245d8d
+class ComposerStaticInitc5a45535f3f853f9abf875cd6544d4c0
 {
     public static $files = array (
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
@@ -390,38 +390,6 @@ class ComposerStaticInit56e77cea60cfa9ebee020dc15a245d8d
         'SmtpSdk\\Response\\Statistics\\IndexResponse' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/src/Response/Statistics/IndexResponse.php',
         'SmtpSdk\\SmtpSdk' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/src/SmtpSdk.php',
         'SmtpSdk\\SmtpSdkException' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/src/SmtpSdkException.php',
-        'SmtpSdk\\Tests\\Api\\Account\\AccountTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Api/Account/AccountTest.php',
-        'SmtpSdk\\Tests\\Api\\Alerts\\AlertsTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Api/Alerts/AlertsTest.php',
-        'SmtpSdk\\Tests\\Api\\ApiKeys\\ApiKeysTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Api/ApiKeys/ApiKeysTest.php',
-        'SmtpSdk\\Tests\\Api\\Callbacks\\CallbacksLogTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Api/Callbacks/CallbacksLogTest.php',
-        'SmtpSdk\\Tests\\Api\\Callbacks\\CallbacksTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Api/Callbacks/CallbacksTest.php',
-        'SmtpSdk\\Tests\\Api\\Channels\\ChannelsTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Api/Channels/ChannelsTest.php',
-        'SmtpSdk\\Tests\\Api\\DkimKeys\\DkimKeysTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Api/DkimKeys/DkimKeysTest.php',
-        'SmtpSdk\\Tests\\Api\\Domains\\DomainsTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Api/Domains/DomainsTest.php',
-        'SmtpSdk\\Tests\\Api\\Messages\\MessagesTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Api/Messages/MessagesTest.php',
-        'SmtpSdk\\Tests\\Api\\Reports\\ReportsTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Api/Reports/ReportsTest.php',
-        'SmtpSdk\\Tests\\Api\\Statistics\\StatisticsTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Api/Statistics/StatisticsTest.php',
-        'SmtpSdk\\Tests\\Api\\TestCase' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Api/TestCase.php',
-        'SmtpSdk\\Tests\\HttpClient\\HttpRequestTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/HttpClient/HttpRequestTest.php',
-        'SmtpSdk\\Tests\\Model\\AccountTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Model/AccountTest.php',
-        'SmtpSdk\\Tests\\Model\\AlertTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Model/AlertTest.php',
-        'SmtpSdk\\Tests\\Model\\ApiKeysTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Model/ApiKeysTest.php',
-        'SmtpSdk\\Tests\\Model\\CallbackLogTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Model/CallbackLogTest.php',
-        'SmtpSdk\\Tests\\Model\\CallbackTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Model/CallbackTest.php',
-        'SmtpSdk\\Tests\\Model\\ChannelTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Model/ChannelTest.php',
-        'SmtpSdk\\Tests\\Model\\DkimKeyTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Model/DkimKeyTest.php',
-        'SmtpSdk\\Tests\\Model\\DomainTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Model/DomainTest.php',
-        'SmtpSdk\\Tests\\Model\\MessageTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Model/MessageTest.php',
-        'SmtpSdk\\Tests\\Model\\ReportsTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Model/ReportsTest.php',
-        'SmtpSdk\\Tests\\Model\\StatisticsTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Model/StatisticsTest.php',
-        'SmtpSdk\\Tests\\Response\\AlertIndexTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Response/AlertIndexTest.php',
-        'SmtpSdk\\Tests\\Response\\ApiKeysIndexTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Response/ApiKeysIndexTest.php',
-        'SmtpSdk\\Tests\\Response\\CallbackIndexTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Response/CallbackIndexTest.php',
-        'SmtpSdk\\Tests\\Response\\CallbackLogIndexTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Response/CallbackLogIndexTest.php',
-        'SmtpSdk\\Tests\\Response\\ChannelIndexTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Response/ChannelIndexTest.php',
-        'SmtpSdk\\Tests\\Response\\DomainIndexTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Response/DomainIndexTest.php',
-        'SmtpSdk\\Tests\\Response\\MessageIndexTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Response/MessageIndexTest.php',
-        'SmtpSdk\\Tests\\Response\\ReportsIndexTest' => __DIR__ . '/..' . '/smtpcom/smtpcom-php/tests/Response/ReportsIndexTest.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'Symfony\\Component\\HttpClient\\AmpHttpClient' => __DIR__ . '/..' . '/symfony/http-client/AmpHttpClient.php',
         'Symfony\\Component\\HttpClient\\AsyncDecoratorTrait' => __DIR__ . '/..' . '/symfony/http-client/AsyncDecoratorTrait.php',
@@ -544,9 +512,9 @@ class ComposerStaticInit56e77cea60cfa9ebee020dc15a245d8d
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit56e77cea60cfa9ebee020dc15a245d8d::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit56e77cea60cfa9ebee020dc15a245d8d::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit56e77cea60cfa9ebee020dc15a245d8d::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitc5a45535f3f853f9abf875cd6544d4c0::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitc5a45535f3f853f9abf875cd6544d4c0::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitc5a45535f3f853f9abf875cd6544d4c0::$classMap;
 
         }, null, ClassLoader::class);
     }
