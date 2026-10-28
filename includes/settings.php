@@ -61,13 +61,8 @@ if ( !function_exists( 'smtpcom_mail_setting_display' ) ) {
         $dateEnd = date($dateFormatWP);
         $headerMessDisplay = 'none';
 
-        if (version_compare(phpversion(), '7.2', '<')) {
-            $startDate = date(DateTime::RFC2822, strtotime(date('Y-m-d 00:00:00', strtotime('-6 days'))));
-            $endDate = date(DateTime::RFC2822, strtotime(date('Y-m-d') . ' 23:59:59'));
-        } else {
-            $startDate = date(DateTimeInterface::RFC2822, strtotime(date('Y-m-d 00:00:00', strtotime("-6 days"))));
-            $endDate = date(DateTimeInterface::RFC2822, strtotime(date('Y-m-d 23:59:59')));
-        }
+        $startDate = date(DateTimeInterface::RFC2822, strtotime(date('Y-m-d 00:00:00', strtotime("-6 days"))));
+        $endDate = date(DateTimeInterface::RFC2822, strtotime(date('Y-m-d 23:59:59')));
 
         /**
          * Get recent deliveries from SMTP.com API

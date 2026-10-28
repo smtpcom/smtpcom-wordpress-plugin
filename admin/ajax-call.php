@@ -292,13 +292,8 @@ if ( !function_exists( 'smtpcom_mail_show_messages' ) ) {
     {
         $dateFormatWP = get_option('date_format');
         $timeFormatWP = get_option('time_format');
-        if (version_compare(phpversion(), '7.2', '<')) {
-            $startDate = date(DateTime::RFC2822, strtotime($dateFrom . ' 00:00:00'));
-            $endDate = date(DateTime::RFC2822, strtotime($dateEnd . ' 23:59:59'));
-        } else {
-            $startDate = date(DateTimeInterface::RFC2822, strtotime($dateFrom . ' 00:00:00'));
-            $endDate = date(DateTimeInterface::RFC2822, strtotime($dateEnd . ' 23:59:59'));
-        }
+        $startDate = date(DateTimeInterface::RFC2822, strtotime($dateFrom . ' 00:00:00'));
+        $endDate = date(DateTimeInterface::RFC2822, strtotime($dateEnd . ' 23:59:59'));
 
         $parameters = [
             'start' => $startDate,
