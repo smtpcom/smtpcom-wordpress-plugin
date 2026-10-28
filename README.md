@@ -53,6 +53,16 @@ You don't need to pay for the WordPress plugin -- it's completely free. You will
 
 # Changelog
 
+## 1.1.0
+* Requires PHP 8.3 or later
+* Security: updated bundled third-party libraries
+* Updated the SMTP.com PHP SDK
+
+## 1.0.2
+* Renamed "SMTP Login" to "Channel login" on the settings page
+* Admin styles updates
+* Tested up to WordPress 7.1
+
 ## 1.0.1
 * Security updates
 
