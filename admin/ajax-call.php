@@ -4,6 +4,21 @@ use PHPMailer\PHPMailer\SMTP;
 use SmtpSdk\SmtpSdk;
 
 /**
+ * Allow the request only for administrators with a valid settings nonce
+ *
+ * @since 1.1.0
+ */
+if ( !function_exists( 'smtpcom_mail_verify_ajax_request' ) ) {
+    function smtpcom_mail_verify_ajax_request()
+    {
+        if (!current_user_can('manage_options') || !check_ajax_referer('wp_ajax_settings_smtp', false, false)) {
+            echo esc_attr('Access denied');
+            wp_die();
+        }
+    }
+}
+
+/**
  * Ajax call for saving settings
  *
  * @since 1.0.0
@@ -13,10 +28,7 @@ if ( !function_exists( 'smtpcom_mail_saveSettings_function' ) ) {
     add_action("wp_ajax_saveSettings_smtp", "smtpcom_mail_saveSettings_function");
     function smtpcom_mail_saveSettings_function()
     {
-        if(!is_admin()){
-            echo esc_attr('You must have administrator rights!');
-            wp_die();
-        }
+        smtpcom_mail_verify_ajax_request();
 
         $sanitizedData = smtpcom_mail_sanitizeData($_POST);
         if ($sanitizedData['action'] == 'saveSettings_smtp') {
@@ -150,10 +162,7 @@ if ( !function_exists( 'smtpcom_mail_send_test_function' ) ) {
     add_action("wp_ajax_send_test_smtp_com", "smtpcom_mail_send_test_function");
     function smtpcom_mail_send_test_function()
     {
-        if(!is_admin()){
-            echo esc_attr('You must have administrator rights!');
-            wp_die();
-        }
+        smtpcom_mail_verify_ajax_request();
 
         $sanitizedData = smtpcom_mail_sanitizeData($_POST);
 
@@ -273,6 +282,8 @@ if ( !function_exists( 'smtpcom_mail_sort_messages_function' ) ) {
     add_action("wp_ajax_sort_messages__smtp", "smtpcom_mail_sort_messages_function");
     function smtpcom_mail_sort_messages_function()
     {
+        smtpcom_mail_verify_ajax_request();
+
         if ($_POST['action'] == 'sort_messages__smtp') {
             $dateFrom = sanitize_option('date_format', $_POST['dateFrom']);
             $dateEnd = sanitize_option('date_format', $_POST['dateEnd']);
@@ -292,13 +303,8 @@ if ( !function_exists( 'smtpcom_mail_show_messages' ) ) {
     {
         $dateFormatWP = get_option('date_format');
         $timeFormatWP = get_option('time_format');
-        if (version_compare(phpversion(), '7.2', '<')) {
-            $startDate = date(DateTime::RFC2822, strtotime($dateFrom . ' 00:00:00'));
-            $endDate = date(DateTime::RFC2822, strtotime($dateEnd . ' 23:59:59'));
-        } else {
-            $startDate = date(DateTimeInterface::RFC2822, strtotime($dateFrom . ' 00:00:00'));
-            $endDate = date(DateTimeInterface::RFC2822, strtotime($dateEnd . ' 23:59:59'));
-        }
+        $startDate = date(DateTimeInterface::RFC2822, strtotime($dateFrom . ' 00:00:00'));
+        $endDate = date(DateTimeInterface::RFC2822, strtotime($dateEnd . ' 23:59:59'));
 
         $parameters = [
             'start' => $startDate,

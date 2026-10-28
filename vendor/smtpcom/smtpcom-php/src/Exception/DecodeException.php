@@ -8,5 +8,4 @@ use SmtpSdk\SmtpSdkException;
 
 class DecodeException extends SmtpSdkException
 {
-
 }

@@ -26,6 +26,7 @@ class CreateResponse extends Base
      * @param array $data
      * @return CreateResponse
      */
+    #[\Override]
     public static function create($data)
     {
         $response = new self();

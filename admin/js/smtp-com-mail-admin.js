@@ -245,7 +245,8 @@
                 data: {
                     action: 'sort_messages__smtp',
                     dateFrom: dateFrom,
-                    dateEnd: dateEnd
+                    dateEnd: dateEnd,
+                    _wpnonce: $('#_wpnonce').val()
                 },
                 success: function (data) {
                     $('.result_message__smtp').html(data);

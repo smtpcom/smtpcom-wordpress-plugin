@@ -6,19 +6,20 @@ namespace SmtpSdk\HttpClient;
 
 use Http\Client\Common\HttpMethodsClient;
 use Http\Client\Common\HttpMethodsClientInterface;
-use Http\Client\Exception;
-use Http\Discovery\HttpClientDiscovery;
-use Http\Discovery\MessageFactoryDiscovery;
+use Http\Discovery\Psr17FactoryDiscovery;
+use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use SmtpSdk\Exception\DecodeException;
 use SmtpSdk\Exception\HttpClientException;
 use SmtpSdk\Exception\HttpException;
 use SmtpSdk\SmtpSdkException;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpClient\Psr18Client;
 
 class HttpRequest
 {
     /**
-     * @var HttpMethodsClient
+     * @var HttpMethodsClientInterface
      */
     private $client;
 
@@ -37,17 +38,20 @@ class HttpRequest
      * @param string $apiKey
      * @param string $apiUrl
      * @param string $apiVersion
-     * @param HttpMethodsClient|null $client
+     * @param HttpMethodsClientInterface|null $client
      */
     public function __construct(
         string $apiKey,
         string $apiUrl,
         string $apiVersion,
-        HttpMethodsClientInterface $client = null
+        ?HttpMethodsClientInterface $client = null
     ) {
+        // Redirects are not followed: a 3xx must surface as an error instead of
+        // being replayed (a redirected POST would turn into a body-less GET).
         $this->client = $client ?: new HttpMethodsClient(
-            HttpClientDiscovery::find(),
-            MessageFactoryDiscovery::find()
+            new Psr18Client(HttpClient::create(['max_redirects' => 0])),
+            Psr17FactoryDiscovery::findRequestFactory(),
+            Psr17FactoryDiscovery::findStreamFactory()
         );
         $this->baseUri = "$apiUrl/$apiVersion/";
         $this->headers = [
@@ -63,7 +67,7 @@ class HttpRequest
      * @return array
      * @throws SmtpSdkException
      */
-    public function request(string $method, string $uri, array $data = null): array
+    public function request(string $method, string $uri, ?array $data = null): array
     {
         try {
             $response = $this->client->send(
@@ -72,7 +76,7 @@ class HttpRequest
                 $this->headers,
                 !empty($data) ? json_encode($data) : null
             );
-        } catch (Exception $exception) {
+        } catch (ClientExceptionInterface $exception) {
             throw new HttpClientException($exception->getMessage());
         }
 
