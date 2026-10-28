@@ -65,6 +65,7 @@ You don't need to pay for the WordPress plugin -- it's completely free. You will
 
 = 1.1.0 =
 * Requires PHP 8.3 or later
+* Security: improved permission checks in the admin
 * Security: updated bundled third-party libraries
 * Updated the SMTP.com PHP SDK
 
