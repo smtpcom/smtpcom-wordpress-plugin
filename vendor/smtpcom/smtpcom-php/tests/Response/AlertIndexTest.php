@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Response;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SmtpSdk\Response\Alerts\IndexResponse;
 use SmtpSdk\Model\Alert;
@@ -12,10 +13,10 @@ use SmtpSdk\Model\Alert;
 class AlertIndexTest extends TestCase
 {
     /**
-     * @dataProvider alertProvider
      *
      * @param array $data
      */
+    #[DataProvider('alertProvider')]
     public function testIndex(array $data)
     {
         $responseObject = IndexResponse::create($data);
@@ -29,7 +30,7 @@ class AlertIndexTest extends TestCase
     /**
      * @return array
      */
-    public function alertProvider()
+    public static function alertProvider()
     {
         $json = <<<'JSON'
         {

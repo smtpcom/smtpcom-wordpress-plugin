@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SmtpSdk\Model\PeriodicReport;
 use SmtpSdk\Model\OnDemandReport;
@@ -13,9 +14,9 @@ use SmtpSdk\Model\CommonReport;
 class ReportsTest extends TestCase
 {
     /**
-    * @dataProvider PeriodicReportProvider
     * @param array $data
     */
+    #[DataProvider('periodicReportProvider')]
     public function testPeriodicReport(array $data)
     {
         $PeriodicReportObject = new PeriodicReport($data);
@@ -32,7 +33,7 @@ class ReportsTest extends TestCase
     /**
     * @return array
     */
-    public function periodicReportProvider()
+    public static function periodicReportProvider()
     {
         $json =
         <<<'JSON'
@@ -51,9 +52,9 @@ JSON;
     }
 
     /**
-    * @dataProvider OnDemandReportProvider
     * @param array $data
     */
+    #[DataProvider('onDemandReportProvider')]
     public function testOnDemandReport(array $data)
     {
 
@@ -73,7 +74,7 @@ JSON;
     /**
     * @return array
     */
-    public function onDemandReportProvider()
+    public static function onDemandReportProvider()
     {
         $json =
         <<<'JSON'
@@ -94,9 +95,9 @@ JSON;
     }
 
     /**
-    * @dataProvider CommonReportProvider
     * @param array $data
     */
+    #[DataProvider('commonReportProvider')]
     public function testCommonReport(array $data)
     {
 
@@ -119,7 +120,7 @@ JSON;
     /**
     * @return array
     */
-    public function commonReportProvider()
+    public static function commonReportProvider()
     {
         $json =
         <<<'JSON'

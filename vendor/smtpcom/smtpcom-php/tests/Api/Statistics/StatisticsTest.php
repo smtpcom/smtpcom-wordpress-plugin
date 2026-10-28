@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Api\Statistics;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use GuzzleHttp\Psr7\Response;
 use SmtpSdk\Api\Statistics;
 use SmtpSdk\Model\Statistics as StatisticsModel;
@@ -15,9 +16,9 @@ use SmtpSdk\Tests\Api\TestCase;
 class StatisticsTest extends TestCase
 {
     /**
-     * @dataProvider indexProvider
      * @param string $data
      */
+    #[DataProvider('indexProvider')]
     public function testIndex(string $data)
     {
         $this->setHttpResponse(new Response(
@@ -37,7 +38,7 @@ class StatisticsTest extends TestCase
     /**
      * @return string
      */
-    public function indexProvider()
+    public static function indexProvider()
     {
 
         $json =

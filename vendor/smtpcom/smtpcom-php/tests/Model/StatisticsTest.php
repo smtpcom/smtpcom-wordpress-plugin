@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SmtpSdk\Model\Statistics;
 
@@ -12,9 +13,9 @@ use SmtpSdk\Model\Statistics;
 class StatisticsTest extends TestCase
 {
     /**
-    * @dataProvider statisticsProvider
     * @param array $data
     */
+    #[DataProvider('statisticsProvider')]
     public function testStatistics(array $data)
     {
         $statisticsObject = new Statistics($data);
@@ -34,7 +35,7 @@ class StatisticsTest extends TestCase
     /**
      * @return array
      */
-    public function statisticsProvider()
+    public static function statisticsProvider()
     {
 
         $json =

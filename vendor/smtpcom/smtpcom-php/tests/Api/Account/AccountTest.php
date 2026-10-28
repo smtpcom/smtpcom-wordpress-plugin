@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Api\Account;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use GuzzleHttp\Psr7\Response;
 use SmtpSdk\Api\Account;
 use SmtpSdk\Model\Account as AccountModel;
@@ -14,9 +15,9 @@ use SmtpSdk\Tests\Api\TestCase;
 class AccountTest extends TestCase
 {
     /**
-     * @dataProvider showProvider
      * @param string $data
      */
+    #[DataProvider('showProvider')]
     public function testShow(string $data)
     {
         $this->setHttpResponse(new Response(
@@ -47,7 +48,7 @@ class AccountTest extends TestCase
     /**
      * @return string
      */
-    public function showProvider()
+    public static function showProvider()
     {
 
         $json =
@@ -78,9 +79,9 @@ JSON;
 
 
     /**
-     * @dataProvider updateProvider
      * @param string $data
      */
+    #[DataProvider('updateProvider')]
     public function testUpdate(string $data)
     {
         $this->setHttpResponse(new Response(
@@ -99,7 +100,7 @@ JSON;
     /**
      * @return string
      */
-    public function updateProvider()
+    public static function updateProvider()
     {
 
         $json =

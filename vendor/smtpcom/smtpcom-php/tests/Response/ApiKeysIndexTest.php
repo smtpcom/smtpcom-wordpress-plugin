@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Response;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SmtpSdk\Response\ApiKeys\IndexResponse;
 use SmtpSdk\Model\ApiKey;
@@ -12,10 +13,10 @@ use SmtpSdk\Model\ApiKey;
 class ApiKeysIndexTest extends TestCase
 {
     /**
-     * @dataProvider keysProvider
      * @param int $count
      * @param array $data
      */
+    #[DataProvider('keysProvider')]
     public function testIndex(int $count, array $data)
     {
         $apikeysObject = IndexResponse::create($data);
@@ -38,7 +39,7 @@ class ApiKeysIndexTest extends TestCase
     /**
      * @return array
      */
-    public function keysProvider()
+    public static function keysProvider()
     {
         $json =
         <<<'JSON'

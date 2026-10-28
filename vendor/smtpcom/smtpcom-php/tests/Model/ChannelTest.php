@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SmtpSdk\Model\Channel;
 
@@ -12,9 +13,9 @@ use SmtpSdk\Model\Channel;
 class ChannelTest extends TestCase
 {
     /**
-     * @dataProvider channelProvider
      * @param array $data
      */
+    #[DataProvider('channelProvider')]
     public function testChannel(array $data)
     {
 
@@ -34,7 +35,7 @@ class ChannelTest extends TestCase
     /**
      * @return array
      */
-    public function channelProvider()
+    public static function channelProvider()
     {
 
         $json =

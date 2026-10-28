@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Response;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SmtpSdk\Response\Reports\IndexResponse;
 use SmtpSdk\Model\PeriodicReport;
@@ -13,9 +14,9 @@ use SmtpSdk\Model\OnDemandReport;
 class ReportsIndexTest extends TestCase
 {
     /**
-     * @dataProvider chanelProvider
      * @param array $data
      */
+    #[DataProvider('chanelProvider')]
     public function testIndex(array $data)
     {
         //Response
@@ -60,7 +61,7 @@ class ReportsIndexTest extends TestCase
     /**
      * @return array
      */
-    public function chanelProvider()
+    public static function chanelProvider()
     {
         $json =
             <<<'JSON'

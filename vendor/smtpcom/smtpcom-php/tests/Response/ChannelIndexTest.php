@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Response;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SmtpSdk\Response\Channels\IndexResponse;
 use SmtpSdk\Model\Channel;
@@ -12,10 +13,10 @@ use SmtpSdk\Model\Channel;
 class ChannelIndexTest extends TestCase
 {
     /**
-     * @dataProvider chanelProvider
      * @param int $count
      * @param array $data
      */
+    #[DataProvider('chanelProvider')]
     public function testIndex(array $data)
     {
         $channelObject = IndexResponse::create($data);
@@ -42,7 +43,7 @@ class ChannelIndexTest extends TestCase
     /**
      * @return array
      */
-    public function chanelProvider()
+    public static function chanelProvider()
     {
         $json =
             <<<'JSON'

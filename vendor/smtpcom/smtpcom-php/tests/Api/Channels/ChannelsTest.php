@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Api\Channels;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use GuzzleHttp\Psr7\Response;
 use SmtpSdk\Api\Channels;
 use SmtpSdk\Model\Channel;
@@ -14,9 +15,9 @@ use SmtpSdk\Tests\Api\TestCase;
 class ChannelsTest extends TestCase
 {
     /**
-     * @dataProvider indexProvider
      * @param string $data
      */
+    #[DataProvider('indexProvider')]
     public function testIndex(string $data)
     {
         $this->setHttpResponse(new Response(
@@ -34,9 +35,9 @@ class ChannelsTest extends TestCase
     }
 
     /**
-     * @dataProvider showProvider
      * @param string $data
      */
+    #[DataProvider('showProvider')]
     public function testShow(string $data)
     {
         $this->setHttpResponse(new Response(
@@ -62,9 +63,9 @@ class ChannelsTest extends TestCase
     }
 
     /**
-     * @dataProvider updateProvider
      * @param string $data
      */
+    #[DataProvider('updateProvider')]
     public function testUpdate(string $data)
     {
         $this->setHttpResponse(new Response(
@@ -91,9 +92,9 @@ class ChannelsTest extends TestCase
     }
 
     /**
-     * @dataProvider createProvider
      * @param string $data
      */
+    #[DataProvider('createProvider')]
     public function testCreate(string $data)
     {
         $this->setHttpResponse(new Response(
@@ -119,9 +120,9 @@ class ChannelsTest extends TestCase
     }
 
     /**
-     * @dataProvider deleteProvider
      * @param string $data
      */
+    #[DataProvider('deleteProvider')]
     public function testDelete(string $data)
     {
         $this->setHttpResponse(new Response(
@@ -149,7 +150,7 @@ class ChannelsTest extends TestCase
     /**
      * @return string
      */
-    public function indexProvider()
+    public static function indexProvider()
     {
 
         $json =
@@ -185,7 +186,7 @@ JSON;
     /**
      * @return string
      */
-    public function showProvider()
+    public static function showProvider()
     {
 
         $json =
@@ -209,7 +210,7 @@ JSON;
     /**
      * @return string
      */
-    public function updateProvider()
+    public static function updateProvider()
     {
 
         $json =
@@ -233,7 +234,7 @@ JSON;
     /**
      * @return string
      */
-    public function createProvider()
+    public static function createProvider()
     {
 
         $json =
@@ -260,7 +261,7 @@ JSON;
     /**
      * @return string
      */
-    public function deleteProvider()
+    public static function deleteProvider()
     {
 
         $json =

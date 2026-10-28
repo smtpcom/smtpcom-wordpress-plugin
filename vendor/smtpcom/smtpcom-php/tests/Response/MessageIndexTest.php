@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Response;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SmtpSdk\Response\Message\IndexResponse;
 use SmtpSdk\Model\Message;
@@ -12,10 +13,10 @@ use SmtpSdk\Model\Message;
 class MessageIndexTest extends TestCase
 {
     /**
-     * @dataProvider messageProvider
      *
      * @param array $data
      */
+    #[DataProvider('messageProvider')]
     public function testIndex(array $data)
     {
         $responseObject = IndexResponse::create($data);
@@ -29,7 +30,7 @@ class MessageIndexTest extends TestCase
     /**
      * @return array
      */
-    public function messageProvider()
+    public static function messageProvider()
     {
         $json = <<<'JSON'
         {

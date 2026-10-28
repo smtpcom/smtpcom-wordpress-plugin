@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SmtpSdk\Model\ApiKey;
 
@@ -12,9 +13,9 @@ use SmtpSdk\Model\ApiKey;
 class ApiKeysTest extends TestCase
 {
     /**
-    * @dataProvider keysProvider
     * @param array $data
     */
+    #[DataProvider('keysProvider')]
     public function testApiKey(array $data)
     {
         $apikeysObject = new ApiKey($data);
@@ -31,7 +32,7 @@ class ApiKeysTest extends TestCase
     /**
      * @return array
      */
-    public function keysProvider()
+    public static function keysProvider()
     {
         $json =
             <<<'JSON'

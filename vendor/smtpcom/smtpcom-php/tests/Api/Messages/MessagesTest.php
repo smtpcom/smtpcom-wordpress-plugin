@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Api\Messages;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use GuzzleHttp\Psr7\Response;
 use SmtpSdk\Api\Messages;
 use SmtpSdk\Model\Message;
@@ -16,9 +17,9 @@ use SmtpSdk\Tests\Api\TestCase;
 class MessagesTest extends TestCase
 {
     /**
-     * @dataProvider indexProvider
      * @param string $data
      */
+    #[DataProvider('indexProvider')]
     public function testIndex(string $data)
     {
         $this->setHttpResponse(new Response(
@@ -45,7 +46,7 @@ class MessagesTest extends TestCase
     /**
      * @return string
      */
-    public function indexProvider()
+    public static function indexProvider()
     {
 
         $json = <<<'JSON'
@@ -148,9 +149,9 @@ JSON;
     }
 
     /**
-     * @dataProvider createProvider
      * @param string $data
      */
+    #[DataProvider('createProvider')]
     public function testCreate(string $data)
     {
         $this->setHttpResponse(new Response(
@@ -170,7 +171,7 @@ JSON;
     /**
      * @return string
      */
-    public function createProvider()
+    public static function createProvider()
     {
 
         $json = <<<'JSON'
@@ -185,9 +186,9 @@ JSON;
     }
 
     /**
-     * @dataProvider createMimeProvider
      * @param string $data
      */
+    #[DataProvider('createMimeProvider')]
     public function testCreateMime(string $data)
     {
         $this->setHttpResponse(new Response(
@@ -207,7 +208,7 @@ JSON;
     /**
      * @return string
      */
-    public function createMimeProvider()
+    public static function createMimeProvider()
     {
 
         $json = <<<'JSON'

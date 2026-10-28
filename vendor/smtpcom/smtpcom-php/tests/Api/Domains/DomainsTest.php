@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Api\Domains;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use GuzzleHttp\Psr7\Response;
 use SmtpSdk\Api\Domains;
 use SmtpSdk\Model\Domain;
@@ -15,9 +16,9 @@ use SmtpSdk\Tests\Api\TestCase;
 class DomainsTest extends TestCase
 {
     /**
-     * @dataProvider indexProvider
      * @param string $data
      */
+    #[DataProvider('indexProvider')]
     public function testIndex(string $data)
     {
         $this->setHttpResponse(new Response(
@@ -37,7 +38,7 @@ class DomainsTest extends TestCase
     /**
      * @return string
      */
-    public function indexProvider()
+    public static function indexProvider()
     {
 
         $json =
@@ -64,9 +65,9 @@ JSON;
 
 
     /**
-     * @dataProvider showProvider
      * @param string $data
      */
+    #[DataProvider('showProvider')]
     public function testShow(string $data)
     {
         $this->setHttpResponse(new Response(
@@ -84,7 +85,7 @@ JSON;
     /**
      * @return string
      */
-    public function showProvider()
+    public static function showProvider()
     {
 
         $json =
@@ -103,9 +104,9 @@ JSON;
 
 
     /**
-     * @dataProvider deleteProvider
      * @param string $data
      */
+    #[DataProvider('deleteProvider')]
     public function testDelete(string $data)
     {
         $this->setHttpResponse(new Response(
@@ -123,7 +124,7 @@ JSON;
     /**
      * @return string
      */
-    public function deleteProvider()
+    public static function deleteProvider()
     {
 
         $json =
@@ -139,9 +140,9 @@ JSON;
 
 
     /**
-     * @dataProvider updateProvider
      * @param string $data
      */
+    #[DataProvider('updateProvider')]
     public function testUpdate(string $data)
     {
         $this->setHttpResponse(new Response(
@@ -159,7 +160,7 @@ JSON;
     /**
      * @return string
      */
-    public function updateProvider()
+    public static function updateProvider()
     {
 
         $json =
@@ -175,9 +176,9 @@ JSON;
 
 
     /**
-     * @dataProvider createProvider
      * @param string $data
      */
+    #[DataProvider('createProvider')]
     public function testCreate(string $data)
     {
         $this->setHttpResponse(new Response(
@@ -195,7 +196,7 @@ JSON;
     /**
      * @return string
      */
-    public function createProvider()
+    public static function createProvider()
     {
 
         $json =

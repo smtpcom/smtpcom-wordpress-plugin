@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Api\Callbacks;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use GuzzleHttp\Psr7\Response;
 use SmtpSdk\Api\CallbackLogs;
 use SmtpSdk\Model\CallbackLog;
@@ -15,9 +16,9 @@ use SmtpSdk\Tests\Api\TestCase;
 class CallbacksLogTest extends TestCase
 {
     /**
-     * @dataProvider indexProvider
      * @param string $data
      */
+    #[DataProvider('indexProvider')]
     public function testIndex(string $data)
     {
         $this->setHttpResponse(new Response(
@@ -37,7 +38,7 @@ class CallbacksLogTest extends TestCase
     /**
      * @return string
      */
-    public function indexProvider()
+    public static function indexProvider()
     {
 
         $json =

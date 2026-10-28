@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SmtpSdk\Model\DkimKey;
 
@@ -11,9 +12,9 @@ use SmtpSdk\Model\DkimKey;
 class DkimKeyTest extends TestCase
 {
     /**
-     * @dataProvider dkimKeyProvider
      * @param array $data
      */
+    #[DataProvider('dkimKeyProvider')]
     public function testDkimKey(array $data)
     {
         $dkimKeyObject = new DkimKey($data);
@@ -29,7 +30,7 @@ class DkimKeyTest extends TestCase
     /**
      * @return array
      */
-    public function dkimKeyProvider()
+    public static function dkimKeyProvider()
     {
         $json = <<<'JSON'
         {

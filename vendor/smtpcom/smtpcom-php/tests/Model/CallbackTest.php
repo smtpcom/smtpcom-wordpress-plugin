@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SmtpSdk\Model\Callback;
 
@@ -11,9 +12,9 @@ use SmtpSdk\Model\Callback;
 class CallbackTest extends TestCase
 {
     /**
-     * @dataProvider callbackProvider
      * @param array $data
      */
+    #[DataProvider('callbackProvider')]
     public function testCallback(array $data)
     {
         $callbackObject = new Callback($data);
@@ -30,7 +31,7 @@ class CallbackTest extends TestCase
     /**
      * @return array
      */
-    public function callbackProvider()
+    public static function callbackProvider()
     {
         $json = <<<'JSON'
         {

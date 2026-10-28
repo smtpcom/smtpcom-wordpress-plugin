@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SmtpSdk\Model\Account;
 
@@ -12,9 +13,9 @@ use SmtpSdk\Model\Account;
 class AccountTest extends TestCase
 {
     /**
-    * @dataProvider accountProvider
     * @param array $data
     */
+    #[DataProvider('accountProvider')]
     public function testAccount(array $data)
     {
         $accountObject = new Account($data);
@@ -37,7 +38,7 @@ class AccountTest extends TestCase
     /**
     * @return array
     */
-    public function accountProvider()
+    public static function accountProvider()
     {
 
         $json =

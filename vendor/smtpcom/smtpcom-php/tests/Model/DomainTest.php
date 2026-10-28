@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SmtpSdk\Model\Domain;
 
@@ -11,9 +12,9 @@ use SmtpSdk\Model\Domain;
 class DomainTest extends TestCase
 {
     /**
-     * @dataProvider domainProvider
      * @param array $data
      */
+    #[DataProvider('domainProvider')]
     public function testDomain(array $data)
     {
         $domainObject = new Domain($data);
@@ -27,7 +28,7 @@ class DomainTest extends TestCase
     /**
      * @return array
      */
-    public function domainProvider()
+    public static function domainProvider()
     {
         $json = <<<'JSON'
         {

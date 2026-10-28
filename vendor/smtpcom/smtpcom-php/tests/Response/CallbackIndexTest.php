@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Response;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SmtpSdk\Response\Callbacks\IndexResponse;
 use SmtpSdk\Model\Callback;
@@ -12,10 +13,10 @@ use SmtpSdk\Model\Callback;
 class CallbackIndexTest extends TestCase
 {
     /**
-     * @dataProvider callbackProvider
      *
      * @param array $data
      */
+    #[DataProvider('callbackProvider')]
     public function testIndex(array $data)
     {
         $responseObject = IndexResponse::create($data);
@@ -29,7 +30,7 @@ class CallbackIndexTest extends TestCase
     /**
      * @return array
      */
-    public function callbackProvider()
+    public static function callbackProvider()
     {
         $json = <<<'JSON'
         {

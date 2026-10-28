@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Api\Reports;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use GuzzleHttp\Psr7\Response;
 use SmtpSdk\Api\Reports;
 use SmtpSdk\Api\OnDemandReports;
@@ -18,11 +19,10 @@ use SmtpSdk\Tests\Api\TestCase;
 
 class ReportsTest extends TestCase
 {
-
     /**
-     * @dataProvider indexReportsProvider
      * @param string $data
      */
+    #[DataProvider('indexReportsProvider')]
     public function testReportsIndex(string $data)
     {
         $this->setHttpResponse(new Response(
@@ -43,7 +43,7 @@ class ReportsTest extends TestCase
     /**
      * @return string
      */
-    public function indexReportsProvider()
+    public static function indexReportsProvider()
     {
 
         $json =
@@ -96,9 +96,9 @@ JSON;
 
 
     /**
-     * @dataProvider onDemandProvider
      * @param string $data
      */
+    #[DataProvider('onDemandProvider')]
     public function testOnDemand(string $data)
     {
         $this->setHttpResponse(new Response(
@@ -115,7 +115,7 @@ JSON;
     /**
      * @return string
      */
-    public function onDemandProvider()
+    public static function onDemandProvider()
     {
         $json =
             <<<'JSON'
@@ -138,9 +138,9 @@ JSON;
 
 
     /**
-     * @dataProvider periodicProvider
      * @param string $data
      */
+    #[DataProvider('periodicProvider')]
     public function testPeriodic(string $data)
     {
         $this->setHttpResponse(new Response(
@@ -157,7 +157,7 @@ JSON;
     /**
      * @return string
      */
-    public function periodicProvider()
+    public static function periodicProvider()
     {
         $json =
             <<<'JSON'
@@ -178,9 +178,9 @@ JSON;
 
 
     /**
-     * @dataProvider showProvider
      * @param string $data
      */
+    #[DataProvider('showProvider')]
     public function testShow(string $data)
     {
         $this->setHttpResponse(new Response(
@@ -198,7 +198,7 @@ JSON;
     /**
      * @return string
      */
-    public function showProvider()
+    public static function showProvider()
     {
 
         $json =

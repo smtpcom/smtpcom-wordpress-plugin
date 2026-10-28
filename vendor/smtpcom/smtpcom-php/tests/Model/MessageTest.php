@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SmtpSdk\Model\Message;
 
@@ -11,9 +12,9 @@ use SmtpSdk\Model\Message;
 class MessageTest extends TestCase
 {
     /**
-     * @dataProvider messageFullProvider
      * @param array $data
      */
+    #[DataProvider('messageFullProvider')]
     public function testMessageFull(array $data)
     {
         $messageObject = new Message($data);
@@ -37,7 +38,7 @@ class MessageTest extends TestCase
     /**
      * @return array
      */
-    public function messageFullProvider()
+    public static function messageFullProvider()
     {
         $json = <<<'JSON'
         {

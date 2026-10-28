@@ -15,7 +15,6 @@
 namespace Assert;
 
 use LogicException;
-use ReflectionClass;
 
 /**
  * Chaining builder for assertions.
@@ -23,7 +22,7 @@ use ReflectionClass;
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  *
  * @method AssertionChain alnum(string|callable $message = null, string $propertyPath = null) Assert that value is alphanumeric.
- * @method AssertionChain base64(string|callable $message = null, string $propertyPath = null) Assert that a constant is defined.
+ * @method AssertionChain base64(string|callable $message = null, string $propertyPath = null) Assert that the given string is a valid base64 string.
  * @method AssertionChain between(mixed $lowerLimit, mixed $upperLimit, string|callable $message = null, string $propertyPath = null) Assert that a value is greater or equal than a lower limit, and less than or equal to an upper limit.
  * @method AssertionChain betweenExclusive(mixed $lowerLimit, mixed $upperLimit, string|callable $message = null, string $propertyPath = null) Assert that a value is greater than a lower limit, and less than an upper limit.
  * @method AssertionChain betweenLength(int $minLength, int $maxLength, string|callable $message = null, string $propertyPath = null, string $encoding = 'utf8') Assert that string length is between min and max lengths.
@@ -152,7 +151,7 @@ class AssertionChain
      * @param mixed $value
      * @param string|callable|null $defaultMessage
      */
-    public function __construct($value, $defaultMessage = null, string $defaultPropertyPath = null)
+    public function __construct($value, $defaultMessage = null, ?string $defaultPropertyPath = null)
     {
         $this->value = $value;
         $this->defaultMessage = $defaultMessage;
@@ -171,12 +170,11 @@ class AssertionChain
             return $this;
         }
 
-        if (!\method_exists($this->assertionClassName, $methodName)) {
-            throw new \RuntimeException("Assertion '" . $methodName . "' does not exist.");
+        try {
+            $method = new \ReflectionMethod($this->assertionClassName, $methodName);
+        } catch (\ReflectionException $exception) {
+            throw new \RuntimeException("Assertion '".$methodName."' does not exist.");
         }
-
-        $reflClass = new ReflectionClass($this->assertionClassName);
-        $method = $reflClass->getMethod($methodName);
 
         \array_unshift($args, $this->value);
         $params = $method->getParameters();
@@ -186,17 +184,18 @@ class AssertionChain
                 continue;
             }
 
-            if ('message' == $param->getName()) {
-                $args[$idx] = $this->defaultMessage;
-            }
-
-            if ('propertyPath' == $param->getName()) {
-                $args[$idx] = $this->defaultPropertyPath;
+            switch ($param->getName()) {
+                case 'message':
+                    $args[$idx] = $this->defaultMessage;
+                    break;
+                case 'propertyPath':
+                    $args[$idx] = $this->defaultPropertyPath;
+                    break;
             }
         }
 
         if ($this->all) {
-            $methodName = 'all' . $methodName;
+            $methodName = 'all'.$methodName;
         }
 
         \call_user_func_array([$this->assertionClassName, $methodName], $args);
@@ -238,7 +237,7 @@ class AssertionChain
         }
 
         if (Assertion::class !== $className && !\is_subclass_of($className, Assertion::class)) {
-            throw new LogicException($className . ' is not (a subclass of) ' . Assertion::class);
+            throw new LogicException($className.' is not (a subclass of) '.Assertion::class);
         }
 
         $this->assertionClassName = $className;

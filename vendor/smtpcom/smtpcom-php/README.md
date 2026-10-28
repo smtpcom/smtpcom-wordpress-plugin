@@ -4,6 +4,10 @@ This is the smtp.com PHP SDK. This SDK contains methods for interacting with the
 Below are examples to get you started. For additional information, please see API documentation at
 https://www.smtp.com/resources/api-documentation/
 
+# Requirements
+
+- PHP 8.3 or later
+
 # Install
 
 Via Composer

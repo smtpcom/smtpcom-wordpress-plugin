@@ -3,7 +3,6 @@
 namespace SmtpSdk;
 
 use Assert\Assertion as BaseAssertion;
-use phpDocumentor\Reflection\Types\Void_;
 use SmtpSdk\Exception\InvalidArgumentException;
 
 class Assertion extends BaseAssertion

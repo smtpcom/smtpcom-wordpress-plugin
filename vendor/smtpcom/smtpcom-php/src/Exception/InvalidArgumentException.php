@@ -22,7 +22,7 @@ class InvalidArgumentException extends SmtpSdkException implements AssertionFail
      */
     private $constraints;
 
-    public function __construct($message, $code, string $propertyPath = null, $value = null, array $constraints = [])
+    public function __construct($message, $code, ?string $propertyPath = null, $value = null, array $constraints = [])
     {
         parent::__construct($message, $code);
 
@@ -40,6 +40,7 @@ class InvalidArgumentException extends SmtpSdkException implements AssertionFail
      *
      * @return string|null
      */
+    #[\Override]
     public function getPropertyPath()
     {
         return $this->propertyPath;
@@ -50,6 +51,7 @@ class InvalidArgumentException extends SmtpSdkException implements AssertionFail
      *
      * @return mixed
      */
+    #[\Override]
     public function getValue()
     {
         return $this->value;
@@ -58,6 +60,7 @@ class InvalidArgumentException extends SmtpSdkException implements AssertionFail
     /**
      * Get the constraints that applied to the failed assertion.
      */
+    #[\Override]
     public function getConstraints(): array
     {
         return $this->constraints;

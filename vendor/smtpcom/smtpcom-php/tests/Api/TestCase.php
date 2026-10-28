@@ -11,7 +11,7 @@ use SmtpSdk\HttpClient\HttpRequest;
 class TestCase extends BaseTestCase
 {
     /**
-     * @var string
+     * @var ResponseInterface|null
      */
     protected $httpResponse = null;
 
@@ -30,9 +30,7 @@ class TestCase extends BaseTestCase
      */
     protected function getApiInstance(string $class, $parameter = null)
     {
-        $httpMethodsClient = $this->getMockBuilder(HttpMethodsClientInterface::class)
-            ->setMethods(['send', 'get', 'head', 'trace', 'post', 'put', 'patch', 'delete', 'options', 'sendRequest'])
-            ->getMock();
+        $httpMethodsClient = $this->createStub(HttpMethodsClientInterface::class);
 
         $httpMethodsClient
             ->method('send')

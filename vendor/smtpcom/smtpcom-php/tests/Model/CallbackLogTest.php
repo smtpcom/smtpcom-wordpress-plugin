@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SmtpSdk\Model\CallbackLog;
 
@@ -11,9 +12,9 @@ use SmtpSdk\Model\CallbackLog;
 class CallbackLogTest extends TestCase
 {
     /**
-     * @dataProvider callbackLogProvider
      * @param array $data
      */
+    #[DataProvider('callbackLogProvider')]
     public function testCallbackLog(array $data)
     {
         $channelLogObject = new CallbackLog($data);
@@ -28,7 +29,7 @@ class CallbackLogTest extends TestCase
     /**
      * @return array
      */
-    public function callbackLogProvider()
+    public static function callbackLogProvider()
     {
         $json = <<<'JSON'
         {

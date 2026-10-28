@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SmtpSdk\Model\Alert;
 
@@ -11,9 +12,9 @@ use SmtpSdk\Model\Alert;
 class AlertTest extends TestCase
 {
     /**
-     * @dataProvider alertProvider
      * @param array $data
      */
+    #[DataProvider('alertProvider')]
     public function testAlert(array $data)
     {
         $alertObject = new Alert($data);
@@ -28,7 +29,7 @@ class AlertTest extends TestCase
     /**
      * @return array
      */
-    public function alertProvider()
+    public static function alertProvider()
     {
         $json = <<<'JSON'
         {

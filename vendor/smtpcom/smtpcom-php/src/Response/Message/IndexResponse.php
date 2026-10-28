@@ -31,6 +31,7 @@ class IndexResponse extends Base
      * @param array $data
      * @return IndexResponse
      */
+    #[\Override]
     public static function create($data)
     {
         $response = new self();

@@ -2,6 +2,7 @@
 
 namespace SmtpSdk\Tests\Response;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SmtpSdk\Response\Callbacks\Logs\IndexResponse;
 use SmtpSdk\Model\CallbackLog;
@@ -12,10 +13,10 @@ use SmtpSdk\Model\CallbackLog;
 class CallbackLogIndexTest extends TestCase
 {
     /**
-     * @dataProvider callbackLogProvider
      *
      * @param array $data
      */
+    #[DataProvider('callbackLogProvider')]
     public function testIndex(array $data)
     {
         $responseObject = IndexResponse::create($data);
@@ -29,7 +30,7 @@ class CallbackLogIndexTest extends TestCase
     /**
      * @return array
      */
-    public function callbackLogProvider()
+    public static function callbackLogProvider()
     {
         $json = <<<'JSON'
         {

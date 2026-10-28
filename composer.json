@@ -1,19 +1,21 @@
 {
     "repositories": [
         {
-            "type": "path",
-            "url": "../sdk-php",
-            "options": {
-                "symlink": false
-            }
+            "type": "vcs",
+            "url": "https://github.com/smtpcom/smtpcom-php"
         }
     ],
     "require": {
-        "smtpcom/smtpcom-php": "*"
+        "php": "^8.3",
+        "smtpcom/smtpcom-php": "^1.1"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.6.0"
     },
-    "minimum-stability": "dev",
+    "config": {
+        "platform": {
+            "php": "8.3.0"
+        }
+    },
     "prefer-stable": true
 }
